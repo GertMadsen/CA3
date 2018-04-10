@@ -7,7 +7,6 @@ function handleHttpErrors(res) {
     return res.json();
 }
 
-
 class ApiFacade {
 
     setToken = (token) => {
@@ -25,16 +24,18 @@ class ApiFacade {
     }
 
     login = (user, pass) => {
-        const options = this.makeFetchOptions("POST",{ username: user, password: pass });
-        return fetch(URL+"/api/login",options,true)
-        .then(handleHttpErrors)
-        .then(res=>{this.setToken(res.token)})
+        const options = this.makeFetchOptions("POST", { username: user, password: pass });
+        return fetch(URL + "/api/login", options, true)
+            .then(handleHttpErrors)
+            .then(res => { this.setToken(res.token) })
     }
-    
-    fetchData = () =>{
+
+    fetchData = () => {
         const options = this.makeFetchOptions("GET");
-        return fetch(URL+"/api/info/user",options).then(handleHttpErrors);
-      }
+        return fetch(URL + "/api/info/user", options).then(handleHttpErrors);
+    }
+
+
 
     makeFetchOptions = (type, b) => {
         let headers = {
