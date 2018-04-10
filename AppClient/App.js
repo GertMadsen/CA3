@@ -3,11 +3,13 @@ import { Text, View, Platform, TouchableOpacity, StyleSheet, Button, WebView, Sc
 import { Constants, WebBrowser } from "expo";
 import { StackNavigator } from 'react-navigation';
 import Anotherpage from './Anotherpage';
+import StarWars from './StarWars';
 
 const Touchable = (props) => (
   <TouchableOpacity style={styles.button} onPress={props.onPress}>
     <Text style={styles.buttonText}>{props.title}</Text>
-  </TouchableOpacity>)
+  </TouchableOpacity>
+  )
 
 class HomeScreen extends React.Component{
   static navigationOptions = {title: 'Gruppe 3s app'};
@@ -17,6 +19,7 @@ class HomeScreen extends React.Component{
       <View>
         <Text style={{ textAlign: "center", fontSize: 20 }}>Welcome to our awesome app!</Text>
         <Touchable onPress={() => navigate('anotherpage')} title="Go to another page" />
+        <Touchable onPress={() => navigate('starwars')} title="Star Wars" />
       </View>
     );
   }
@@ -27,6 +30,7 @@ export default App = () => <RouteStack style={{ marginTop: Platform.OS === 'ios'
 const RouteStack = StackNavigator({
   Home: { screen: HomeScreen},
   anotherpage: { screen: Anotherpage },
+  starwars: { screen: StarWars },
 })
 
 
