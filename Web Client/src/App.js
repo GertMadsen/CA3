@@ -1,5 +1,7 @@
 import React, { Component } from "react"
 import facade from "./apiFacade";
+import jwt_decode from 'jwt-decode';
+
 import {
   HashRouter as Router,
   Route,
@@ -7,27 +9,6 @@ import {
   NavLink
 } from 'react-router-dom'
 
-const Home = (props) => (
-  <div>
-    <WelcomeMsg/>
-  </div>
-)
-
-const About = () => (
-  <div>
-    <FetchMyData/>
-  </div>
-)
-
-const Topic = ({ match }) => (
-  <div>
-    <h3>{match.params.topicId}</h3>
-  </div>
-)
-
-const Topics = ({ match }) => (
-  <div> </div>
-)
 
 class LogIn extends Component {
   constructor(props) {
@@ -74,9 +55,8 @@ class LoggedIn extends Component {
 
           <hr />
 
-          <Route exact path="/" render={() => <div> <Home msg="Home" /></div>} />
-          <Route path="/about" component={About} />
-          <Route path="/topics" component={Topics} />
+          <Route exact path="/" render={<WelcomeMsg/>} />
+          <Route path="/about" component={<FetchMyData/>} />
         </div>
       </Router>
     )
@@ -86,16 +66,22 @@ class LoggedIn extends Component {
 class WelcomeMsg extends Component {
   constructor(props) {
     super(props);
-    this.state = { dataFromServer: "Fetching!!" };
+    var userToken = facade.getToken();
+    var decoded = jwt_decode(userToken);
+    var userName = decoded.sub; 
+    var userRoles = decoded.roles;
+    this.state = { dataFromServer: "Fetching!!", username : userName, userroles: userRoles };
   }
   componentDidMount() {
     facade.fetchData().then(res => this.setState({ dataFromServer: res }));
+  
   }
   render() {
     return (
       <div>
         <h2>Data Received from server</h2>
-        <h3>{this.state.dataFromServer}</h3>
+        <h3> {this.state.dataFromServer}</h3>
+        <h3>Name: { this.state.username } - Roles: { this.state.userroles }</h3> 
       </div>
     )
   }
@@ -104,16 +90,23 @@ class WelcomeMsg extends Component {
 class FetchMyData extends Component {
   constructor(props) {
     super(props);
-    this.state = { dataFromServer: "Fetching!!" };
+    var userToken = facade.getToken();
+    var decoded = jwt_decode(userToken);
+    var userName = decoded.sub; 
+    var userRoles = decoded.roles;
+    this.state = { dataFromServer: "Fetching!!", username : userName, userroles: userRoles };
   }
   componentDidMount() {
     facade.fetchData().then(res => this.setState({ dataFromServer: res }));
+  
   }
+ 
   render() {
     return (
       <div>
         <h2>Data Received from server</h2>
-        <h3>{this.state.dataFromServer}</h3>
+        <h3>{this.state.dataFromServer}</h3>        
+        <h3>Name: { this.state.userName } - Roles: { this.state.userRoles }</h3>        
       </div>
     )
   }
