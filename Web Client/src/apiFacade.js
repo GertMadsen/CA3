@@ -1,5 +1,7 @@
 const URL = "http://localhost:8084/jwtbackend";
 
+
+
 function handleHttpErrors(res) {
     if (!res.ok) {
         throw { message: res.statusText, status: res.status };
@@ -25,6 +27,8 @@ class ApiFacade {
 
     login = (user, pass) => {
         const options = this.makeFetchOptions("POST", { username: user, password: pass });
+
+
         return fetch(URL + "/api/login", options, true)
             .then(handleHttpErrors)
             .then(res => { this.setToken(res.token) })

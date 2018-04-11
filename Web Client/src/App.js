@@ -2,8 +2,6 @@ import React, { Component } from "react"
 import facade from "./apiFacade";
 import jwt_decode from 'jwt-decode';
 
-
-
 class LogIn extends Component {
   constructor(props) {
     super(props);
@@ -62,8 +60,12 @@ class App extends Component {
     this.setState({ loggedIn: false });
   }
   login = (user, pass) => {
+    this.setState({ loginError: "" })
     facade.login(user, pass)
-      .then(res => this.setState({ loggedIn: true }));
+      .then(res => this.setState({ loggedIn: true }))
+    .catch(error => {
+      this.setState({ loginError: "User or Password Incorrect" })   
+    })   
   }
   render() {
     return (
@@ -73,6 +75,7 @@ class App extends Component {
             <LoggedIn />
             <button onClick={this.logout}>Logout</button>
           </div>)}
+        <h3>{this.state.loginError} </h3>  
       </div>
     )
   }
