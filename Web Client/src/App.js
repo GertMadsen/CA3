@@ -2,6 +2,8 @@ import React, { Component } from "react"
 import facade from "./apiFacade";
 import jwt_decode from 'jwt-decode';
 
+<<<<<<< HEAD
+=======
 
 import {
   HashRouter as Router,
@@ -18,6 +20,7 @@ const FunFact = () => (
   <h1> Not Funny </h1>
 )
 
+>>>>>>> 339ddbb137ee854a588ab681453aa241e25ec815
 class LogIn extends Component {
 
   constructor(props) {
@@ -119,8 +122,12 @@ class App extends Component {
     this.setState({ loggedIn: false });
   }
   login = (user, pass) => {
+    this.setState({ loginError: "" })
     facade.login(user, pass)
-      .then(res => this.setState({ loggedIn: true }));
+      .then(res => this.setState({ loggedIn: true }))
+    .catch(error => {
+      this.setState({ loginError: "User or Password Incorrect" })   
+    })   
   }
   render() {
     return (
@@ -131,6 +138,9 @@ class App extends Component {
             <WelcomeMsg />
             <button onClick={this.logout}>Logout</button>
           </div>)}
+<<<<<<< HEAD
+        <h3>{this.state.loginError} </h3>  
+=======
 
         <Router>
           <Switch>
@@ -140,6 +150,7 @@ class App extends Component {
             <Route component={NoMatch} />
           </Switch>
         </Router>
+>>>>>>> 339ddbb137ee854a588ab681453aa241e25ec815
       </div>
     )
   }
