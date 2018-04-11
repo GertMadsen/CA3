@@ -3,7 +3,8 @@ import { Text, View, Platform, TouchableOpacity, StyleSheet, Button, WebView, Sc
 import { Constants, WebBrowser } from "expo";
 import { StackNavigator } from 'react-navigation';
 import Anotherpage from './Anotherpage';
-import StarWars from './StarWars';
+// import StarWars from './StarWars';
+import StarWars from './Swapi';
 
 const Touchable = (props) => (
   <TouchableOpacity style={styles.button} onPress={props.onPress}>
