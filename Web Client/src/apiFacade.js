@@ -1,4 +1,6 @@
 const URL = "http://localhost:8084/jwtbackend";
+const URL2 = "https://www.ramsbone.dk/CA3/api/info/people/";
+var number = Math.floor(Math.random() * 88);
 
 function handleHttpErrors(res) {
     if (!res.ok) {
@@ -33,6 +35,11 @@ class ApiFacade {
     fetchData = () => {
         const options = this.makeFetchOptions("GET");
         return fetch(URL + "/api/info/user", options).then(handleHttpErrors);
+    }
+
+    fetchPerson = () => {
+        const options = this.makeFetchOptions("GET");
+        return fetch(URL2 + number, options).then(handleHttpErrors);
     }
 
 
