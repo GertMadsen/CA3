@@ -9,15 +9,15 @@ import {
 } from 'react-router-dom'
 
 
-const hejsa = () => (
-  <h1> Hejsa </h1>
-)
 const NoMatch = () => (
   <h1> No Match </h1>
 )
 
 const Fetch = () => (
   <h1> fetching.. </h1>
+)
+const FunFact = () => (
+  <h1> Not Funny </h1>
 )
 
 class LogIn extends Component {
@@ -93,11 +93,11 @@ class WelcomeMsg extends Component {
               <ul className="header">
                 <li><NavLink exact to="/">Home</NavLink></li>
                 <li><NavLink to="/fetch">Fetch</NavLink></li>
-                <li><NavLink to="/topics">Topics</NavLink></li>
+                <li><NavLink to="/fun">Fun Facts</NavLink></li>
               </ul>
             </div>
           </Router>
-
+          <h2> Welcome :-) </h2>
           <h2> Data Received from server </h2>
           <h3> {this.state.dataFromServer} </h3>
           <h3> Name: {this.state.username} - Roles: {this.state.userroles}</h3>
@@ -135,6 +135,7 @@ class App extends Component {
           <Switch>
             <Route exact path="/" render={() => <div></div>} />
             <Route path="/fetch" component={Fetch} />
+            <Route path="/fun" component={FunFact} />
             <Route component={NoMatch} />
           </Switch>
         </Router>
