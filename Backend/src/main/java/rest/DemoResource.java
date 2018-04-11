@@ -69,7 +69,7 @@ public class DemoResource {
                 jsonStr = scan.nextLine();
             }
             scan.close();
-        return ""+jsonStr;
+        return jsonStr;
     }
 
 }
