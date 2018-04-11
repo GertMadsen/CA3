@@ -1,16 +1,27 @@
 import React, { Component } from "react"
 import facade from "./apiFacade";
 import jwt_decode from 'jwt-decode';
-
 import {
   HashRouter as Router,
   Route,
-  Link,
+  Switch,
   NavLink
 } from 'react-router-dom'
 
 
+const hejsa = () => (
+  <h1> Hejsa </h1>
+)
+const NoMatch = () => (
+  <h1> No Match </h1>
+)
+
+const Fetch = () => (
+  <h1> fetching.. </h1>
+)
+
 class LogIn extends Component {
+
   constructor(props) {
     super(props);
     this.state = { username: "", password: "" }
@@ -22,6 +33,7 @@ class LogIn extends Component {
   onChange = (evt) => {
     this.setState({ [evt.target.id]: evt.target.value })
   }
+
   render() {
     return (
       <div>
@@ -35,30 +47,24 @@ class LogIn extends Component {
     )
   }
 }
+
 class LoggedIn extends Component {
   constructor(props) {
     super(props);
-    this.state = { dataFromServer: "Fetching!!" };
+    var userToken = facade.getToken();
+    var decoded = jwt_decode(userToken);
+    var userName = decoded.sub;
+    var userRoles = decoded.roles;
+    this.state = { dataFromServer: "Fetching!!", username: userName, userroles: userRoles };
   }
+
   componentDidMount() {
     facade.fetchData().then(res => this.setState({ dataFromServer: res }));
   }
+
   render() {
     return (
-      <Router>
-        <div>
-          <ul className="header">
-            <li><NavLink exact to="/">Home</NavLink></li>
-            <li><NavLink to="/about">About</NavLink></li>
-            <li><NavLink to="/topics">Topics</NavLink></li>
-          </ul>
-
-          <hr />
-
-          <Route exact path="/" render={<WelcomeMsg/>} />
-          <Route path="/about" component={<FetchMyData/>} />
-        </div>
-      </Router>
+      <h1> hej </h1>
     )
   }
 }
@@ -68,46 +74,36 @@ class WelcomeMsg extends Component {
     super(props);
     var userToken = facade.getToken();
     var decoded = jwt_decode(userToken);
-    var userName = decoded.sub; 
+    var userName = decoded.sub;
     var userRoles = decoded.roles;
-    this.state = { dataFromServer: "Fetching!!", username : userName, userroles: userRoles };
+    this.state = { dataFromServer: "Fetching!!", username: userName, userroles: userRoles };
   }
-  componentDidMount() {
-    facade.fetchData().then(res => this.setState({ dataFromServer: res }));
-  
-  }
-  render() {
-    return (
-      <div>
-        <h2>Data Received from server</h2>
-        <h3> {this.state.dataFromServer}</h3>
-        <h3>Name: { this.state.username } - Roles: { this.state.userroles }</h3> 
-      </div>
-    )
-  }
-}
 
-class FetchMyData extends Component {
-  constructor(props) {
-    super(props);
-    var userToken = facade.getToken();
-    var decoded = jwt_decode(userToken);
-    var userName = decoded.sub; 
-    var userRoles = decoded.roles;
-    this.state = { dataFromServer: "Fetching!!", username : userName, userroles: userRoles };
-  }
   componentDidMount() {
     facade.fetchData().then(res => this.setState({ dataFromServer: res }));
-  
   }
- 
+
   render() {
     return (
       <div>
-        <h2>Data Received from server</h2>
-        <h3>{this.state.dataFromServer}</h3>        
-        <h3>Name: { this.state.userName } - Roles: { this.state.userRoles }</h3>        
+        <div>
+
+          <Router>
+            <div>
+              <ul className="header">
+                <li><NavLink exact to="/">Home</NavLink></li>
+                <li><NavLink to="/fetch">Fetch</NavLink></li>
+                <li><NavLink to="/topics">Topics</NavLink></li>
+              </ul>
+            </div>
+          </Router>
+
+          <h2> Data Received from server </h2>
+          <h3> {this.state.dataFromServer} </h3>
+          <h3> Name: {this.state.username} - Roles: {this.state.userroles}</h3>
+        </div>
       </div>
+
     )
   }
 }
@@ -128,11 +124,20 @@ class App extends Component {
   render() {
     return (
       <div>
+
         {!this.state.loggedIn ? (<LogIn login={this.login} />) :
           (<div>
-            <LoggedIn />
+            <WelcomeMsg />
             <button onClick={this.logout}>Logout</button>
           </div>)}
+
+        <Router>
+          <Switch>
+            <Route exact path="/" render={() => <div></div>} />
+            <Route path="/fetch" component={Fetch} />
+            <Route component={NoMatch} />
+          </Switch>
+        </Router>
       </div>
     )
   }
