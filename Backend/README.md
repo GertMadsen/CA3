@@ -12,6 +12,7 @@ When cloning this seed remember to:
 - in the package.json file in the web client- and in the app client project, change the serverURL to your backend server location.
 
 Following endpoints is available in the REST api:
+
 api/info/user
 (OPTIONS: GET)
 (Access allowed with user role)
