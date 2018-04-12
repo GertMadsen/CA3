@@ -157,11 +157,11 @@ class App extends Component {
                 <Route component={NoMatch} />
               </Switch>
             </Router>
+            <button onClick={this.logout}>Logout</button>
 
           </div>)}
 
         <h3>{this.state.loginError} </h3>
-        <button onClick={this.logout}>Logout</button>
 
       </div>
     )
