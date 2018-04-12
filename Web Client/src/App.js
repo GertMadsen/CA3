@@ -28,13 +28,26 @@ class LogIn extends Component {
 
   render() {
     return (
-      <div>
-        <h2>Login</h2>
-        <form className= 'btn btn-success'onSubmit={this.login} onChange={this.onChange} >
-          <input placeholder="User Name" id="username" />
-          <input placeholder="Password" id="password" />
-          <button>Login</button>
-        </form>
+      <div class="row">
+        <div class="col-md-5"></div>
+        <div class="col-md-2">
+        <h3><span class="label label-primary">Login</span></h3>
+          <form onSubmit={this.login} onChange={this.onChange} >
+            <div class="input-group">
+              <div class="input-group">
+                <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                <input class="form-control" placeholder="User Name" id="username" />
+              </div>
+              <div class="input-group">
+                <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                <input class="form-control" placeholder="Password" id="password" />
+              </div>
+              <button class='btn btn-success btn-block'>Login</button>
+            </div>
+
+          </form>
+        </div>
+        <div class="col-md-5"></div>
       </div>
     )
   }
@@ -53,19 +66,25 @@ class FetchSwapi extends Component {
 
   render() {
     return (
-      <div>
-        <h2> Name: {this.state.pers.name} </h2>
-        <h3> Height: {this.state.pers.height} </h3>
-        <h3> Weight : {this.state.pers.mass} </h3>
-        <h3> Gender : {this.state.pers.gender} </h3>
+      <div class="row">
+        <div class="col-sm-4"></div>
+        <div class="col-sm-4">
+          <div class="well well-sm"> <h4> Name:  {this.state.pers.name}</h4></div>
+          <div class="well well-sm">  <h4> Height: {this.state.pers.height} </h4></div>
+          <div class="well well-sm">  <h4> Weight : {this.state.pers.mass} </h4></div>
+          <div class="well well-sm">  <h4> Gender : {this.state.pers.gender} </h4></div>
+        </div>
+        <div class="col-sm-4"></div>
       </div>
     )
   }
 }
 
 const Home = () => (
-  <div>
-    <h2>Welcome.</h2>
+  <div class="row">
+    <div class="col-sm-4"></div>
+    <div class="col-sm-4 well well-lg"> <h2>Welcome to the Seed</h2></div>
+    <div class="col-sm-4"></div>
   </div>
 )
 
@@ -82,11 +101,13 @@ class UserData extends Component {
   }
   render() {
     return (
-      <div>
-        <div>
-          <h2> Data Received from server </h2>
-          <h3> {this.state.dataFromServer} </h3>
+      <div class="row">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-8">
+          <div class="well well-lg"> <h2> Data Received from server </h2> </div>
+          <div class="well well-lg">  <h3> {this.state.dataFromServer} </h3> </div>
         </div>
+        <div class="col-sm-2"></div>
       </div>
 
     )
@@ -105,21 +126,30 @@ class Header extends Component {
   render() {
     return (
       <div>
-        <div>
-          <Router>
-            <div>
-              <ul className="header">
+        <Router>
+          <nav class="navbar navbar-inverse">
+            <div class="container-fluid">
+              <div class="navbar-header">
+                <a class="navbar-brand">CA3 Seed</a>
+              </div>
+              <ul class="nav navbar-nav">
                 <li><NavLink exact to="/">Home</NavLink></li>
                 {this.state.userroles === "user" && <li><NavLink to="/userdata">UserData</NavLink></li>}
                 {this.state.userroles === "admin" && <li><NavLink to="/admindata">AdminData</NavLink></li>}
                 <li><NavLink to="/swapi">Swapi</NavLink></li>
               </ul>
+              <ul class="nav navbar-nav navbar-right">
+                <li><button onClick={this.props.logout} class='btn btn-link'> <span class="glyphicon glyphicon-log-out"></span> Logout</button></li>
+              </ul>
             </div>
-          </Router>
-          <h3> Logged in as : {this.state.username}</h3>
+          </nav>
+        </Router>
+        <div>
+          <span>
+            <div class="well well-sm"><h4> Logged in as : {this.state.username}</h4></div>
+            </span>
         </div>
       </div>
-
     )
   }
 }
@@ -146,7 +176,7 @@ class App extends Component {
       <div>
         {!this.state.loggedIn ? (<LogIn login={this.login} />) :
           (<div>
-            <Header />
+            <Header logout={this.logout} />
 
             <Router>
               <Switch>
@@ -157,8 +187,6 @@ class App extends Component {
                 <Route component={NoMatch} />
               </Switch>
             </Router>
-            <button onClick={this.logout}>Logout</button>
-
           </div>)}
 
         <h3>{this.state.loginError} </h3>
