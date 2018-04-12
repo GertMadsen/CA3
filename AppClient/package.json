@@ -2,7 +2,7 @@
   "name": "AppClient",
   "version": "0.1.0",
   "private": true,
-  "serverURL": "https://www.ramsbone.dk/CA3",
+  "serverURL": "https://www.ramsbone.dk/backend/CA3",
   "devDependencies": {
     "jest-expo": "26.0.0",
     "react-native-scripts": "1.13.1",

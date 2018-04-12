@@ -1,5 +1,7 @@
 {
   "expo": {
-    "sdkVersion": "26.0.0"
+	"name": "Seed App",
+    "sdkVersion": "26.0.0",
+	"description": "Seed App for use with Seed Project",
   }
 }
