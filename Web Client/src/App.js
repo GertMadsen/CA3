@@ -190,8 +190,8 @@ class App extends Component {
           </div>)}
 
         <div class="row">
+          <br/>
           <div class="col-md-5"></div>
-
           {this.state.loginError &&
             <span><div class="col-md-2 alert alert-danger"> {this.state.loginError} </div></span>
               }
