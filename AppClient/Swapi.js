@@ -1,46 +1,51 @@
-import React, {Component} from 'react';
-import {Button, Text, StyleSheet, View, TouchableOpacity} from 'react-native';
+import React, { Component } from 'react';
+import { Button, Text, StyleSheet, View, TouchableOpacity } from 'react-native';
 
 const URL = "https://www.ramsbone.dk/CA3/api/info/people/";
 
+export default class Swapi extends Component {
+    static navigationOptions = { title: "Star wars" }
 
-
-export default class Swapi extends Component{
-    static navigationOptions = {title: "Star wars"}
-
-    _onPressButton(){
-        this.setState({dummy: 0});
+    getRandomNumber() {
+        return Math.floor(Math.random() * 88) + 1;
     }
 
-    constructor(props){
-        super(props);
-        var RandomNumber = Math.floor(Math.random()*88)+1;
-        this.state={isLoading: true, rnd: RandomNumber}
-        
-    }
+    getData() {
+        var randomNumber = this.getRandomNumber();
+        return (
+            fetch(URL + randomNumber)
+                .then((response) => response.json())
+                .then((responseJson) => {
+                    this.setState({
+                        isLoading: false,
+                        datasource: responseJson.name,
+                    }, function () {
 
-    componentDidMount(){
-        return(
-            fetch(URL+ this.state.rnd)
-            .then((response) => response.json())
-            .then((responseJson) =>{
-                this.setState({
-                    isLoading: false,
-                    datasource: responseJson.name,
-                }, function(){
-
-                });
-            })
-            .catch((error) => {
-                console.error(error)
-            })
+                    });
+                })
+                .catch((error) => {
+                    console.error(error)
+                })
         );
     }
 
-    render(){
-        return(
+    _onPressButton() {
+        this.getData();
+    }
+
+    constructor(props) {
+        super(props);
+        this.state = { isLoading: true }
+
+    }
+
+    componentDidMount() {
+        this.getData();
+    }
+
+    render() {
+        return (
             <View style={styles.container}>
-                {/* <Text>Star wars!</Text> */}
                 <Text style={styles.texting}>A Star Wars character: </Text>
                 <Text style={styles.texting}>{this.state.datasource}</Text>
                 <Touchable onPress={this._onPressButton.bind(this)} title="Get another character" />
@@ -51,9 +56,9 @@ export default class Swapi extends Component{
 
 const Touchable = (props) => (
     <TouchableOpacity style={styles.button} onPress={props.onPress}>
-      <Text style={styles.buttonText}>{props.title}</Text>
+        <Text style={styles.buttonText}>{props.title}</Text>
     </TouchableOpacity>
-    )
+)
 
 const styles = StyleSheet.create({
     container: {
@@ -67,14 +72,22 @@ const styles = StyleSheet.create({
         fontSize: 30,
     },
     button: {
-        margin: 3,
-        alignItems: 'center',
-        backgroundColor: '#2196F3'
-      },
-      buttonText: {
-        padding: 7,
+        marginTop: 10,
+        paddingTop: 7,
+        paddingBottom: 7,
+        marginLeft: 30,
+        marginRight: 30,
+        backgroundColor: '#999999',
+        borderRadius: 10,
+        borderWidth: 1,
+        borderColor: '#4d4d4d',
+        
+    },
+    buttonText: {
+        textAlign: 'center',
+        padding: 5,
         fontSize: 18,
-        fontWeight: "bold",
+        fontWeight: 'bold',
         color: 'white'
-      }
+    }
 });
