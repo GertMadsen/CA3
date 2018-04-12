@@ -13,7 +13,7 @@ import javax.ws.rs.container.ContainerResponseFilter;
 import javax.ws.rs.container.PreMatching;
 import javax.ws.rs.ext.Provider;
 
-@Provider
+//@Provider
 @PreMatching
 public class CorsResponseFilter implements ContainerResponseFilter {
   private final static Logger LOG = Logger.getLogger(CorsResponseFilter.class.getName());
