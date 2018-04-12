@@ -1,7 +1,5 @@
 const URL = "https://www.ramsbone.dk/CA3";
 
-
-
 function handleHttpErrors(res) {
     if (!res.ok) {
         throw { message: res.statusText, status: res.status };
@@ -34,9 +32,9 @@ class ApiFacade {
             .then(res => { this.setToken(res.token) })
     }
 
-    fetchData = () => {
+    fetchUserData = (role) => {
         const options = this.makeFetchOptions("GET");
-        return fetch(URL + "/api/info/user", options).then(handleHttpErrors);
+        return fetch(URL + "/api/info/"+role, options).then(handleHttpErrors);
     }
 
     fetchPerson = () => {

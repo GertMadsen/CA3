@@ -12,10 +12,6 @@ const NoMatch = () => (
   <h1> No Match </h1>
 )
 
-const FunFact = () => (
-  <h1> Not Funny </h1>
-)
-
 class LogIn extends Component {
 
   constructor(props) {
@@ -44,7 +40,7 @@ class LogIn extends Component {
   }
 }
 
-class Fetching extends Component {
+class FetchSwapi extends Component {
   constructor(props) {
     super(props);
     var person = facade.fetchPerson;
@@ -52,54 +48,75 @@ class Fetching extends Component {
   }
 
   componentDidMount() {
-    facade.fetchPerson().then(res => this.setState({ pers: res })); 
+    facade.fetchPerson().then(res => this.setState({ pers: res }));
   }
 
   render() {
     return (
-    <div>
-        <h2> Name: {this.state.pers.name} </h2> 
-        <h3> Height: {this.state.pers.height} </h3> 
-        <h3> Weight : {this.state.pers.mass} </h3> 
-        <h3> Gender : {this.state.pers.gender} </h3> 
-     </div>
+      <div>
+        <h2> Name: {this.state.pers.name} </h2>
+        <h3> Height: {this.state.pers.height} </h3>
+        <h3> Weight : {this.state.pers.mass} </h3>
+        <h3> Gender : {this.state.pers.gender} </h3>
+      </div>
     )
   }
 }
 
-class WelcomeMsg extends Component {
+const Home = () => (
+  <div>
+    <h2>Welcome.</h2>
+  </div>
+)
+
+class UserData extends Component {
+  constructor(props) {
+    super(props);
+    var userToken = facade.getToken();
+    var decoded = jwt_decode(userToken);
+    var userRoles = decoded.roles;
+    this.state = { dataFromServer: "Fetching!!", userroles: userRoles };
+  }
+  componentDidMount() {
+    facade.fetchUserData(this.state.userroles).then(res => this.setState({ dataFromServer: res }));
+  }
+  render() {
+    return (
+      <div>
+        <div>
+          <h2> Data Received from server </h2>
+          <h3> {this.state.dataFromServer} </h3>
+        </div>
+      </div>
+
+    )
+  }
+}
+
+class Header extends Component {
   constructor(props) {
     super(props);
     var userToken = facade.getToken();
     var decoded = jwt_decode(userToken);
     var userName = decoded.sub;
     var userRoles = decoded.roles;
-    this.state = { dataFromServer: "Fetching!!", username: userName, userroles: userRoles };
+    this.state = { username: userName, userroles: userRoles };
   }
-
-  componentDidMount() {
-    facade.fetchData().then(res => this.setState({ dataFromServer: res }));
-  }
-
   render() {
     return (
       <div>
         <div>
-
           <Router>
             <div>
               <ul className="header">
                 <li><NavLink exact to="/">Home</NavLink></li>
-                <li><NavLink to="/fetch">Fetch</NavLink></li>
-                <li><NavLink to="/fun">Fun Facts</NavLink></li>
+                {this.state.userroles === "user" && <li><NavLink to="/userdata">UserData</NavLink></li>}
+                {this.state.userroles === "admin" && <li><NavLink to="/admindata">AdminData</NavLink></li>}
+                <li><NavLink to="/swapi">Swapi</NavLink></li>
               </ul>
             </div>
           </Router>
-
-          <h2> Welcome :-) </h2>
-          <h2> Data Received from server </h2>
-          <h3> {this.state.dataFromServer} </h3>
-          <h3> Name: {this.state.username} - Roles: {this.state.userroles}</h3>
+          <h3> Logged in as : {this.state.username}</h3>
         </div>
       </div>
 
@@ -120,28 +137,31 @@ class App extends Component {
     this.setState({ loginError: "" })
     facade.login(user, pass)
       .then(res => this.setState({ loggedIn: true }))
-    .catch(error => {
-      this.setState({ loginError: "User or Password Incorrect" })   
-    })   
+      .catch(error => {
+        this.setState({ loginError: "User or Password Incorrect" })
+      })
   }
   render() {
     return (
       <div>
-
         {!this.state.loggedIn ? (<LogIn login={this.login} />) :
           (<div>
-            <WelcomeMsg />
-            <button onClick={this.logout}>Logout</button>
+            <Header />
+
+            <Router>
+              <Switch>
+                <Route exact path="/" render={() => <Home />} />
+                <Route path="/swapi" render={() => <FetchSwapi />} />
+                <Route path="/userdata" render={() => <UserData />} />
+                <Route path="/admindata" render={() => <UserData />} />
+                <Route component={NoMatch} />
+              </Switch>
+            </Router>
+
           </div>)}
-        <h3>{this.state.loginError} </h3>  
-        <Router>
-          <Switch>
-            <Route exact path="/" render={() => <div></div>} />
-            <Route path="/fetch" render={() => <div> <Fetching /> </div>} />
-            <Route path="/fun" component={FunFact} />
-            <Route component={NoMatch} />
-          </Switch>
-        </Router>
+
+        <h3>{this.state.loginError} </h3>
+        <button onClick={this.logout}>Logout</button>
 
       </div>
     )
