@@ -1,4 +1,5 @@
-const URL = "https://www.ramsbone.dk/CA3";
+
+const URL = require("../package.json").serverURL;
 
 function handleHttpErrors(res) {
     if (!res.ok) {

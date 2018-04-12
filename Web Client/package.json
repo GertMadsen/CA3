@@ -2,6 +2,7 @@
   "name": "login-frontend",
   "version": "0.1.0",
   "private": true,
+  "serverURL": "https://www.ramsbone.dk/CA3",
   "dependencies": {
     "jsonwebtoken": "^8.2.1",
     "react": "^16.3.1",
@@ -15,4 +16,5 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   }
+  
 }
