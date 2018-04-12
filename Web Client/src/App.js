@@ -30,7 +30,7 @@ class LogIn extends Component {
     return (
       <div>
         <h2>Login</h2>
-        <form onSubmit={this.login} onChange={this.onChange} >
+        <form className= 'btn btn-success'onSubmit={this.login} onChange={this.onChange} >
           <input placeholder="User Name" id="username" />
           <input placeholder="Password" id="password" />
           <button>Login</button>
