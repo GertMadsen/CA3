@@ -31,7 +31,7 @@ class LogIn extends Component {
       <div class="row">
         <div class="col-md-5"></div>
         <div class="col-md-2">
-        <h3><span class="label label-primary">Login</span></h3>
+          <h3><span class="label label-primary">Login</span></h3>
           <form onSubmit={this.login} onChange={this.onChange} >
             <div class="input-group">
               <div class="input-group">
@@ -147,7 +147,7 @@ class Header extends Component {
         <div>
           <span>
             <div class="well well-sm"><h4> Logged in as : {this.state.username}</h4></div>
-            </span>
+          </span>
         </div>
       </div>
     )
@@ -189,8 +189,14 @@ class App extends Component {
             </Router>
           </div>)}
 
-        <h3>{this.state.loginError} </h3>
+        <div class="row">
+          <div class="col-md-5"></div>
 
+          {this.state.loginError &&
+            <span><div class="col-md-2 alert alert-danger"> {this.state.loginError} </div></span>
+              }
+            <div class="col-md-5"></div>
+          </div>
       </div>
     )
   }
