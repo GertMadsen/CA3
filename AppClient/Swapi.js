@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Button, Text, StyleSheet, View, TouchableOpacity } from 'react-native';
 
-const URL = "https://www.ramsbone.dk/CA3/api/info/people/";
+const URL = require("./package.json").serverURL;
 
 export default class Swapi extends Component {
     static navigationOptions = { title: "Star wars" }
@@ -13,7 +13,7 @@ export default class Swapi extends Component {
     getData() {
         var randomNumber = this.getRandomNumber();
         return (
-            fetch(URL + randomNumber)
+            fetch(URL + "/api/info/people/" + randomNumber)
                 .then((response) => response.json())
                 .then((responseJson) => {
                     this.setState({
