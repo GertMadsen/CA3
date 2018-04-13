@@ -4,6 +4,7 @@ This seed contains
 - a mobile app created with React-native
 
 How to use this seed: 
+
 When cloning this seed remember to:
 - create a database 
 - create a persistence-unit which refers to this database 
@@ -13,10 +14,6 @@ When cloning this seed remember to:
 
 Optional:
 - Activate/deactivate CORS by comment in/out the @Provider annotation in the CORS request and respons files in the backend project.
-
-Backend roles available:
-- user
-- admin
 
 Following endpoints is available in the REST api:
 
@@ -37,3 +34,6 @@ api/login
 (OPTIONS: POST)
 (Requires json object:{ "username": XXX, "password": XXX })
 
+Backend roles available:
+- user
+- admin
