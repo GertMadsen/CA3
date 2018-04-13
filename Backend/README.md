@@ -1,9 +1,9 @@
+How to use this seed: 
+
 This seed contains
 - a backend project with REST api
 - a Web Client created with React
 - a mobile app created with React-native
-
-How to use this seed: 
 
 When cloning this seed remember to:
 - create a database 
