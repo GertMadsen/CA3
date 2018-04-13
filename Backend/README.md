@@ -15,25 +15,26 @@ When cloning this seed remember to:
 Optional:
 - Activate/deactivate CORS by comment in/out the @Provider annotation in the CORS request and respons files in the backend project.
 
+Roles available for backend users:
+- user
+- admin
+
 Following endpoints is available in the REST api:
 
-api/info/user
+- api/info/user
 (OPTIONS: GET)
 (Access allowed with user role)
 
-api/info/admin
+- api/info/admin
 (OPTIONS: GET)
 (Access allowed with admin role)
 
-api/info/people/peopleId
+- api/info/people/peopleId
 (PeopleId must be an integer)
 (OPTIONS: GET)
 (Access allowed for everybody)
 
-api/login
+- api/login
 (OPTIONS: POST)
 (Requires json object:{ "username": XXX, "password": XXX })
 
-Backend roles available:
-- user
-- admin
