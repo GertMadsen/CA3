@@ -11,6 +11,13 @@ When cloning this seed remember to:
 - before running the web client and the app client for the first time use npm install or yarn install in the root of the web client project. 
 - in the package.json file in the web client- and in the app client project, change the serverURL to your backend server location.
 
+Optional:
+- Activate/deactivate CORS by comment out the @Provider annotation in the CORS request and respons files in the backend project.
+
+Backend roles available:
+- user
+- admin
+
 Following endpoints is available in the REST api:
 
 api/info/user
