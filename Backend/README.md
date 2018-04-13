@@ -21,20 +21,20 @@ Roles available for backend users:
 
 Following endpoints is available in the REST api:
 
-api/info/user
+- api/info/user
 (OPTIONS: GET)
 (Access allowed with user role)
 
-api/info/admin
+- api/info/admin
 (OPTIONS: GET)
 (Access allowed with admin role)
 
-api/info/people/peopleId
+- api/info/people/peopleId
 (PeopleId must be an integer)
 (OPTIONS: GET)
 (Access allowed for everybody)
 
-api/login
+- api/login
 (OPTIONS: POST)
 (Requires json object:{ "username": XXX, "password": XXX })
 
