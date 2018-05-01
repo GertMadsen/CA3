@@ -9,7 +9,7 @@ package entity;
  *
  * @author lene_
  */
-class Reservation {
+public class Reservation {
     private String companyTag;
     private String customerMail;
     private String fromDate;
