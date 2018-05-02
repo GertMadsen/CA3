@@ -63,9 +63,9 @@ public class TestResource {
 //    }
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public String getByLocation(@QueryParam("location") String location) {
+    public String getCars(@QueryParam("location") String location, @QueryParam("category") String category) {
         Cars cars = new Cars();
-        if (location == null) {
+        if (location == null && category == null) {
             cars.add(c1);
             cars.add(c2);
             cars.add(c3);
@@ -74,22 +74,35 @@ public class TestResource {
 
             return gson.toJson(cars);
         }
-        switch (location) {
-            case "Cph Airport":
-                cars.add(c1);
-                cars.add(c2);
-                break;
-            case "Aarhus City":
-                cars.add(c3);
-                cars.add(c4);
-                break;
-            case "Naestved":
-                cars.add(c5);
-                break;
-
+        if (location != null) {
+            switch (location) {
+                case "Cph Airport":
+                    cars.add(c1);
+                    cars.add(c2);
+                    break;
+                case "Aarhus City":
+                    cars.add(c3);
+                    cars.add(c4);
+                    break;
+                case "Naestved":
+                    cars.add(c5);
+                    break;
+            }
         }
-
-        return gson.toJson(cars);
+        if(category != null){
+            switch(category){
+                case "mini":
+                    cars.add(c1);
+                    break;
+                case "economy":
+                    cars.add(c2);
+                    cars.add(c3);
+                    break;
+                case "fullsize":
+                    cars.add(c4);
+                    cars.add(c5);
+            }
+        }
+            return gson.toJson(cars);
     }
-
 }
