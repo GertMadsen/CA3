@@ -41,16 +41,21 @@ public class TestResource {
      */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("all")
     public String getAllCars() {
         Car c1 = new Car("logo.jpg", "somecompany", "mini", "pic.jpg", "vw", "up", 2016, "LL12345", 5, 3, "manuel", true, "Cph Airport", 50);
-        Car c2 = new Car("logo.jpg", "somecompany", "business", "pic.jpg", "Ford", "Fiesta", 2016, "AB89764", 5, 4, "automatic", true, "Cph Airport", 100);
-        Reservation r1 = new Reservation("somecompany", "test@testersen.dk", "01/05/2018", "04/05/2018");
+        Car c2 = new Car("logo.jpg", "somecompany", "economy", "pic.jpg", "Ford", "Fiesta", 2016, "AB89764", 5, 4, "automatic", true, "Cph Airport", 100);
+        Car c3 = new Car("logo.jpg", "anothercompany", "economy", "pic.jpg", "Peugeot", "306", 2017, "YC23456", 5, 5, "manuel", true, "Aarhus City", 100);
+        Car c4 = new Car("logo.jpg", "anothercompany", "fullsize", "pic.jpg", "Toyota", "Avensis stc", 2018, "AB23999", 5, 5, "automatic", true, "Aarhus City", 200);
+        Car c5 = new Car("logo.jpg", "randomcompany", "fullsize", "pic.jpg", "Citroen", "Berlingo", 2016, "AC12345", 7, 5, "manuel", true, "Naestved", 200);
+        Reservation r1 = new Reservation("SC", "test@testersen.dk", "01/05/2018", "04/05/2018");
         c1.addReservation(r1);
         
         Cars cars = new Cars();
         cars.add(c1);
         cars.add(c2);
+        cars.add(c3);
+        cars.add(c4);
+        cars.add(c5);
         
         return gson.toJson(cars);
     }
