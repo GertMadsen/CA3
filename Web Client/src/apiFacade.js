@@ -1,5 +1,7 @@
 
+// const URL = require("../package.json").serverURL;
 const URL = require("../package.json").serverURL;
+
 
 function handleHttpErrors(res) {
     if (!res.ok) {
@@ -33,16 +35,16 @@ class ApiFacade {
             .then(res => { this.setToken(res.token) })
     }
 
-    fetchUserData = (role) => {
+    fetchCars = (urlExtension) => {
         const options = this.makeFetchOptions("GET");
-        return fetch(URL + "/api/info/"+role, options).then(handleHttpErrors);
+        return fetch(URL + "/api/test/"+urlExtension, options).then(handleHttpErrors);
     }
 
-    fetchPerson = () => {
-        var number = Math.floor(Math.random() * 88);
-        const options = this.makeFetchOptions("GET");
-        return fetch(URL + "/api/info/people/" + number, options).then(handleHttpErrors);
-    }
+    // fetchPerson = () => {
+    //     var number = Math.floor(Math.random() * 88);
+    //     const options = this.makeFetchOptions("GET");
+    //     return fetch(URL + "/api/info/people/" + number, options).then(handleHttpErrors);
+    // }
 
 
 

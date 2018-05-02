@@ -3,7 +3,8 @@ import {
   HashRouter as Router,
   Route,
   Switch,
-  NavLink
+  NavLink,
+  Link
 } from 'react-router-dom'
 import facade from "./apiFacade";
 import jwt_decode from 'jwt-decode';
@@ -85,6 +86,7 @@ const Home = () => (
     Welcome to CarMondo
   </div>
 )
+
 class RentCar extends Component {
   constructor(props) {
     super(props);
@@ -98,9 +100,11 @@ class RentCar extends Component {
 
   handleChangeLocation(event) {
     this.setState({location: event.target.value});
+    this.props.setURL("?location="+event.target.value);
   }
   handleChangeCategori(event) {
     this.setState({categori: event.target.value});
+    this.props.setURL("?category="+event.target.value);
   }
 
   handleSubmit(event) {
@@ -121,9 +125,9 @@ class RentCar extends Component {
         <div class="row">
           <div class="col-sm-5"> </div>
           <div class="col-sm-3">
-            <form onSubmit={this.handleSubmit}>
+            <form>
               <div class="form group">
-                <button type="submit" class="btn btn-success btn-lg">Show All Cars</button>
+               <Link to="/showcars" class="btn btn-success btn-lg">Show All Cars</Link>
               </div>
             </form>
           </div>
@@ -137,16 +141,16 @@ class RentCar extends Component {
         <div class="row">
           <div class="col-sm-4"> </div>
           <div class="col-sm-4">
-            <form class="form-inline" onSubmit={this.handleSubmit}>
+            <form class="form-inline">
               <div class="form group">
                 <label> Kategori: </label>
                 <select class="form-control" value={this.state.categori} onChange={this.handleChangeCategori}>
                   <option selected value="All">Alle</option>
                   <option value="Mini">Mini</option>
                   <option value="Sedan">Sedan</option>
-                  <option value="Suv">SUV</option>
+                  <option value="SUV">SUV</option>
                 </select>
-                <button type="submit" class="btn btn-success">Show Cars</button>
+                <Link to="/showcars" class="btn btn-success">Show All Cars</Link>
               </div>
             </form>
           </div>
@@ -160,16 +164,16 @@ class RentCar extends Component {
         <div class="row">
           <div class="col-sm-4"> </div>
           <div class="col-sm-4">
-            <form class="form-inline" onSubmit={this.handleSubmit}>
+            <form class="form-inline">
               <div class="form group">
                 <label> Lokation: </label>
                 <select class="form-control" value={this.state.location} onChange={this.handleChangeLocation}>
                   <option selected value="All">Alle</option>
-                  <option value="Cph">CPH Airport</option>
+                  <option value="Cph Airport">CPH Airport</option>
                   <option value="Aarhus">Aarhus</option>
                   <option value="Naestved">Næstved</option>
                 </select>
-                <button type="submit" class="btn btn-success">Show Cars</button>
+                <Link to="/showcars" class="btn btn-success">Show All Cars</Link>
               </div>
             </form>
           </div>
@@ -207,6 +211,29 @@ class RentCar extends Component {
 //     )
 //   }
 // }
+
+class ShowCars extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { fetchURL: props.fetchURL };
+  }
+  componentDidMount() {
+    // facade.fetchUserData(this.state.userroles).then(res => this.setState({ dataFromServer: res }));
+  }
+  render() {
+    return (
+      <div class="row">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-8">
+          <div class="well well-lg"> <h2> SHOW CARS PAGE - URL = {this.state.fetchURL}</h2> </div>
+        </div>
+        <div class="col-sm-2"></div>
+      </div>
+
+    )
+  }
+}
+
 
 class Header extends Component {
   constructor(props) {
@@ -251,7 +278,10 @@ class Header extends Component {
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = { loggedIn: false }
+    this.state = { loggedIn: false, fetchURL: "" }
+  }
+  setURL = (url) => {
+    this.setState({ fetchURL: url });
   }
   // logout = () => {
   //   facade.logout();
@@ -265,23 +295,25 @@ class App extends Component {
   //       this.setState({ loginError: "User or Password Incorrect" })
   //     })
 
+
   render() {
     return (
       <div>
-
         <div>
           <Header />
-
+          
           <Router>
             <Switch>
-              <Route exact path="/" render={() => <RentCar />} />
+              <Route exact path="/" render={() => <RentCar setURL={this.setURL}/>} />
+              <Route path="/showcars" render={() => <ShowCars fetchURL={this.state.fetchURL} />} />
+              
               {/* <Route path="/swapi" render={() => <FetchSwapi />} /> */}
               {/* <Route path="/userdata" render={() => <UserData />} />
                 <Route path="/admindata" render={() => <UserData />} /> */}
               <Route component={NoMatch} />
             </Switch>
           </Router>
-        </div>}
+        </div>
 
         <div class="row">
           <br />
