@@ -147,8 +147,8 @@ class RentCar extends Component {
                 <select class="form-control" value={this.state.categori} onChange={this.handleChangeCategori}>
                   <option selected value="All">Alle</option>
                   <option value="Mini">Mini</option>
-                  <option value="Sedan">Sedan</option>
-                  <option value="SUV">SUV</option>
+                  <option value="Economy">Economy</option>
+                  <option value="Fullsize">Fullsize</option>
                 </select>
                 <Link to="/showcars" class="btn btn-success">Show All Cars</Link>
               </div>
