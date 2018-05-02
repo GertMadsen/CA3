@@ -26,11 +26,11 @@ import javax.ws.rs.core.MediaType;
 @Path("test")
 public class TestResource {
 
-    private Car c1 = new Car("logo.jpg", "somecompany", "mini", "pic.jpg", "vw", "up", 2016, "LL12345", 5, 3, "manuel", true, "Cph Airport", 50);
-    private Car c2 = new Car("logo.jpg", "somecompany", "economy", "pic.jpg", "Ford", "Fiesta", 2016, "AB89764", 5, 4, "automatic", true, "Cph Airport", 100);
-    private Car c3 = new Car("logo.jpg", "anothercompany", "economy", "pic.jpg", "Peugeot", "306", 2017, "YC23456", 5, 5, "manuel", true, "Aarhus City", 100);
-    private Car c4 = new Car("logo.jpg", "anothercompany", "fullsize", "pic.jpg", "Toyota", "Avensis stc", 2018, "AB23999", 5, 5, "automatic", true, "Aarhus City", 200);
-    private Car c5 = new Car("logo.jpg", "randomcompany", "fullsize", "pic.jpg", "Citroen", "Berlingo", 2016, "AC12345", 7, 5, "manuel", true, "Naestved", 200);
+    private Car c1 = new Car("https://www.ramsbone.dk/backend/CA3/schwertz-logo.jpg ", "Schwertz", "Mini", "pic.jpg", "vw", "up", 2016, "LL12345", 5, 3, "manuel", true, "Cph Airport", 50);
+    private Car c2 = new Car("https://www.ramsbone.dk/backend/CA3/schwertz-logo.jpg ", "Schwertz", "Economy", "pic.jpg", "Ford", "Fiesta", 2016, "AB89764", 5, 4, "automatic", true, "Cph Airport", 100);
+    private Car c3 = new Car("https://www.ramsbone.dk/backend/CA3/schwertz-logo.jpg ", "Schwertz", "Economy", "pic.jpg", "Peugeot", "306", 2017, "YC23456", 5, 5, "manuel", true, "Aarhus City", 100);
+    private Car c4 = new Car("https://www.ramsbone.dk/backend/CA3/schwertz-logo.jpg ", "Schwertz", "Fullsize", "pic.jpg", "Toyota", "Avensis stc", 2018, "AB23999", 5, 5, "automatic", true, "Aarhus City", 200);
+    private Car c5 = new Car("https://www.ramsbone.dk/backend/CA3/schwertz-logo.jpg ", "Schwertz", "Fullsize", "pic.jpg", "Citroen", "Berlingo", 2016, "AC12345", 7, 5, "manuel", true, "Naestved", 200);
     private Reservation r1 = new Reservation("SC", "test@testersen.dk", "01/05/2018", "04/05/2018");
 
     private static Gson gson = new Gson();
@@ -91,14 +91,14 @@ public class TestResource {
         }
         if(category != null){
             switch(category){
-                case "mini":
+                case "Mini":
                     cars.add(c1);
                     break;
-                case "economy":
+                case "Economy":
                     cars.add(c2);
                     cars.add(c3);
                     break;
-                case "fullsize":
+                case "Fullsize":
                     cars.add(c4);
                     cars.add(c5);
             }
