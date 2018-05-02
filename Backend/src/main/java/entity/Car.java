@@ -25,7 +25,7 @@ public class Car {
     private String gear;
     private boolean aircondition;
     private String location;
-    private int pricePerDay;
+    private int priceperday;
     private ArrayList<Reservation> reservations;
 
     public Car(String logo, String company, String category, String picture, String make, String model, int year, String regno, int seats, int doors, String gear, boolean aircondition, String location, int pricePerDay) {
@@ -42,7 +42,7 @@ public class Car {
         this.gear = gear;
         this.aircondition = aircondition;
         this.location = location;
-        this.pricePerDay = pricePerDay;
+        this.priceperday = pricePerDay;
         this.reservations = new ArrayList<>();
     }
 
@@ -99,7 +99,7 @@ public class Car {
     }
 
     public int getPricePerDay() {
-        return pricePerDay;
+        return priceperday;
     }
 
     public ArrayList<Reservation> getReservations() {
@@ -159,7 +159,7 @@ public class Car {
     }
 
     public void setPricePerDay(int pricePerDay) {
-        this.pricePerDay = pricePerDay;
+        this.priceperday = pricePerDay;
     }
     
     public void addReservation(Reservation reservation){
