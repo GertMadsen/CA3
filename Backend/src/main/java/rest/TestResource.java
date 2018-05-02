@@ -14,6 +14,8 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 /**
@@ -30,8 +32,8 @@ public class TestResource {
     private Car c4 = new Car("logo.jpg", "anothercompany", "fullsize", "pic.jpg", "Toyota", "Avensis stc", 2018, "AB23999", 5, 5, "automatic", true, "Aarhus City", 200);
     private Car c5 = new Car("logo.jpg", "randomcompany", "fullsize", "pic.jpg", "Citroen", "Berlingo", 2016, "AC12345", 7, 5, "manuel", true, "Naestved", 200);
     private Reservation r1 = new Reservation("SC", "test@testersen.dk", "01/05/2018", "04/05/2018");
+
     private static Gson gson = new Gson();
-    
 
     @Context
     private UriInfo context;
@@ -47,18 +49,45 @@ public class TestResource {
      *
      * @return an instance of java.lang.String
      */
+//    @GET
+//    @Produces(MediaType.APPLICATION_JSON)
+//    public String getAllCars() {
+//        Cars cars = new Cars();
+//        cars.add(c1);
+//        cars.add(c2);
+//        cars.add(c3);
+//        cars.add(c4);
+//        cars.add(c5);
+//
+//        return gson.toJson(cars);
+//    }
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public String getAllCars() {
-
-        c1.addReservation(r1);
-
+    public String getByLocation(@QueryParam("location") String location) {
         Cars cars = new Cars();
-        cars.add(c1);
-        cars.add(c2);
-        cars.add(c3);
-        cars.add(c4);
-        cars.add(c5);
+        if (location == null) {
+            cars.add(c1);
+            cars.add(c2);
+            cars.add(c3);
+            cars.add(c4);
+            cars.add(c5);
+
+            return gson.toJson(cars);
+        }
+        switch (location) {
+            case "Cph Airport":
+                cars.add(c1);
+                cars.add(c2);
+                break;
+            case "Aarhus City":
+                cars.add(c3);
+                cars.add(c4);
+                break;
+            case "Naestved":
+                cars.add(c5);
+                break;
+
+        }
 
         return gson.toJson(cars);
     }
