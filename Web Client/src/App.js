@@ -162,6 +162,8 @@ class ShowCars extends Component {
           </table>
           <br />
 
+          <Link to="/" class="btn btn-success">Back</Link>
+
         </div>
         <div class="col-sm-2"></div>
       </div>
