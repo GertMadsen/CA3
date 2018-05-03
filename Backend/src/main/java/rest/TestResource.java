@@ -44,23 +44,38 @@ public class TestResource {
     public TestResource() {
     }
 
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("{regno}")
+    public String getCarByRegNo(@PathParam("regno") String regno){
+        Car car;
+        switch(regno){
+            case "LL12345":
+                car = c1;
+                break;
+            case "AB89764":
+                car = c2;
+                break;
+            case "YC23456":
+                car = c3;
+                break;
+            case "AB23999":
+                car = c4;
+                break;
+            case "AC12345":
+                car = c5;
+                break;
+            default:
+                car = null;
+        }
+        return gson.toJson(car);
+    }
+    
     /**
      * Retrieves representation of an instance of rest.TestResource
      *
      * @return an instance of java.lang.String
      */
-//    @GET
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public String getAllCars() {
-//        Cars cars = new Cars();
-//        cars.add(c1);
-//        cars.add(c2);
-//        cars.add(c3);
-//        cars.add(c4);
-//        cars.add(c5);
-//
-//        return gson.toJson(cars);
-//    }
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public String getCars(@QueryParam("location") String location, @QueryParam("category") String category) {
