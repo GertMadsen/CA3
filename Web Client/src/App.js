@@ -33,11 +33,19 @@ class RentCar extends Component {
 
   handleChangeLocation(event) {
     this.setState({location: event.target.value});
-    this.props.setURL("?location="+event.target.value);
+    if (event.target.value == "All") {
+      this.props.setURL("");
+    } else {  
+      this.props.setURL("?location="+event.target.value);
+    }
   }
   handleChangeCategori(event) {
     this.setState({categori: event.target.value});
-    this.props.setURL("?category="+event.target.value);
+    if (event.target.value == "All") {
+      this.props.setURL("");
+    } else {  
+          this.props.setURL("?category="+event.target.value);
+    }      
   }
 
   handleSubmit(event) {
@@ -216,6 +224,7 @@ class App extends Component {
   }
   setURL = (url) => {
     this.setState({ fetchURL: url });
+    console.log(url);
   }
 
 
