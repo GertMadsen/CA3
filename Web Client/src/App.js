@@ -146,7 +146,7 @@ class ShowCars extends Component {
       <div class="row">
         <div class="col-sm-2"></div>
         <div class="col-sm-8">
-          <div class="well well-lg"> <h2> SHOW CARS PAGE</h2> </div>
+          <div class="well well-lg"> <h2> List of Cars</h2> </div>
           <table class="table" key="tableList">
             <tbody>
               <tr>               
