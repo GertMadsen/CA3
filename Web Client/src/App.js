@@ -13,73 +13,6 @@ const NoMatch = () => (
   <h1> No Match </h1>
 )
 
-// class LogIn extends Component {
-
-//   constructor(props) {
-//     super(props);
-//     this.state = { username: "", password: "" }
-//   }
-//   login = (evt) => {
-//     evt.preventDefault();
-//     this.props.login(this.state.username, this.state.password);
-//   }
-//   onChange = (evt) => {
-//     this.setState({ [evt.target.id]: evt.target.value })
-//   }
-
-//   render() {
-//     return (
-//       <div class="row">
-//         <div class="col-md-5"></div>
-//         <div class="col-md-2">
-//           <h3><span class="label label-primary">Login</span></h3>
-//           <form onSubmit={this.login} onChange={this.onChange} >
-//             <div class="input-group">
-//               <div class="input-group">
-//                 <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-//                 <input class="form-control" placeholder="User Name" id="username" />
-//               </div>
-//               <div class="input-group">
-//                 <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-//                 <input class="form-control" placeholder="Password" id="password" />
-//               </div>
-//               <button class='btn btn-success btn-block'>Login</button>
-//             </div>
-
-//           </form>
-//         </div>
-//         <div class="col-md-5"></div>
-//       </div>
-//     )
-//   }
-// }
-
-// class FetchSwapi extends Component {
-//   constructor(props) {
-//     super(props);
-//     var person = facade.fetchPerson;
-//     this.state = { pers: person };
-//   }
-
-//   componentDidMount() {
-//     facade.fetchPerson().then(res => this.setState({ pers: res }));
-//   }
-
-//   render() {
-//     return (
-//       <div class="row">
-//         <div class="col-sm-4"></div>
-//         <div class="col-sm-4">
-//           <div class="well well-sm"> <h4> Name:  {this.state.pers.name}</h4></div>
-//           <div class="well well-sm">  <h4> Height: {this.state.pers.height} </h4></div>
-//           <div class="well well-sm">  <h4> Weight : {this.state.pers.mass} </h4></div>
-//           <div class="well well-sm">  <h4> Gender : {this.state.pers.gender} </h4></div>
-//         </div>
-//         <div class="col-sm-4"></div>
-//       </div>
-//     )
-//   }
-// }
 
 const Home = () => (
   <div>
@@ -185,33 +118,6 @@ class RentCar extends Component {
   }
 }
 
-
-// class UserData extends Component {
-//   constructor(props) {
-//     super(props);
-//     var userToken = facade.getToken();
-//     var decoded = jwt_decode(userToken);
-//     var userRoles = decoded.roles;
-//     this.state = { dataFromServer: "Fetching!!", userroles: userRoles };
-//   }
-//   componentDidMount() {
-//     facade.fetchUserData(this.state.userroles).then(res => this.setState({ dataFromServer: res }));
-//   }
-//   render() {
-//     return (
-//       <div class="row">
-//         <div class="col-sm-2"></div>
-//         <div class="col-sm-8">
-//           <div class="well well-lg"> <h2> Data Received from server </h2> </div>
-//           <div class="well well-lg">  <h3> {this.state.dataFromServer} </h3> </div>
-//         </div>
-//         <div class="col-sm-2"></div>
-//       </div>
-
-//     )
-//   }
-// }
-
 class ShowCars extends Component {
   constructor(props) {
     super(props);
@@ -224,7 +130,7 @@ class ShowCars extends Component {
     var cars = this.state.dataFromServer.cars;
     var linkTable = cars.map((car) => {
       return (
-        <tr key={car.regno}>
+        <tr  scope="row" key={car.regno}>
           <td>{car.make}</td>
           <td>{car.model}</td>         
           <td>{car.location}</td>
@@ -241,15 +147,15 @@ class ShowCars extends Component {
         <div class="col-sm-2"></div>
         <div class="col-sm-8">
           <div class="well well-lg"> <h2> SHOW CARS PAGE</h2> </div>
-          <table key="tableList">
+          <table class="table" key="tableList">
             <tbody>
               <tr>               
-                <th>Make</th>
-                <th>Model</th>
-                <th>Location</th>
-                <th>PricePerDay</th>
-                <th>Details</th>
-                <th>Booking</th>
+                <th scope="col">Make</th>
+                <th scope="col">Model</th>
+                <th scope="col">Location</th>
+                <th scope="col">PricePerDay</th>
+                <th scope="col">Details</th>
+                <th scope="col">Booking</th>
               </tr>
               {linkTable}
             </tbody>
@@ -268,11 +174,7 @@ class ShowCars extends Component {
 class Header extends Component {
   constructor(props) {
     super(props);
-    // var userToken = facade.getToken();
-    // var decoded = jwt_decode(userToken);
-    // var userName = decoded.sub;
-    // var userRoles = decoded.roles;
-    // this.state = { username: userName, userroles: userRoles };
+
   }
   render() {
     return (
@@ -313,17 +215,7 @@ class App extends Component {
   setURL = (url) => {
     this.setState({ fetchURL: url });
   }
-  // logout = () => {
-  //   facade.logout();
-  //   this.setState({ loggedIn: false });
-  // }
-  // login = (user, pass) => {
-  //   this.setState({ loginError: "" })
-  //   facade.login(user, pass)
-  //     .then(res => this.setState({ loggedIn: true }))
-  //     .catch(error => {
-  //       this.setState({ loginError: "User or Password Incorrect" })
-  //     })
+
 
 
   render() {
