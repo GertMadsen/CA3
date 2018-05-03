@@ -26,7 +26,7 @@ import javax.ws.rs.core.MediaType;
 @Path("test")
 public class TestResource {
 
-    private Car c1 = new Car("https://www.ramsbone.dk/backend/CA3/schwertz-logo.jpg ", "Schwertz", "Mini", "pic.jpg", "vw", "up", 2016, "LL12345", 5, 3, "manuel", true, "Cph Airport", 50);
+    private Car c1 = new Car("https://www.ramsbone.dk/backend/CA3/schwertz-logo.jpg ", "Schwertz", "Mini", "pic.jpg", "VW", "Up", 2016, "LL12345", 5, 3, "manuel", true, "Cph Airport", 50);
     private Car c2 = new Car("https://www.ramsbone.dk/backend/CA3/schwertz-logo.jpg ", "Schwertz", "Economy", "pic.jpg", "Ford", "Fiesta", 2016, "AB89764", 5, 4, "automatic", true, "Cph Airport", 100);
     private Car c3 = new Car("https://www.ramsbone.dk/backend/CA3/schwertz-logo.jpg ", "Schwertz", "Economy", "pic.jpg", "Peugeot", "306", 2017, "YC23456", 5, 5, "manuel", true, "Aarhus City", 100);
     private Car c4 = new Car("https://www.ramsbone.dk/backend/CA3/schwertz-logo.jpg ", "Schwertz", "Fullsize", "pic.jpg", "Toyota", "Avensis stc", 2018, "AB23999", 5, 5, "automatic", true, "Aarhus City", 200);
