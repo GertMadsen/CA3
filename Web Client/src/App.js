@@ -103,7 +103,7 @@ class RentCar extends Component {
                 <select class="form-control" value={this.state.location} onChange={this.handleChangeLocation}>
                   <option selected value="All">Alle</option>
                   <option value="Cph Airport">CPH Airport</option>
-                  <option value="Aarhus">Aarhus</option>
+                  <option value="Aarhus City">Aarhus City</option>
                   <option value="Naestved">Næstved</option>
                 </select>
                 <Link to="/showcars" class="btn btn-success">Show All Cars</Link>
