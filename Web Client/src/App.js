@@ -215,17 +215,47 @@ class RentCar extends Component {
 class ShowCars extends Component {
   constructor(props) {
     super(props);
-    this.state = { fetchURL: props.fetchURL };
+    this.state = { fetchURL: props.fetchURL, dataFromServer: { cars: []} };
   }
   componentDidMount() {
-    // facade.fetchUserData(this.state.userroles).then(res => this.setState({ dataFromServer: res }));
+    facade.fetchCars(this.state.fetchURL).then(res => this.setState({ dataFromServer: res }));
   }
   render() {
+    var cars = this.state.dataFromServer.cars;
+    var linkTable = cars.map((car) => {
+      return (
+        <tr key={car.regno}>
+          <td>{car.make}</td>
+          <td>{car.model}</td>         
+          <td>{car.location}</td>
+          <td>{car.priceperday}</td>
+          <td><Link to={`details/${car.regno}`} class="btn btn-success">Show Details</Link></td>
+          <td><Link to="/showcars" class="btn btn-success">Book</Link></td>
+          {/* <td><Link to={`booking/${car.regno}`} class="btn btn-success">Book</Link></td> */}
+        </tr>
+      )
+    });
+
     return (
       <div class="row">
         <div class="col-sm-2"></div>
         <div class="col-sm-8">
-          <div class="well well-lg"> <h2> SHOW CARS PAGE - URL = {this.state.fetchURL}</h2> </div>
+          <div class="well well-lg"> <h2> SHOW CARS PAGE</h2> </div>
+          <table key="tableList">
+            <tbody>
+              <tr>               
+                <th>Make</th>
+                <th>Model</th>
+                <th>Location</th>
+                <th>PricePerDay</th>
+                <th>Details</th>
+                <th>Booking</th>
+              </tr>
+              {linkTable}
+            </tbody>
+          </table>
+          <br />
+
         </div>
         <div class="col-sm-2"></div>
       </div>

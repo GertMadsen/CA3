@@ -1,6 +1,6 @@
 
 // const URL = require("../package.json").serverURL;
-const URL = require("../package.json").serverURL;
+const URL = "http://localhost:8084/jwtbackend";
 
 
 function handleHttpErrors(res) {
@@ -37,7 +37,12 @@ class ApiFacade {
 
     fetchCars = (urlExtension) => {
         const options = this.makeFetchOptions("GET");
-        return fetch(URL + "/api/test/"+urlExtension, options).then(handleHttpErrors);
+        return fetch(URL + "/api/test"+urlExtension, options).then(handleHttpErrors);
+    }
+    
+    fetchSingleCar = (regno) => {
+        const options = this.makeFetchOptions("GET");
+        return fetch(URL + "/api/test/"+regno, options).then(handleHttpErrors);
     }
 
     // fetchPerson = () => {

@@ -14,7 +14,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.Provider;
 
 //Comment out these two annotations below to disable CORS-handling
-//@Provider  //This will ensure that the filter is used "automatically"
+@Provider  //This will ensure that the filter is used "automatically"
 @PreMatching
 public class CorsRequestFilter implements ContainerRequestFilter {
   private final static Logger log = Logger.getLogger(CorsRequestFilter.class.getName());
