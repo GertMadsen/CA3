@@ -3,13 +3,16 @@ package entity;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -31,6 +34,9 @@ public class User implements Serializable {
     private String lastName;
     @Column(name="age")
     private int age;
+    
+    @OneToMany (cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    private List<Booking> bookings = new ArrayList<>();
     
     
     public User(){
@@ -73,6 +79,40 @@ public class User implements Serializable {
 
     public void setAge(int age) {
         this.age = age;
+    }
+    
+      @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 29 * hash + Objects.hashCode(this.email);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final User other = (User) obj;
+        if (!Objects.equals(this.email, other.email)) {
+            return false;
+        }
+        return true;
+    }
+    
+     @Override
+    public String toString() {
+        return "User{" + "email=" + email + ", firstName=" + firstName + ", lastName=" + lastName + ", age=" + age + '}';
+    }
+    
+    public void addBooking(Booking booking){
+        this.bookings.add(booking);
     }
     
 //    @Basic(optional = false)
@@ -134,6 +174,5 @@ public class User implements Serializable {
 //    public void addRole(Role userRole) {
 //        roleList.add(userRole);
 //    }
-
 
 }
