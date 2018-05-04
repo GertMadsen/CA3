@@ -37,7 +37,7 @@ class RentCar extends Component {
     this.props.setCatValue(event.target.value);
     if (event.target.value === "All") {
       this.props.setCategoryURL("");
-    } else { 
+    } else {
       this.props.setCategoryURL("?category=" + event.target.value);
     }
   }
@@ -131,6 +131,7 @@ class ShowCars extends Component {
         <tr key={car.regno}>
           <td>{car.make}</td>
           <td>{car.model}</td>
+          <td>{car.category}</td>
           <td>{car.location}</td>
           <td>{car.priceperday}</td>
           <td><Link to={`details/${car.regno}`} className="btn btn-success">Show Details</Link></td>
@@ -138,7 +139,6 @@ class ShowCars extends Component {
         </tr>
       )
     });
-
     return (
       <div className="row">
         <div className="col-sm-2"></div>
@@ -149,6 +149,7 @@ class ShowCars extends Component {
               <tr>
                 <th scope="col">Make</th>
                 <th scope="col">Model</th>
+                <th scope="col">Category</th>
                 <th scope="col">Location</th>
                 <th scope="col">PricePerDay</th>
                 <th scope="col">Details</th>
@@ -217,8 +218,6 @@ class CarDetails extends Component {
                 <td>{car.location}</td>
                 <td>{car.priceperday}</td>
                 <td><Link to={`/bookinginfo/${car.regno}`} className="btn btn-success">Book</Link></td>
-
-                {/* <td><Link to='/details/{this.state.regno}' class="btn btn-success">Book</Link></td> */}
               </tr>
             </tbody>
           </table>
@@ -258,12 +257,12 @@ class BookingInfo extends Component {
           <br /><br />
           <p>You want to rent a <b>{car.make} {car.model}</b> from the location <b>{car.location}</b> </p>
           <p>In the period from <b>04/05/2018</b> to <b>06/05/2018</b>. </p>
-          
+
           <Link to={`/bookinginfo/${car.regno}`} className="btn btn-success">Continue</Link>
           <br /><br />
-          
+
           <Link to={this.props.returnURL} className="btn btn-success">Back</Link>
-          
+
         </div>
         <div className="col-sm-2"></div>
       </div>
@@ -274,7 +273,6 @@ class BookingInfo extends Component {
 
 
 class Header extends Component {
-  
   render() {
     return (
       <div>
@@ -309,7 +307,7 @@ class Header extends Component {
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = { loggedIn: false, locationURL: "", categoryURL: "", locValue: "", catValue : "", returnURL: "" }
+    this.state = { loggedIn: false, locationURL: "", categoryURL: "", locValue: "", catValue: "", returnURL: "" }
   }
 
   setLocationURL = (url) => {
@@ -327,8 +325,8 @@ class App extends Component {
   setReturnURL = (url) => {
     this.setState({ returnURL: url });
   }
-  
-  
+
+
   render() {
     return (
       <div>
@@ -337,16 +335,16 @@ class App extends Component {
 
           <Router>
             <Switch>
-              <Route exact path="/" render={(props) => <RentCar catValue={this.state.catValue} setCatValue = {this.setCatValue} locValue={this.state.locValue} setLocValue={this.setLocValue} setCategoryURL={this.setCategoryURL} setLocationURL={this.setLocationURL} {...props}/>} />
+              <Route exact path="/" render={(props) => <RentCar catValue={this.state.catValue} setCatValue={this.setCatValue} locValue={this.state.locValue} setLocValue={this.setLocValue} setCategoryURL={this.setCategoryURL} setLocationURL={this.setLocationURL} {...props} />} />
               <Route path="/showallcars" render={(props) => <ShowCars setReturnURL={this.setReturnURL} fetchURL="" {...props} />} />
               <Route path="/showloccars" render={(props) => <ShowCars setReturnURL={this.setReturnURL} fetchURL={this.state.locationURL} {...props} />} />
               <Route path="/showcatcars" render={(props) => <ShowCars setReturnURL={this.setReturnURL} fetchURL={this.state.categoryURL} {...props} />} />
               <Route path="/details/:regno" render={(props) => <CarDetails setReturnURL={this.setReturnURL} returnURL={this.state.returnURL} {...props} />} />
               <Route path="/bookinginfo/:regno" render={(props) => <BookingInfo returnURL={this.state.returnURL} {...props} />} />
 
-              {/* <Route path="/swapi" render={() => <FetchSwapi />} /> */}
-              {/* <Route path="/userdata" render={() => <UserData />} />
-                <Route path="/admindata" render={() => <UserData />} /> */}
+              {/* <Route path="/swapi" render={() => <FetchSwapi />} /> 
+                  <Route path="/userdata" render={() => <UserData />} />
+                  <Route path="/admindata" render={() => <UserData />} /> */}
               <Route component={NoMatch} />
             </Switch>
           </Router>
@@ -356,8 +354,7 @@ class App extends Component {
           <br />
           <div className="col-md-5"></div>
           {/* {this.state.loginError &&
-            <span><div class="col-md-2 alert alert-danger"> {this.state.loginError} </div></span>
-              } */}
+            <span><div class="col-md-2 alert alert-danger"> {this.state.loginError} </div></span> */}
           <div className="col-md-5"></div>
         </div>
       </div>
