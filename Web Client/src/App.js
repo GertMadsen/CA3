@@ -269,10 +269,10 @@ class BookingInfo extends Component {
           <br /><br />
           <p>You want to rent a <b>{car.make} {car.model}</b> from the location <b>{car.location}</b> </p>
           <p>In the period from <b>04/05/2018</b> to <b>06/05/2018</b>. </p>
-
-          <Link to="/bookinginfo" class="btn btn-success">Continue</Link>
+          
+          <Link to={`/bookinginfo/${car.regno}`} class="btn btn-success">Continue</Link>
           <br /><br />
-
+          
           <Link to="/showcars" class="btn btn-success">Back</Link>
           
         </div>
