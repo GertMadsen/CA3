@@ -179,8 +179,6 @@ class ShowCars extends Component {
   }
 }
 
-
-
 class CarDetails extends Component {
   constructor(props) {
     super(props);
@@ -331,6 +329,7 @@ class App extends Component {
     this.setState({ fetchURL: url });
     console.log(url);
   }
+  
   render() {
     return (
       <div>
