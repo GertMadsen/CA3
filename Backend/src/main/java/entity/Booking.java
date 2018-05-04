@@ -32,7 +32,7 @@ public class Booking implements Serializable {
     public Booking(){
     }
 
-    public Booking(String regno, String fromDate, String toDate, User user) {
+    public Booking(String regno, String fromDate, String toDate) {
         this.regno = regno;
         this.fromDate = fromDate;
         this.toDate = toDate;
