@@ -16,10 +16,10 @@ public class UserPrincipal implements Principal {
  private List<String> roles = new ArrayList<>();
 
  /* Create a UserPrincipal, given the Entity class User*/
- public UserPrincipal(User user){
-     this.username = user.getUserName();
-     this.roles = user.getRolesAsStrings();
- }
+// public UserPrincipal(User user){
+//     this.username = user.getUserName();
+//     this.roles = user.getRolesAsStrings();
+// }
  public UserPrincipal(String username, String... roles) {
    super();
    this.username = username;
