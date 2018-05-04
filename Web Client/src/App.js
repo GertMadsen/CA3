@@ -7,118 +7,107 @@ import {
   Link
 } from 'react-router-dom'
 import facade from "./apiFacade";
-import jwt_decode from 'jwt-decode';
 
 const NoMatch = () => (
   <h1> No Match </h1>
 )
 
 
-const Home = () => (
-  <div>
-    Welcome to CarMondo
-  </div>
-)
-
 class RentCar extends Component {
   constructor(props) {
     super(props);
-    this.state = { location: "Alle", categori: "Alle" }
+    this.state = { location: props.locValue, categori: props.catValue }
 
     this.handleChangeLocation = this.handleChangeLocation.bind(this);
     this.handleChangeCategori = this.handleChangeCategori.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
 
   handleChangeLocation(event) {
     this.setState({ location: event.target.value });
-    if (event.target.value == "All") {
-      this.props.setURL("");
+    this.props.setLocValue(event.target.value);
+    if (event.target.value === "All") {
+      this.props.setLocationURL("");
     } else {
-      this.props.setURL("?location=" + event.target.value);
+      this.props.setLocationURL("?location=" + event.target.value);
     }
   }
   handleChangeCategori(event) {
     this.setState({ categori: event.target.value });
-    if (event.target.value == "All") {
-      this.props.setURL("");
-    } else {
-      this.props.setURL("?category=" + event.target.value);
+    this.props.setCatValue(event.target.value);
+    if (event.target.value === "All") {
+      this.props.setCategoryURL("");
+    } else { 
+      this.props.setCategoryURL("?category=" + event.target.value);
     }
-  }
-
-  handleSubmit(event) {
-    alert('submitted: ' + 'loca: ' + this.state.location + ", kate: " + this.state.categori);
-    event.preventDefault();
   }
 
   render() {
     return (
       <div>
 
-        <div class="row">
-          <div class="col-sm-4"></div>
-          <div class="col-sm-4 well well-lg"> <h2>Welcome to CarMondo</h2></div>
-          <div class="col-sm-4"></div>
+        <div className="row">
+          <div className="col-sm-4"></div>
+          <div className="col-sm-4 well well-lg"> <h2>Welcome to CarMondo</h2></div>
+          <div className="col-sm-4"></div>
         </div>
 
-        <div class="row">
-          <div class="col-sm-5"> </div>
-          <div class="col-sm-3">
+        <div className="row">
+          <div className="col-sm-5"> </div>
+          <div className="col-sm-3">
             <form>
-              <div class="form group">
-                <Link to="/showcars" class="btn btn-success btn-lg">Show All Cars</Link>
+              <div className="form group">
+                <Link to="/showallcars" className="btn btn-success btn-lg">Show All Cars</Link>
               </div>
             </form>
           </div>
-          <div class="col-sm-4"> </div>
+          <div className="col-sm-4"> </div>
         </div>
 
-        <div class="form-group">
+        <div className="form-group">
           &nbsp;
         </div>
 
-        <div class="row">
-          <div class="col-sm-4"> </div>
-          <div class="col-sm-4">
-            <form class="form-inline">
-              <div class="form group">
+        <div className="row">
+          <div className="col-sm-4"> </div>
+          <div className="col-sm-4">
+            <form className="form-inline">
+              <div className="form group">
                 <label> Kategori: </label>
-                <select class="form-control" value={this.state.categori} onChange={this.handleChangeCategori}>
-                  <option selected value="All">Alle</option>
+                <select className="form-control" value={this.state.categori} onChange={this.handleChangeCategori}>
+                  <option value="All">Alle</option>
                   <option value="Mini">Mini</option>
                   <option value="Economy">Economy</option>
                   <option value="Fullsize">Fullsize</option>
                 </select>
-                <Link to="/showcars" class="btn btn-success">Show All Cars</Link>
+                <Link to="/showcatcars" className="btn btn-success">Show</Link>
               </div>
             </form>
           </div>
-          <div class="col-sm-4"> </div>
+          <div className="col-sm-4"> </div>
         </div>
 
-        <div class="form-group">
+        <div className="form-group">
           &nbsp;
         </div>
 
-        <div class="row">
-          <div class="col-sm-4"> </div>
-          <div class="col-sm-4">
-            <form class="form-inline">
-              <div class="form group">
+        <div className="row">
+          <div className="col-sm-4"> </div>
+          <div className="col-sm-4">
+            <form className="form-inline">
+              <div className="form group">
                 <label> Lokation: </label>
-                <select class="form-control" value={this.state.location} onChange={this.handleChangeLocation}>
-                  <option selected value="All">Alle</option>
+                <select className="form-control" value={this.state.location} onChange={this.handleChangeLocation}>
+                  <option value="All">Alle</option>
                   <option value="Cph Airport">CPH Airport</option>
                   <option value="Aarhus City">Aarhus City</option>
                   <option value="Naestved">Næstved</option>
                 </select>
-                <Link to="/showcars" class="btn btn-success">Show All Cars</Link>
+                <Link to="/showloccars" className="btn btn-success">Show</Link>
               </div>
             </form>
           </div>
-          <div class="col-sm-4"> </div>
+          <div className="col-sm-4"> </div>
         </div>
 
       </div>
@@ -130,6 +119,7 @@ class ShowCars extends Component {
   constructor(props) {
     super(props);
     this.state = { fetchURL: props.fetchURL, dataFromServer: { cars: [] } };
+    this.props.setReturnURL(props.match.url);
   }
   componentDidMount() {
     facade.fetchCars(this.state.fetchURL).then(res => this.setState({ dataFromServer: res }));
@@ -138,23 +128,23 @@ class ShowCars extends Component {
     var cars = this.state.dataFromServer.cars;
     var linkTable = cars.map((car) => {
       return (
-        <tr scope="row" key={car.regno}>
+        <tr key={car.regno}>
           <td>{car.make}</td>
           <td>{car.model}</td>
           <td>{car.location}</td>
           <td>{car.priceperday}</td>
-          <td><Link to={`details/${car.regno}`} class="btn btn-success">Show Details</Link></td>
-          <td><Link to={`bookinginfo/${car.regno}`} class="btn btn-success">Book</Link></td>
+          <td><Link to={`details/${car.regno}`} className="btn btn-success">Show Details</Link></td>
+          <td><Link to={`bookinginfo/${car.regno}`} className="btn btn-success">Book</Link></td>
         </tr>
       )
     });
 
     return (
-      <div class="row">
-        <div class="col-sm-2"></div>
-        <div class="col-sm-8">
-          <div class="well well-sm"> <h3> List of Cars</h3> </div>
-          <table class="table" key="tableList">
+      <div className="row">
+        <div className="col-sm-2"></div>
+        <div className="col-sm-8">
+          <div className="well well-sm"> <h3> List of Cars</h3> </div>
+          <table className="table" key="tableList">
             <tbody>
               <tr>
                 <th scope="col">Make</th>
@@ -169,10 +159,10 @@ class ShowCars extends Component {
           </table>
           <br />
 
-          <Link to="/" class="btn btn-success">Back</Link>
+          <Link to="/" className="btn btn-success">Back</Link>
 
         </div>
-        <div class="col-sm-2"></div>
+        <div className="col-sm-2"></div>
       </div>
 
     )
@@ -186,20 +176,19 @@ class CarDetails extends Component {
   }
   componentDidMount() {
     facade.fetchSingleCar(this.state.regno).then(res => this.setState({ dataFromServer: res }));
-    console.log(this.state.regno);
   }
   render() {
     var car = this.state.dataFromServer;
 
     return (
-      <div class="row">
-        <div class="col-sm-2"></div>
-        <div class="col-sm-8">
-          <div class="well well-sm"> <h3> Car Details</h3> </div>
+      <div className="row">
+        <div className="col-sm-2"></div>
+        <div className="col-sm-8">
+          <div className="well well-sm"> <h3> Car Details</h3> </div>
           <img src={car.logo} width="100px" height="100px" alt="" />
           <h2>{car.company}</h2>
 
-          <table class="table" key="tableList">
+          <table className="table" key="tableList">
             <tbody>
               <tr>
                 <th scope="col">Category</th>
@@ -215,7 +204,7 @@ class CarDetails extends Component {
                 <th scope="col">PricePerDay</th>
                 <th scope="col">Booking</th>
               </tr>
-              <tr scope="row" key={car.regno}>
+              <tr key={car.regno}>
                 <td>{car.category}</td>
                 <td>{car.model}</td>
                 <td>{car.make}</td>
@@ -227,7 +216,7 @@ class CarDetails extends Component {
                 <td>{"" + car.aircondition}</td>
                 <td>{car.location}</td>
                 <td>{car.priceperday}</td>
-                <td><Link to={`/bookinginfo/${car.regno}`} class="btn btn-success">Book</Link></td>
+                <td><Link to={`/bookinginfo/${car.regno}`} className="btn btn-success">Book</Link></td>
 
                 {/* <td><Link to='/details/{this.state.regno}' class="btn btn-success">Book</Link></td> */}
               </tr>
@@ -238,10 +227,10 @@ class CarDetails extends Component {
 
           <br /><br />
 
-          <Link to="/showcars" class="btn btn-success">Back</Link>
+          <Link to={this.props.returnURL} className="btn btn-success">Back</Link>
 
         </div>
-        <div class="col-sm-2"></div>
+        <div className="col-sm-2"></div>
       </div>
 
     )
@@ -260,23 +249,23 @@ class BookingInfo extends Component {
     var car = this.state.dataFromServer;
 
     return (
-      <div class="row">
-        <div class="col-sm-2"></div>
-        <div class="col-sm-8">
-          <div class="well well-sm"> <h3> Booking info</h3> </div>
+      <div className="row">
+        <div className="col-sm-2"></div>
+        <div className="col-sm-8">
+          <div className="well well-sm"> <h3> Booking info</h3> </div>
 
           <img src={car.picture} width="30%" height="30%" alt="" />
           <br /><br />
           <p>You want to rent a <b>{car.make} {car.model}</b> from the location <b>{car.location}</b> </p>
           <p>In the period from <b>04/05/2018</b> to <b>06/05/2018</b>. </p>
           
-          <Link to={`/bookinginfo/${car.regno}`} class="btn btn-success">Continue</Link>
+          <Link to={`/bookinginfo/${car.regno}`} className="btn btn-success">Continue</Link>
           <br /><br />
           
-          <Link to="/showcars" class="btn btn-success">Back</Link>
+          <Link to={this.props.returnURL} className="btn btn-success">Back</Link>
           
         </div>
-        <div class="col-sm-2"></div>
+        <div className="col-sm-2"></div>
       </div>
 
     )
@@ -285,26 +274,23 @@ class BookingInfo extends Component {
 
 
 class Header extends Component {
-  constructor(props) {
-    super(props);
-
-  }
+  
   render() {
     return (
       <div>
         <Router>
-          <nav class="navbar navbar-inverse">
-            <div class="container-fluid">
-              <div class="navbar-header">
-                <a class="navbar-brand">CarMondo</a>
+          <nav className="navbar navbar-inverse">
+            <div className="container-fluid">
+              <div className="navbar-header">
+                <a className="navbar-brand">CarMondo</a>
               </div>
-              <ul class="nav navbar-nav">
+              <ul className="nav navbar-nav">
                 <li><NavLink exact to="/">Rent Car</NavLink></li>
                 {/* {this.state.userroles === "user" && <li><NavLink to="/userdata">UserData</NavLink></li>}
                 {this.state.userroles === "admin" && <li><NavLink to="/admindata">AdminData</NavLink></li>} */}
                 {/* <li><NavLink to="/swapi">Swapi</NavLink></li> */}
               </ul>
-              <ul class="nav navbar-nav navbar-right">
+              <ul className="nav navbar-nav navbar-right">
                 {/* <li><button onClick={this.props.logout} class='btn btn-link'> <span class="glyphicon glyphicon-log-out"></span> Logout</button></li> */}
               </ul>
             </div>
@@ -323,12 +309,25 @@ class Header extends Component {
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = { loggedIn: false, fetchURL: "" }
+    this.state = { loggedIn: false, locationURL: "", categoryURL: "", locValue: "", catValue : "", returnURL: "" }
   }
-  setURL = (url) => {
-    this.setState({ fetchURL: url });
-    console.log(url);
+
+  setLocationURL = (url) => {
+    this.setState({ locationURL: url });
   }
+  setCategoryURL = (url) => {
+    this.setState({ categoryURL: url });
+  }
+  setLocValue = (value) => {
+    this.setState({ locValue: value });
+  }
+  setCatValue = (value) => {
+    this.setState({ catValue: value });
+  }
+  setReturnURL = (url) => {
+    this.setState({ returnURL: url });
+  }
+  
   
   render() {
     return (
@@ -338,10 +337,12 @@ class App extends Component {
 
           <Router>
             <Switch>
-              <Route exact path="/" render={() => <RentCar setURL={this.setURL} />} />
-              <Route path="/showcars" render={() => <ShowCars fetchURL={this.state.fetchURL} />} />
-              <Route path="/details/:regno" render={(props) => <CarDetails {...props} />} />
-              <Route path="/bookinginfo/:regno" render={(props) => <BookingInfo {...props} />} />
+              <Route exact path="/" render={(props) => <RentCar catValue={this.state.catValue} setCatValue = {this.setCatValue} locValue={this.state.locValue} setLocValue={this.setLocValue} setCategoryURL={this.setCategoryURL} setLocationURL={this.setLocationURL} {...props}/>} />
+              <Route path="/showallcars" render={(props) => <ShowCars setReturnURL={this.setReturnURL} fetchURL="" {...props} />} />
+              <Route path="/showloccars" render={(props) => <ShowCars setReturnURL={this.setReturnURL} fetchURL={this.state.locationURL} {...props} />} />
+              <Route path="/showcatcars" render={(props) => <ShowCars setReturnURL={this.setReturnURL} fetchURL={this.state.categoryURL} {...props} />} />
+              <Route path="/details/:regno" render={(props) => <CarDetails setReturnURL={this.setReturnURL} returnURL={this.state.returnURL} {...props} />} />
+              <Route path="/bookinginfo/:regno" render={(props) => <BookingInfo returnURL={this.state.returnURL} {...props} />} />
 
               {/* <Route path="/swapi" render={() => <FetchSwapi />} /> */}
               {/* <Route path="/userdata" render={() => <UserData />} />
@@ -351,13 +352,13 @@ class App extends Component {
           </Router>
         </div>
 
-        <div class="row">
+        <div className="row">
           <br />
-          <div class="col-md-5"></div>
+          <div className="col-md-5"></div>
           {/* {this.state.loginError &&
             <span><div class="col-md-2 alert alert-danger"> {this.state.loginError} </div></span>
               } */}
-          <div class="col-md-5"></div>
+          <div className="col-md-5"></div>
         </div>
       </div>
     )
