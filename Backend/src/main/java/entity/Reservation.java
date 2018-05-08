@@ -5,10 +5,7 @@
  */
 package entity;
 
-/**
- *
- * @author lene_
- */
+
 public class Reservation {
     private String companyTag;
     private String customerMail;
