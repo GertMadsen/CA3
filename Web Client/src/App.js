@@ -37,7 +37,7 @@ class RentCar extends Component {
     this.props.setCatValue(event.target.value);
     if (event.target.value === "All") {
       this.props.setCategoryURL("");
-    } else { 
+    } else {
       this.props.setCategoryURL("?category=" + event.target.value);
     }
   }
@@ -115,6 +115,8 @@ class RentCar extends Component {
   }
 }
 
+
+
 class ShowCars extends Component {
   constructor(props) {
     super(props);
@@ -134,7 +136,7 @@ class ShowCars extends Component {
           <td>{car.location}</td>
           <td>{car.priceperday}</td>
           <td><Link to={`details/${car.regno}`} className="btn btn-success">Show Details</Link></td>
-          <td><Link to={`bookinginfo/${car.regno}`} className="btn btn-success">Book</Link></td>
+          <td><Link to={`ClientData`} className="btn btn-success">Book</Link></td>
         </tr>
       )
     });
@@ -216,7 +218,7 @@ class CarDetails extends Component {
                 <td>{"" + car.aircondition}</td>
                 <td>{car.location}</td>
                 <td>{car.priceperday}</td>
-                <td><Link to={`/bookinginfo/${car.regno}`} className="btn btn-success">Book</Link></td>
+                <td><Link to={`/kundedata`} className="btn btn-success">Book</Link></td>
 
                 {/* <td><Link to='/details/{this.state.regno}' class="btn btn-success">Book</Link></td> */}
               </tr>
@@ -258,12 +260,12 @@ class BookingInfo extends Component {
           <br /><br />
           <p>You want to rent a <b>{car.make} {car.model}</b> from the location <b>{car.location}</b> </p>
           <p>In the period from <b>04/05/2018</b> to <b>06/05/2018</b>. </p>
-          
+
           <Link to={`/bookinginfo/${car.regno}`} className="btn btn-success">Continue</Link>
           <br /><br />
-          
+
           <Link to={this.props.returnURL} className="btn btn-success">Back</Link>
-          
+
         </div>
         <div className="col-sm-2"></div>
       </div>
@@ -274,7 +276,7 @@ class BookingInfo extends Component {
 
 
 class Header extends Component {
-  
+
   render() {
     return (
       <div>
@@ -306,10 +308,90 @@ class Header extends Component {
   }
 }
 
+class ClientData extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = { firstname: props.firstname, lastname: props.lastname, email: props.email }
+
+    this.handleChangeFname = this.handleChangeFname.bind(this);
+    this.handleChangeLname = this.handleChangeLname.bind(this);
+    this.handleChangeEmail = this.handleChangeEmail.bind(this);
+  }
+
+  handleChangeFname(event) {
+    this.setState({ firstname: event.target.value });
+    this.props.setUserFname(event.target.value);
+    console.log(this.state.firstname,this.state.lastname,this.state.email)
+  }
+  handleChangeLname(event) {
+    this.setState({ lastname: event.target.value })
+    this.props.setUserLname(event.target.value);
+  }
+  handleChangeEmail(event) {
+    this.setState({ email: event.target.value })
+    this.props.setUserEmail(event.target.value);
+  }
+
+  render() {
+    var car = this.state.dataFromServer;
+    return (
+      <div className="row">
+        <div className="col-sm-2"></div>
+        <div className="col-sm-8">
+          <div className="well well-sm"> <h3> Kunde Data</h3> </div>
+
+          <form >
+            <div className="form-group">
+
+              <label className="col-form-label">
+                Firstname:
+          <input
+                  className="form-control"
+                  name="firstname"
+                  type="text"
+                  placeholder="firstname"
+                  onChange={this.handleChangeFname} />
+              </label>
+              <br />
+              <label className="col-form-label">
+                Lastname:
+          <input
+                  className="form-control"
+                  name="lastname"
+                  type="text"
+                  placeholder="lastname"
+                  onChange={this.handleChangeLname} />
+              </label>
+              <br />
+              <label className="col-form-label">
+                Email:
+              <input
+                  className="form-control"
+                  name="email"
+                  type="email"
+                  placeholder="email"
+                  onChange={this.handleChangeEmail} />
+              </label>
+            </div>
+          </form>
+        </div>
+        <div className="col-sm-2"></div>
+
+      </div>
+
+    )
+  }
+
+}
+
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = { loggedIn: false, locationURL: "", categoryURL: "", locValue: "", catValue : "", returnURL: "" }
+    this.state = {
+      loggedIn: false, locationURL: "", categoryURL: "", locValue: "", catValue: "", returnURL: "",
+      user: { firstname: "", lastname: "", email: "" }
+    }
   }
 
   setLocationURL = (url) => {
@@ -327,8 +409,32 @@ class App extends Component {
   setReturnURL = (url) => {
     this.setState({ returnURL: url });
   }
-  
-  
+
+  setUserFname = (value) =>
+    this.setState(prevState => ({
+      user: {
+        ...prevState.user,
+        firstname: value
+      }
+    }))
+
+  setUserLname = (value) =>
+    this.setState(prevState => ({
+      user: {
+        ...prevState.user,
+        lastname: value
+      }
+
+    }))
+  setUserEmail = (value) =>
+    this.setState(prevState => ({
+      user: {
+        ...prevState.user,
+        email: value
+      }
+    }),console.log(this.state.user.firstname, this.state.user.lastname,this.state.user.email))
+
+
   render() {
     return (
       <div>
@@ -337,16 +443,17 @@ class App extends Component {
 
           <Router>
             <Switch>
-              <Route exact path="/" render={(props) => <RentCar catValue={this.state.catValue} setCatValue = {this.setCatValue} locValue={this.state.locValue} setLocValue={this.setLocValue} setCategoryURL={this.setCategoryURL} setLocationURL={this.setLocationURL} {...props}/>} />
+              <Route exact path="/" render={(props) => <RentCar catValue={this.state.catValue} setCatValue={this.setCatValue} locValue={this.state.locValue} setLocValue={this.setLocValue} setCategoryURL={this.setCategoryURL} setLocationURL={this.setLocationURL} {...props} />} />
               <Route path="/showallcars" render={(props) => <ShowCars setReturnURL={this.setReturnURL} fetchURL="" {...props} />} />
               <Route path="/showloccars" render={(props) => <ShowCars setReturnURL={this.setReturnURL} fetchURL={this.state.locationURL} {...props} />} />
               <Route path="/showcatcars" render={(props) => <ShowCars setReturnURL={this.setReturnURL} fetchURL={this.state.categoryURL} {...props} />} />
               <Route path="/details/:regno" render={(props) => <CarDetails setReturnURL={this.setReturnURL} returnURL={this.state.returnURL} {...props} />} />
               <Route path="/bookinginfo/:regno" render={(props) => <BookingInfo returnURL={this.state.returnURL} {...props} />} />
+              <Route path="/clientdata" render={(props) => <ClientData returnURL={this.state.returnURL}
+                firstname={this.state.user.firstname} lastname={this.state.user.lastname} email={this.state.user.email}
+                setUserFname={this.setUserFname} setUserLname={this.setUserLname} setUserEmail={this.setUserEmail}
+                {...props} />} />
 
-              {/* <Route path="/swapi" render={() => <FetchSwapi />} /> */}
-              {/* <Route path="/userdata" render={() => <UserData />} />
-                <Route path="/admindata" render={() => <UserData />} /> */}
               <Route component={NoMatch} />
             </Switch>
           </Router>
@@ -355,9 +462,7 @@ class App extends Component {
         <div className="row">
           <br />
           <div className="col-md-5"></div>
-          {/* {this.state.loginError &&
-            <span><div class="col-md-2 alert alert-danger"> {this.state.loginError} </div></span>
-              } */}
+
           <div className="col-md-5"></div>
         </div>
       </div>
