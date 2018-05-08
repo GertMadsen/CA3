@@ -136,7 +136,7 @@ class ShowCars extends Component {
           <td>{car.location}</td>
           <td>{car.priceperday}</td>
           <td><Link to={`details/${car.regno}`} className="btn btn-success">Show Details</Link></td>
-          <td><Link to={`ClientData`} className="btn btn-success">Book</Link></td>
+          <td><Link to={`clientdata/${car.regno}`} className="btn btn-success">Book</Link></td>
         </tr>
       )
     });
@@ -218,7 +218,7 @@ class CarDetails extends Component {
                 <td>{"" + car.aircondition}</td>
                 <td>{car.location}</td>
                 <td>{car.priceperday}</td>
-                <td><Link to={`/kundedata`} className="btn btn-success">Book</Link></td>
+                <td><Link to={`/clientdata/${car.regno}`} className="btn btn-success">Book</Link></td>
 
                 {/* <td><Link to='/details/{this.state.regno}' class="btn btn-success">Book</Link></td> */}
               </tr>
@@ -242,7 +242,7 @@ class CarDetails extends Component {
 class BookingInfo extends Component {
   constructor(props) {
     super(props);
-    this.state = { fetchURL: props.fetchURL, dataFromServer: {}, regno: props.match.params.regno };
+    this.state = { fetchURL: props.fetchURL, dataFromServer: {}, regno: props.match.params.regno , firstname: props.firstname, lastname: props.lastname, email: props.email };
   }
   componentDidMount() {
     facade.fetchSingleCar(this.state.regno).then(res => this.setState({ dataFromServer: res }));
@@ -260,6 +260,7 @@ class BookingInfo extends Component {
           <br /><br />
           <p>You want to rent a <b>{car.make} {car.model}</b> from the location <b>{car.location}</b> </p>
           <p>In the period from <b>04/05/2018</b> to <b>06/05/2018</b>. </p>
+          <p> You are {this.state.firstname} {this.state.lastname} {this.state.email} </p>
 
           <Link to={`/bookinginfo/${car.regno}`} className="btn btn-success">Continue</Link>
           <br /><br />
@@ -312,17 +313,21 @@ class ClientData extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { firstname: props.firstname, lastname: props.lastname, email: props.email }
+    this.state = { firstname: props.firstname, lastname: props.lastname, email: props.email, regno: props.match.params.regno, dataFromServer: [] }
 
     this.handleChangeFname = this.handleChangeFname.bind(this);
     this.handleChangeLname = this.handleChangeLname.bind(this);
     this.handleChangeEmail = this.handleChangeEmail.bind(this);
   }
 
+  componentDidMount() {
+    facade.fetchSingleCar(this.state.regno).then(res => this.setState({ dataFromServer: res }));
+  }
+
   handleChangeFname(event) {
     this.setState({ firstname: event.target.value });
     this.props.setUserFname(event.target.value);
-    console.log(this.state.firstname,this.state.lastname,this.state.email)
+    console.log(this.state.firstname, this.state.lastname, this.state.email)
   }
   handleChangeLname(event) {
     this.setState({ lastname: event.target.value })
@@ -374,9 +379,17 @@ class ClientData extends Component {
                   onChange={this.handleChangeEmail} />
               </label>
             </div>
+            All fields must be filled to continue
           </form>
+     
+          <Link to={this.props.returnURL} className="btn btn-success">Back</Link>
+          {" "}
+         {(this.state.firstname.length >0 && this.state.lastname.length>0 && this.state.email.length>0) && 
+          <Link to={`/bookinginfo/${car.regno}`} className="btn btn-success">Continue</Link>
+         }
         </div>
         <div className="col-sm-2"></div>
+
 
       </div>
 
@@ -432,7 +445,7 @@ class App extends Component {
         ...prevState.user,
         email: value
       }
-    }),console.log(this.state.user.firstname, this.state.user.lastname,this.state.user.email))
+    }), console.log(this.state.user.firstname, this.state.user.lastname, this.state.user.email))
 
 
   render() {
@@ -448,8 +461,8 @@ class App extends Component {
               <Route path="/showloccars" render={(props) => <ShowCars setReturnURL={this.setReturnURL} fetchURL={this.state.locationURL} {...props} />} />
               <Route path="/showcatcars" render={(props) => <ShowCars setReturnURL={this.setReturnURL} fetchURL={this.state.categoryURL} {...props} />} />
               <Route path="/details/:regno" render={(props) => <CarDetails setReturnURL={this.setReturnURL} returnURL={this.state.returnURL} {...props} />} />
-              <Route path="/bookinginfo/:regno" render={(props) => <BookingInfo returnURL={this.state.returnURL} {...props} />} />
-              <Route path="/clientdata" render={(props) => <ClientData returnURL={this.state.returnURL}
+              <Route path="/bookinginfo/:regno" render={(props) => <BookingInfo returnURL={this.state.returnURL} firstname={this.state.user.firstname} lastname={this.state.user.lastname}email={this.state.user.email}{...props} />} />
+              <Route path="/clientdata/:regno" render={(props) => <ClientData returnURL={this.state.returnURL}
                 firstname={this.state.user.firstname} lastname={this.state.user.lastname} email={this.state.user.email}
                 setUserFname={this.setUserFname} setUserLname={this.setUserLname} setUserEmail={this.setUserEmail}
                 {...props} />} />
