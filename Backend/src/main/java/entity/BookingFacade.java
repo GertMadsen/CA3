@@ -5,14 +5,26 @@
  */
 package entity;
 
+import javax.persistence.EntityManager;
+import javax.persistence.Persistence;
+
 /**
  *
  * @author lene_
  */
 public class BookingFacade {
+    private EntityManager em;
+
+    public BookingFacade() {
+        this.em = Persistence.createEntityManagerFactory("pu").createEntityManager();
+    }
     
-    public void createBooking(Car car, Customer customer){
-        
+    public void createBooking(Booking booking, Customer customer){
+       em.getTransaction().begin();
+       customer.setBooking(booking);
+       em.persist(booking);
+       em.persist(customer);
+       em.getTransaction().commit();
     }
     
 }
