@@ -7,7 +7,6 @@ package utils;
 
 import entity.Booking;
 import entity.Customer;
-import entity.User;
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
 
