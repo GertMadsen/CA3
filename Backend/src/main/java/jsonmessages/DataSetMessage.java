@@ -5,10 +5,21 @@
  */
 package jsonmessages;
 
+import entity.*;
+
 /**
  *
  * @author Gert Lehmann Madsen
  */
-public class DataSetMessage {
+public class DataSetMessage implements JSONMessage<DataSet> {
+    
+    public Car car;
+    public Booking booking;
+    public Customer customer;
+
+    @Override
+    public DataSet toInternal() {
+       return new DataSet(car, booking, customer);     
+    }
     
 }

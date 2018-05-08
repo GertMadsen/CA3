@@ -165,4 +165,11 @@ public class Car {
     public void addReservation(Reservation reservation){
         this.reservations.add(reservation);
     }    
+
+    @Override
+    public String toString() {
+        return "Car{" + "logo=" + logo + ", company=" + company + ", category=" + category + ", picture=" + picture + ", make=" + make + ", model=" + model + ", year=" + year + ", regno=" + regno + ", seats=" + seats + ", doors=" + doors + ", gear=" + gear + ", aircondition=" + aircondition + ", location=" + location + ", priceperday=" + priceperday + ", reservations=" + reservations + '}';
+    }
+    
+    
 }

@@ -12,11 +12,15 @@ import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Produces;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
+import jsonmessages.DataSetMessage;
+import jsonmessages.MessageFacade;
+
 
 /**
  * REST Web Service
@@ -35,6 +39,8 @@ public class TestResource {
     private Reservation r1 = new Reservation("SC", "test@testersen.dk", "01/05/2018", "04/05/2018");
 
     private static Gson gson = new Gson();
+    
+    private BookingFacade bf = new BookingFacade();
 
     @Context
     private UriInfo context;
@@ -121,4 +127,15 @@ public class TestResource {
         }
             return gson.toJson(cars);
     }
+    
+    
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    public String testDataSet(String json){
+        DataSet ds = MessageFacade.fromJson(json, DataSetMessage.class);
+        bf.createBooking(ds.getBooking(), ds.getCustomer());
+    return "Succes";    
+    }
+    
+    
 }
