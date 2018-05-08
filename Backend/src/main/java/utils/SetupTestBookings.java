@@ -19,10 +19,10 @@ public class SetupTestBookings {
         EntityManager em = Persistence.createEntityManagerFactory("pu").createEntityManager();
         em.getTransaction().begin();
         Customer cus1 = new Customer("test@gmail.com", "Alice", "Hansen");
-        Booking booking1 = new Booking("LL12345", "04/05/2018", "07/05/2018","Schwertz");
+        Booking booking1 = new Booking("LL12345", "04/05/2018", "07/05/2018","Carmondo");
         cus1.setBooking(booking1);
         Customer cus2 = new Customer("another@gmail.com", "Bob", "Jensen");
-        Booking booking2 = new Booking("AB23999", "05/05/2018", "06/05/2018","Schwertz");
+        Booking booking2 = new Booking("AB23999", "05/05/2018", "06/05/2018","Carmondo");
         cus2.setBooking(booking2);
         em.persist(booking1);
         em.persist(booking2);
