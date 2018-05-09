@@ -7,6 +7,10 @@ package rest;
 
 import com.google.gson.Gson;
 import entity.*;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Produces;
@@ -20,7 +24,6 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import jsonmessages.DataSetMessage;
 import jsonmessages.MessageFacade;
-
 
 /**
  * REST Web Service
@@ -39,7 +42,7 @@ public class TestResource {
     private Reservation r1 = new Reservation("SC", "test@testersen.dk", "01/05/2018", "04/05/2018");
 
     private static Gson gson = new Gson();
-    
+
     private BookingFacade bf = new BookingFacade();
 
     @Context
@@ -54,9 +57,9 @@ public class TestResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("{regno}")
-    public String getCarByRegNo(@PathParam("regno") String regno){
+    public String getCarByRegNo(@PathParam("regno") String regno) {
         Car car;
-        switch(regno){
+        switch (regno) {
             case "LL12345":
                 car = c1;
                 break;
@@ -77,7 +80,7 @@ public class TestResource {
         }
         return gson.toJson(car);
     }
-    
+
     /**
      * Retrieves representation of an instance of rest.TestResource
      *
@@ -85,9 +88,19 @@ public class TestResource {
      */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public String getCars(@QueryParam("location") String location, @QueryParam("category") String category) {
+    public String getCars(@QueryParam("location") String location, @QueryParam("category") String category,
+            @QueryParam("start") String fromDate, @QueryParam("end") String toDate) {
         Cars cars = new Cars();
-        if (location == null && category == null) {
+        Reservation r1 = new Reservation("Carmondo", "test@tesersen.dk", "09/05/2018", "12/05/2018");
+        c1.addReservation(r1);
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat format2 = new SimpleDateFormat("dd-MM-yyyy");
+        Date from = null;
+        Date to = null;
+        
+        
+
+        if (location == null && category == null && fromDate == null && toDate == null) {
             cars.add(c1);
             cars.add(c2);
             cars.add(c3);
@@ -96,6 +109,49 @@ public class TestResource {
 
             return gson.toJson(cars);
         }
+
+        if (fromDate != null && toDate != null) {
+            try {
+                System.out.println("Second print: now in the if");
+                
+                from = format2.parse(fromDate);
+                to = format2.parse(toDate);
+                
+            } catch (ParseException ex) {
+                System.out.println("Error: " + ex.getMessage());
+            }
+            Cars vacant = new Cars();
+            cars.add(c1);
+            cars.add(c2);
+            cars.add(c3);
+            cars.add(c4);
+            cars.add(c5);
+
+            for (Car car : cars.getCars()) {
+                System.out.println("In first for loop");
+                boolean valid = true;
+                for (Reservation res : car.getReservations()) {
+                    
+                    try {
+                        Date resFrom = format.parse(res.getFromDate());
+                        Date resTo = format.parse(res.getToDate());
+                        
+                        
+                        if((from.before(resTo) || from.equals(resTo)) && (from.after(resFrom) || from.equals(resFrom))){
+                            valid = false;                        
+                        }
+                        
+                    } catch (ParseException ex) {
+                        System.out.println(ex.getMessage());
+                    }
+                }
+                if(valid){
+                    vacant.add(car);
+                }
+            }
+            return gson.toJson(vacant);
+        }
+
         if (location != null) {
             switch (location) {
                 case "Cph Airport":
@@ -111,8 +167,8 @@ public class TestResource {
                     break;
             }
         }
-        if(category != null){
-            switch(category){
+        if (category != null) {
+            switch (category) {
                 case "Mini":
                     cars.add(c1);
                     break;
@@ -125,21 +181,15 @@ public class TestResource {
                     cars.add(c5);
             }
         }
-            return gson.toJson(cars);
+        return gson.toJson(cars);
     }
-    
-    
+
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public String testDataSet(String json){
+    public String testDataSet(String json) {
         DataSet ds = MessageFacade.fromJson(json, DataSetMessage.class);
         bf.createBooking(ds.getBooking(), ds.getCustomer());
-        Customer cust = ds.getCustomer();
-        System.out.println(cust.getFirstName());
-        System.out.println(cust.getLastName());
-        System.out.println(cust.getEmail());
-    return gson.toJson(ds.getCar());   
+        return gson.toJson(ds.getCar());
     }
-    
-    
+
 }
