@@ -81,6 +81,63 @@ public class TestResource {
         return gson.toJson(car);
     }
 
+    @GET
+    @Path("combined")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String getCars(@QueryParam("location") String location, @QueryParam("category") String category,
+            @QueryParam("start") String fromDate, @QueryParam("end") String toDate) {
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat format2 = new SimpleDateFormat("dd-MM-yyyy");
+        Date from = null;
+        Date to = null;
+        Cars cars = new Cars();
+        Cars result = new Cars();
+        Reservation r1 = new Reservation("Carmondo", "test@tesersen.dk", "09/05/2018", "12/05/2018");
+        c1.addReservation(r1);
+        cars.add(c1);
+        cars.add(c2);
+        cars.add(c3);
+        cars.add(c4);
+        cars.add(c5);
+        Cars vacant = new Cars();
+
+        try {
+            from = format2.parse(fromDate);
+            to = format2.parse(toDate);
+
+        } catch (ParseException ex) {
+            System.out.println("Error: " + ex.getMessage());
+        }
+
+        for (Car car : cars.getCars()) {
+            boolean valid = true;
+            for (Reservation res : car.getReservations()) {
+                try {
+                    Date resFrom = format.parse(res.getFromDate());
+                    Date resTo = format.parse(res.getToDate());
+
+                    if ((from.before(resTo) || from.equals(resTo)) && (from.after(resFrom) || from.equals(resFrom))) {
+                        valid = false;
+                    }
+
+                } catch (ParseException ex) {
+                    System.out.println(ex.getMessage());
+                }
+            }
+            if(category != null && !car.getCategory().equals(category)){
+                valid = false;
+            }
+            if(location != null && !car.getLocation().equals(location)){
+                valid = false;
+            }
+            if (valid) {
+                vacant.add(car);
+            }
+        }
+
+        return gson.toJson(vacant);
+    }
+
     /**
      * Retrieves representation of an instance of rest.TestResource
      *
@@ -88,7 +145,7 @@ public class TestResource {
      */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public String getCars(@QueryParam("location") String location, @QueryParam("category") String category,
+    public String getCarsOriginal(@QueryParam("location") String location, @QueryParam("category") String category,
             @QueryParam("start") String fromDate, @QueryParam("end") String toDate) {
         Cars cars = new Cars();
         Reservation r1 = new Reservation("Carmondo", "test@tesersen.dk", "09/05/2018", "12/05/2018");
@@ -97,8 +154,6 @@ public class TestResource {
         SimpleDateFormat format2 = new SimpleDateFormat("dd-MM-yyyy");
         Date from = null;
         Date to = null;
-        
-        
 
         if (location == null && category == null && fromDate == null && toDate == null) {
             cars.add(c1);
@@ -113,10 +168,10 @@ public class TestResource {
         if (fromDate != null && toDate != null) {
             try {
                 System.out.println("Second print: now in the if");
-                
+
                 from = format2.parse(fromDate);
                 to = format2.parse(toDate);
-                
+
             } catch (ParseException ex) {
                 System.out.println("Error: " + ex.getMessage());
             }
@@ -131,21 +186,20 @@ public class TestResource {
                 System.out.println("In first for loop");
                 boolean valid = true;
                 for (Reservation res : car.getReservations()) {
-                    
+
                     try {
                         Date resFrom = format.parse(res.getFromDate());
                         Date resTo = format.parse(res.getToDate());
-                        
-                        
-                        if((from.before(resTo) || from.equals(resTo)) && (from.after(resFrom) || from.equals(resFrom))){
-                            valid = false;                        
+
+                        if ((from.before(resTo) || from.equals(resTo)) && (from.after(resFrom) || from.equals(resFrom))) {
+                            valid = false;
                         }
-                        
+
                     } catch (ParseException ex) {
                         System.out.println(ex.getMessage());
                     }
                 }
-                if(valid){
+                if (valid) {
                     vacant.add(car);
                 }
             }
