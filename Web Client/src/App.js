@@ -21,7 +21,7 @@ function getFormattedDate(date) {
   var day = date.getDate().toString();
   day = day.length > 1 ? day : '0' + day;
   
-  return month + '/' + day + '/' + year;
+  return month + '-' + day + '-' + year;
 }
 
 class RentCar extends Component {
@@ -40,11 +40,24 @@ class RentCar extends Component {
 
   onChangeStart(date) {
     this.props.setDateStart(date)
-    console.log("Start: " + getFormattedDate(date));
+    if(this.props.startDate === this.props.endDate){
+      this.props.setDateURL("");
+    }else{
+      let start = getFormattedDate(this.props.startDate)
+      let end = getFormattedDate(this.props.endDate)
+      this.props.setDateURL("?start:"+ start + "&end:"+ end)
+    }
+
   }
   onChangeEnd(date) {
     this.props.setDateEnd(date)
-    console.log("End: " + getFormattedDate(date));
+    if(this.props.startDate === this.props.endDate){
+      this.props.setDateURL("");
+    }else{
+      let start = getFormattedDate(this.props.startDate)
+      let end = getFormattedDate(this.props.endDate)
+      this.props.setDateURL("?start:"+ start + "&end:"+ end)
+    }
   }
 
   handleChangeLocation(event) {
@@ -492,7 +505,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      loggedIn: false, locationURL: "", categoryURL: "", locValue: "", catValue: "", returnURL: "",
+      loggedIn: false, locationURL: "", categoryURL: "", dateURL: "",locValue: "", catValue: "", returnURL: "",
       user: { firstname: "", lastname: "", email: "" }, startDate: new Date(), endDate: new Date()
     }
   }
@@ -501,6 +514,10 @@ class App extends Component {
   }
   setDateEnd = (date) => {
     this.setState({endDate: date})
+  }
+
+  setDateURL = (url) => {
+    this.setState({ dateURL: url });
   }
 
   setLocationURL = (url) => {
@@ -553,7 +570,7 @@ class App extends Component {
 
           <Router>
             <Switch>
-              <Route exact path="/" render={(props) => <RentCar catValue={this.state.catValue} setCatValue={this.setCatValue} locValue={this.state.locValue} setLocValue={this.setLocValue} setCategoryURL={this.setCategoryURL} setLocationURL={this.setLocationURL} setDateEnd={this.setDateEnd} setDateStart={this.setDateStart} startDate={this.state.startDate} endDate={this.state.endDate}
+              <Route exact path="/" render={(props) => <RentCar catValue={this.state.catValue} setCatValue={this.setCatValue} locValue={this.state.locValue} setLocValue={this.setLocValue} setCategoryURL={this.setCategoryURL} setLocationURL={this.setLocationURL} setDateEnd={this.setDateEnd} setDateStart={this.setDateStart} startDate={this.state.startDate} endDate={this.state.endDate} setDateURL={this.setDateURL}
               {...props} />} />
               <Route path="/showallcars" render={(props) => <ShowCars setReturnURL={this.setReturnURL} fetchURL="" {...props} />} />
               <Route path="/showloccars" render={(props) => <ShowCars setReturnURL={this.setReturnURL} fetchURL={this.state.locationURL} {...props} />} />
