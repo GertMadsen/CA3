@@ -3,25 +3,62 @@ import {
   HashRouter as Router,
   Route,
   Switch,
-  NavLink,
   Link
 } from 'react-router-dom'
 import facade from "./apiFacade";
+import Calendar from "react-calendar";
 
 const NoMatch = () => (
   <h1> No Match </h1>
 )
 
+function getFormattedDate(date) {
+  var year = date.getFullYear();
+
+  var month = (1 + date.getMonth()).toString();
+  month = month.length > 1 ? month : '0' + month;
+
+  var day = date.getDate().toString();
+  day = day.length > 1 ? day : '0' + day;
+  
+  return day + '-' + month + '-' + year;
+}
 
 class RentCar extends Component {
   constructor(props) {
     super(props);
-    this.state = { location: props.locValue, categori: props.catValue }
+    this.state = { location: props.locValue, categori: props.catValue, startDate: props.startDate, endDate: props.endDate }
 
+    this.onChangeStart = this.onChangeStart.bind(this);
+    this.onChangeEnd = this.onChangeEnd.bind(this);
     this.handleChangeLocation = this.handleChangeLocation.bind(this);
     this.handleChangeCategori = this.handleChangeCategori.bind(this);
   }
+  componentWillReceiveProps(props) {
+    this.setState({startDate: props.startDate, endDate: props.endDate});
+}
 
+  onChangeStart(date) {
+    this.props.setDateStart(date)
+    if(this.props.startDate === this.props.endDate){
+      this.props.setDateURL("");
+    }else{
+      let start = getFormattedDate(this.props.startDate)
+      let end = getFormattedDate(this.props.endDate)
+      this.props.setDateURL("?start="+ start + "&end="+ end)
+    }
+
+  }
+  onChangeEnd(date) {
+    this.props.setDateEnd(date)
+    if(this.props.startDate === this.props.endDate){
+      this.props.setDateURL("");
+    }else{
+      let start = getFormattedDate(this.props.startDate)
+      let end = getFormattedDate(this.props.endDate)
+      this.props.setDateURL("?start="+ start + "&end="+ end)
+    }
+  }
 
   handleChangeLocation(event) {
     this.setState({ location: event.target.value });
@@ -51,7 +88,7 @@ class RentCar extends Component {
           <div className="col-sm-4 well well-lg"> <h2>Welcome to CarMondo</h2></div>
           <div className="col-sm-4"></div>
         </div>
-
+        <br />
         <div className="row">
           <div className="col-sm-5"> </div>
           <div className="col-sm-3">
@@ -69,7 +106,7 @@ class RentCar extends Component {
         </div>
 
         <div className="row">
-          <div className="col-sm-4"> </div>
+          <div className="col-sm-5"> </div>
           <div className="col-sm-4">
             <form className="form-inline">
               <div className="form group">
@@ -84,7 +121,7 @@ class RentCar extends Component {
               </div>
             </form>
           </div>
-          <div className="col-sm-4"> </div>
+          <div className="col-sm-3"> </div>
         </div>
 
         <div className="form-group">
@@ -92,7 +129,7 @@ class RentCar extends Component {
         </div>
 
         <div className="row">
-          <div className="col-sm-4"> </div>
+          <div className="col-sm-5"> </div>
           <div className="col-sm-4">
             <form className="form-inline">
               <div className="form group">
@@ -107,9 +144,46 @@ class RentCar extends Component {
               </div>
             </form>
           </div>
-          <div className="col-sm-4"> </div>
+          <div className="col-sm-3"> </div>
         </div>
+        <br/>
+        <div className="row">
+          <div className="col-sm-5"> </div>
+          <div className="col-sm-4">
+          <form className="form-inline">
+            <div className="form group">
+              <label> Dato: </label>
+              <br />
+              <div>
+              <p>{getFormattedDate(this.state.startDate)} {getFormattedDate(this.state.endDate)}</p>
+              </div>
 
+              <div className="btn-group dropleft">
+                <button type="button" className="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Start: 
+                </button>
+                <div className="dropdown-menu">
+                  <Calendar className="dropdown-item" href="#" onChange={this.onChangeStart} value={this.state.startDate} />
+                </div>
+              </div>
+            {" "}
+              <div className="btn-group dropright float-right">
+                <button type="button" className="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Slut: 
+                </button>
+                <div className="dropdown-menu">
+                  <Calendar className="dropdown-item" href="#" onChange={this.onChangeEnd} value={this.state.endDate} />
+                </div>   
+              </div>
+              <div>
+              <Link to="/showdatecars" className="btn btn-success btn-sm btn-block">Show</Link>
+              </div>
+            </div>
+          </form>
+          </div>
+          <div className="col-sm-3"> </div>
+       
+        </div>
       </div>
     )
   }
@@ -222,8 +296,6 @@ class CarDetails extends Component {
 
                 <td><Link to={`/clientdata/${car.regno}`} className="btn btn-success">Book</Link></td>
 
-                {/* <td><Link to='/details/{this.state.regno}' class="btn btn-success">Book</Link></td> */}
-
               </tr>
             </tbody>
           </table>
@@ -270,6 +342,7 @@ class BookingInfo extends Component {
           <p> Email: <b>{this.state.email} </b></p>
 
           <Link to="/confirmation" className="btn btn-success">Confirm Booking</Link>
+
           <br /><br />
 
           <Link to={this.props.returnURL} className="btn btn-success">Back</Link>
@@ -343,30 +416,23 @@ class Header extends Component {
     return (
       <div>
         <Router>
-          <nav className="navbar navbar-inverse">
-            <div className="container-fluid">
-              <div className="navbar-header">
-                <a className="navbar-brand">CarMondo</a>
-              </div>
-              <ul className="nav navbar-nav">
-                <li><NavLink exact to="/">Rent Car</NavLink></li>
-                {/* {this.state.userroles === "user" && <li><NavLink to="/userdata">UserData</NavLink></li>}
-                {this.state.userroles === "admin" && <li><NavLink to="/admindata">AdminData</NavLink></li>} */}
-                {/* <li><NavLink to="/swapi">Swapi</NavLink></li> */}
-              </ul>
-              <ul className="nav navbar-nav navbar-right">
-                {/* <li><button onClick={this.props.logout} class='btn btn-link'> <span class="glyphicon glyphicon-log-out"></span> Logout</button></li> */}
+          <nav className="navbar navbar-dark bg-dark">
+            <a className="navbar-brand" href="">CarMondo</a>
+            <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+              <span className="navbar-toggler-icon"></span>
+            </button>
+            <div className="collapse navbar-collapse" id="navbarNav">
+              <ul className="navbar-nav">
               </ul>
             </div>
           </nav>
         </Router>
-        <div>
-          <span>
-            {/* <div class="well well-sm"><h4> Logged in as : {this.state.username}</h4></div> */}
-          </span>
-        </div>
       </div>
     )
+
+
+
+
   }
 }
 
@@ -386,7 +452,11 @@ class ClientData extends Component {
 
   componentDidMount() {
     facade.fetchSingleCar(this.state.regno).then(res => this.setState({ dataFromServer: res }));
-    { this.resetInformation() }
+
+    { 
+      this.resetInformation()
+    }
+
   }
 
   handleChangeFname(event) {
@@ -487,6 +557,8 @@ class ClientData extends Component {
 
 }
 
+
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -494,7 +566,19 @@ class App extends Component {
       loggedIn: false, locationURL: "", categoryURL: "", locValue: "", catValue: "", returnURL: "",
       user: { firstname: "", lastname: "", email: "" },
       car: { reservations: [] }
+
     }
+  }
+  setDateStart = (date) => {
+    this.setState({startDate: date})
+  }
+  setDateEnd = (date) => {
+    this.setState({endDate: date})
+  }
+
+  setDateURL = (url) => {
+    this.setState({ dateURL: url });
+    console.log(url)
   }
 
   setLocationURL = (url) => {
@@ -549,13 +633,16 @@ class App extends Component {
 
           <Router>
             <Switch>
-              <Route exact path="/" render={(props) => <RentCar catValue={this.state.catValue} setCatValue={this.setCatValue} locValue={this.state.locValue} setLocValue={this.setLocValue} setCategoryURL={this.setCategoryURL} setLocationURL={this.setLocationURL} {...props} />} />
+              <Route exact path="/" render={(props) => <RentCar catValue={this.state.catValue} setCatValue={this.setCatValue} locValue={this.state.locValue} setLocValue={this.setLocValue} setCategoryURL={this.setCategoryURL} setLocationURL={this.setLocationURL} setDateEnd={this.setDateEnd} setDateStart={this.setDateStart} startDate={this.state.startDate} endDate={this.state.endDate} setDateURL={this.setDateURL}
+              {...props} />} />
               <Route path="/showallcars" render={(props) => <ShowCars setReturnURL={this.setReturnURL} fetchURL="" {...props} />} />
               <Route path="/showloccars" render={(props) => <ShowCars setReturnURL={this.setReturnURL} fetchURL={this.state.locationURL} {...props} />} />
+              <Route path="/showdatecars" render={(props) => <ShowCars setReturnURL={this.setReturnURL} fetchURL={this.state.dateURL} {...props} />} />
               <Route path="/showcatcars" render={(props) => <ShowCars setReturnURL={this.setReturnURL} fetchURL={this.state.categoryURL} {...props} />} />
               <Route path="/details/:regno" render={(props) => <CarDetails setReturnURL={this.setReturnURL} returnURL={this.state.returnURL} {...props} />} />
               <Route path="/bookinginfo/:regno" render={(props) => <BookingInfo returnURL={this.state.returnURL} firstname={this.state.user.firstname} lastname={this.state.user.lastname} email={this.state.user.email}{...props} />} />
               <Route path="/clientdata/:regno" render={(props) => <ClientData setCar={this.setCar} returnURL={this.state.returnURL}
+
                 firstname={this.state.user.firstname} lastname={this.state.user.lastname} email={this.state.user.email}
                 setUserFname={this.setUserFname} setUserLname={this.setUserLname} setUserEmail={this.setUserEmail}
                 {...props} />} />
