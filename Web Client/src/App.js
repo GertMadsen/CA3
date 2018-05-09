@@ -258,10 +258,13 @@ class BookingInfo extends Component {
 
           <img src={car.picture} width="30%" height="30%" alt="" />
           <br /><br />
+          <p> <b>Car Info:</b> </p>
           <p>You want to rent a <b>{car.make} {car.model}</b> from the location <b>{car.location}</b> </p>
           <p>In the period from <b>04/05/2018</b> to <b>06/05/2018</b>. </p>
-          <p> You are {this.state.firstname} {this.state.lastname} {this.state.email} </p>
-
+          <p> <b>Customer Info:</b> </p>
+          <p> Name: <b>{this.state.firstname} {this.state.lastname} </b></p>
+          <p> Email: <b>{this.state.email} </b></p>
+  
           <Link to={`/bookinginfo/${car.regno}`} className="btn btn-success">Continue</Link>
           <br /><br />
 
@@ -350,7 +353,7 @@ class ClientData extends Component {
     }
 
   errorHandling(){
-   this.setState({errorMessage: "All fields must be fufilled"})
+   this.setState({errorMessage: "All fields must be filled out"})
   }
 
   render() {
@@ -397,9 +400,10 @@ class ClientData extends Component {
                   onChange={this.handleChangeEmail} />
               </label>
             </div>
-            All fields must be filled to continue
+            All fields must be filled out to continue
           </form>
      
+          <br />
           <Link to={this.props.returnURL} className="btn btn-success">Back</Link>
           {" "}
           {(this.state.firstname.length === 0 || this.state.lastname.length === 0 || this.state.email.length === 0) &&
