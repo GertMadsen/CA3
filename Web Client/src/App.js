@@ -3,7 +3,6 @@ import {
   HashRouter as Router,
   Route,
   Switch,
-  NavLink,
   Link
 } from 'react-router-dom'
 import facade from "./apiFacade";
@@ -155,13 +154,16 @@ class RentCar extends Component {
                 </div>
               </div>
             {" "}
-              <div className="btn-group dropright">
+              <div className="btn-group dropright float-right">
                 <button type="button" className="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   Slut: 
                 </button>
                 <div className="dropdown-menu">
                   <Calendar className="dropdown-item" href="#" onChange={this.onChangeEnd} value={this.state.endDate} />
                 </div>   
+              </div>
+              <div>
+              <Link to="/showloccars" className="btn btn-success btn-sm btn-block">Show</Link>
               </div>
             </div>
           </form>
@@ -347,7 +349,7 @@ class Header extends Component {
       <div>
         <Router>
           <nav className="navbar navbar-dark bg-dark">
-            <a className="navbar-brand" href="#">CarMondo</a>
+            <a className="navbar-brand" href="">CarMondo</a>
             <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
               <span className="navbar-toggler-icon"></span>
             </button>
@@ -382,7 +384,9 @@ class ClientData extends Component {
 
   componentDidMount() {
     facade.fetchSingleCar(this.state.regno).then(res => this.setState({ dataFromServer: res }));
-    { this.resetInformation() }
+    { 
+      this.resetInformation()
+    }
   }
 
   handleChangeFname(event) {
