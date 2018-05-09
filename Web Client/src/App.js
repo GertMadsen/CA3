@@ -21,7 +21,7 @@ function getFormattedDate(date) {
   var day = date.getDate().toString();
   day = day.length > 1 ? day : '0' + day;
   
-  return month + '-' + day + '-' + year;
+  return day + '-' + month + '-' + year;
 }
 
 class RentCar extends Component {
@@ -45,7 +45,7 @@ class RentCar extends Component {
     }else{
       let start = getFormattedDate(this.props.startDate)
       let end = getFormattedDate(this.props.endDate)
-      this.props.setDateURL("?start:"+ start + "&end:"+ end)
+      this.props.setDateURL("?start="+ start + "&end="+ end)
     }
 
   }
@@ -56,7 +56,7 @@ class RentCar extends Component {
     }else{
       let start = getFormattedDate(this.props.startDate)
       let end = getFormattedDate(this.props.endDate)
-      this.props.setDateURL("?start:"+ start + "&end:"+ end)
+      this.props.setDateURL("?start="+ start + "&end="+ end)
     }
   }
 
@@ -176,7 +176,7 @@ class RentCar extends Component {
                 </div>   
               </div>
               <div>
-              <Link to="/showloccars" className="btn btn-success btn-sm btn-block">Show</Link>
+              <Link to="/showdatecars" className="btn btn-success btn-sm btn-block">Show</Link>
               </div>
             </div>
           </form>
@@ -518,6 +518,7 @@ class App extends Component {
 
   setDateURL = (url) => {
     this.setState({ dateURL: url });
+    console.log(url)
   }
 
   setLocationURL = (url) => {
@@ -574,6 +575,7 @@ class App extends Component {
               {...props} />} />
               <Route path="/showallcars" render={(props) => <ShowCars setReturnURL={this.setReturnURL} fetchURL="" {...props} />} />
               <Route path="/showloccars" render={(props) => <ShowCars setReturnURL={this.setReturnURL} fetchURL={this.state.locationURL} {...props} />} />
+              <Route path="/showdatecars" render={(props) => <ShowCars setReturnURL={this.setReturnURL} fetchURL={this.state.dateURL} {...props} />} />
               <Route path="/showcatcars" render={(props) => <ShowCars setReturnURL={this.setReturnURL} fetchURL={this.state.categoryURL} {...props} />} />
               <Route path="/details/:regno" render={(props) => <CarDetails setReturnURL={this.setReturnURL} returnURL={this.state.returnURL} {...props} />} />
               <Route path="/bookinginfo/:regno" render={(props) => <BookingInfo returnURL={this.state.returnURL} firstname={this.state.user.firstname} lastname={this.state.user.lastname} email={this.state.user.email}{...props} />} />
