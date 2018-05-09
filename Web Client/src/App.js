@@ -563,7 +563,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      loggedIn: false, locationURL: "", categoryURL: "", locValue: "", catValue: "", returnURL: "",
+      loggedIn: false, locationURL: "", categoryURL: "", locValue: "", catValue: "", returnURL: "", dateURL:"",  startDate: new Date(), endDate: new Date(),
       user: { firstname: "", lastname: "", email: "" },
       car: { reservations: [] }
 
