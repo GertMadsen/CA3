@@ -182,8 +182,25 @@ class RentCar extends Component {
           </form>
           </div>
           <div className="col-sm-3"> </div>
-       
+
         </div>
+
+     
+
+        <div className="row">
+          <div className="col-sm-5"> </div>
+          <div className="col-sm-3">
+            <form>
+              <div className="form group">
+              <br /> <br />
+                <Link to="/showcombicars" className="btn btn-success btn-lg">Show Combined</Link>
+              </div>
+            </form>
+          </div>
+          <div className="col-sm-4"> </div>
+        </div>
+
+
       </div>
     )
   }
@@ -563,7 +580,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      loggedIn: false, locationURL: "", categoryURL: "", locValue: "", catValue: "", returnURL: "",
+      loggedIn: false, locationURL: "", categoryURL: "", locValue: "", catValue: "", returnURL: "", dateURL: "", startDate: new Date(), endDate: new Date(),
       user: { firstname: "", lastname: "", email: "" },
       car: { reservations: [] }
 
@@ -578,7 +595,6 @@ class App extends Component {
 
   setDateURL = (url) => {
     this.setState({ dateURL: url });
-    console.log(url)
   }
 
   setLocationURL = (url) => {
@@ -647,6 +663,7 @@ class App extends Component {
                 setUserFname={this.setUserFname} setUserLname={this.setUserLname} setUserEmail={this.setUserEmail}
                 {...props} />} />
               <Route path="/confirmation/" render={(props) => <Confirmation returnURL={this.state.returnURL} firstname={this.state.user.firstname} lastname={this.state.user.lastname} email={this.state.user.email} car={this.state.car} {...props} />} />
+              <Route path="/showcombicars" render={(props) => <ShowCars setReturnURL={this.setReturnURL} fetchURL={"/combined"+this.state.locationURL+this.state.categoryURL+this.state.dateURL} {...props} />} />
 
 
               <Route component={NoMatch} />
