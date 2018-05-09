@@ -91,7 +91,6 @@ public class TestResource {
         Date from = null;
         Date to = null;
         Cars cars = new Cars();
-        Cars result = new Cars();
         Reservation r1 = new Reservation("Carmondo", "test@tesersen.dk", "09/05/2018", "12/05/2018");
         c1.addReservation(r1);
         cars.add(c1);
@@ -117,6 +116,9 @@ public class TestResource {
                     Date resTo = format.parse(res.getToDate());
 
                     if ((from.before(resTo) || from.equals(resTo)) && (from.after(resFrom) || from.equals(resFrom))) {
+                        valid = false;
+                    }
+                    if ((to.before(resTo) || to.equals(resTo)) && (to.after(resFrom) || to.equals(resFrom))) {
                         valid = false;
                     }
 
@@ -192,6 +194,9 @@ public class TestResource {
                         Date resTo = format.parse(res.getToDate());
 
                         if ((from.before(resTo) || from.equals(resTo)) && (from.after(resFrom) || from.equals(resFrom))) {
+                            valid = false;
+                        }
+                        if ((to.before(resTo) || to.equals(resTo)) && (to.after(resFrom) || to.equals(resFrom))) {
                             valid = false;
                         }
 
