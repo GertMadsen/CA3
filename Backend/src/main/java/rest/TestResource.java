@@ -134,8 +134,10 @@ public class TestResource {
     public String testDataSet(String json){
         DataSet ds = MessageFacade.fromJson(json, DataSetMessage.class);
         bf.createBooking(ds.getBooking(), ds.getCustomer());
-        System.out.println(ds.getCar().getRegno());
-        System.out.println(ds.getCar().getCompany());
+        Customer cust = ds.getCustomer();
+        System.out.println(cust.getFirstName());
+        System.out.println(cust.getLastName());
+        System.out.println(cust.getEmail());
     return gson.toJson(ds.getCar());   
     }
     

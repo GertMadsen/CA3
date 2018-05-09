@@ -245,7 +245,7 @@ class CarDetails extends Component {
 class BookingInfo extends Component {
   constructor(props) {
     super(props);
-    this.state = { fetchURL: props.fetchURL, dataFromServer: {}, regno: props.match.params.regno , firstname: props.firstname, lastname: props.lastname, email: props.email };
+    this.state = { fetchURL: props.fetchURL, dataFromServer: {}, regno: props.match.params.regno, firstname: props.firstname, lastname: props.lastname, email: props.email };
   }
   componentDidMount() {
     facade.fetchSingleCar(this.state.regno).then(res => this.setState({ dataFromServer: res }));
@@ -268,8 +268,8 @@ class BookingInfo extends Component {
           <p> <b>Customer Info:</b> </p>
           <p> Name: <b>{this.state.firstname} {this.state.lastname} </b></p>
           <p> Email: <b>{this.state.email} </b></p>
-  
-          <Link to={`/bookinginfo/${car.regno}`} className="btn btn-success">Continue</Link>
+
+          <Link to="/confirmation" className="btn btn-success">Confirm Booking</Link>
           <br /><br />
 
           <Link to={this.props.returnURL} className="btn btn-success">Back</Link>
@@ -281,6 +281,60 @@ class BookingInfo extends Component {
     )
   }
 }
+
+
+class Confirmation extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      fetchURL: props.fetchURL, dataFromServer: [],
+      firstname: props.firstname, lastname: props.lastname, email: props.email,
+      car: props.car,
+      fromDate: "09/05/2018", toDate: "11/05/2018",
+    };
+
+    var car = this.state.car;
+    var reservations = car.reservations;
+    var insertion = { companyTag: "Carmondo", customerMail: this.state.email, fromDate: this.state.fromDate, toDate: this.state.toDate }
+    reservations.push(insertion);
+    car.reservations = reservations;
+    console.log(car);
+    var body = {
+      car: car,
+      booking: { regno: car.regno, fromDate: this.state.fromDate, toDate: this.state.toDate, companyTag: "Carmondo" },
+      customer: { email: this.state.email, firstName: this.state.firstname, lastName: this.state.lastname }
+    };
+    this.state.body = body;
+    console.log(this.state)
+  }
+
+  componentDidMount() {
+    facade.fetchBooking(this.state.body).then(res => this.setState({ dataFromServer: res }));
+  }
+
+  render() {
+
+    return (
+      <div className="row">
+        <div className="col-sm-2"></div>
+        <div className="col-sm-8">
+          <div className="well well-sm"> <h3> Confirmation</h3> </div>
+
+          <p> Mr./Mrs. <b>{this.state.firstname} {this.state.lastname}</b> </p>
+          <p> Your reservation for a <b>{this.state.car.make} {this.state.car.model}</b> </p>
+          <p> located at <b>{this.state.car.location}</b> has been completed.</p>
+
+          <Link to={this.props.returnURL} className="btn btn-success">Back</Link>
+
+        </div>
+        <div className="col-sm-2"></div>
+      </div>
+
+    )
+  }
+}
+
+
 
 
 class Header extends Component {
@@ -320,17 +374,19 @@ class ClientData extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { firstname: props.firstname, lastname: props.lastname, email: props.email,
-                   regno: props.match.params.regno, dataFromServer: [], emptyState: "", errorMessage: "" }
+    this.state = {
+      firstname: props.firstname, lastname: props.lastname, email: props.email,
+      regno: props.match.params.regno, dataFromServer: [], emptyState: "", errorMessage: ""
+    }
     this.handleChangeFname = this.handleChangeFname.bind(this);
     this.handleChangeLname = this.handleChangeLname.bind(this);
     this.handleChangeEmail = this.handleChangeEmail.bind(this);
   }
- 
+
 
   componentDidMount() {
     facade.fetchSingleCar(this.state.regno).then(res => this.setState({ dataFromServer: res }));
-    {this.resetInformation()}
+    { this.resetInformation() }
   }
 
   handleChangeFname(event) {
@@ -344,32 +400,33 @@ class ClientData extends Component {
   handleChangeEmail(event) {
     this.setState({ email: event.target.value })
     this.props.setUserEmail(event.target.value);
+    this.props.setCar(this.state.dataFromServer);
   }
 
-  resetInformation(){
+  resetInformation() {
     this.setState({ email: this.state.emptyState })
     this.setState({ firstname: this.state.emptyState })
     this.setState({ lastname: this.state.emptyState })
-    this.setState({ message: this.state.emptyState})
+    this.setState({ message: this.state.emptyState })
     this.props.setUserEmail(this.state.emptyState);
     this.props.setUserFname(this.state.emptyState);
     this.props.setUserLname(this.state.emptyState);
-    }
+  }
 
-  errorHandling(){
-   this.setState({errorMessage: "All fields must be filled out"})
+  errorHandling() {
+    this.setState({ errorMessage: "All fields must be filled out" })
   }
 
   render() {
     var car = this.state.dataFromServer;
-   
+
     return (
-      
+
       <div className="row">
-       
+
         <div className="col-sm-2"></div>
         <div className="col-sm-8">
-          <div className="well well-sm"> <h3> Kunde Data</h3> </div>
+          <div className="well well-sm"> <h3> Customer Data</h3> </div>
 
           <form >
             <div className="form-group">
@@ -406,7 +463,7 @@ class ClientData extends Component {
             </div>
             All fields must be filled out to continue
           </form>
-     
+
           <br />
           <Link to={this.props.returnURL} className="btn btn-success">Back</Link>
           {" "}
@@ -414,10 +471,10 @@ class ClientData extends Component {
             <button onClick={this.errorHandling.bind(this)} className="btn btn-success">Continue</button>
           }
 
-         {(this.state.firstname.length >0 && this.state.lastname.length>0 && this.state.email.length>0) && 
-          <Link to={`/bookinginfo/${car.regno}`} className="btn btn-success">Continue</Link>
-         }
-         <div><h3 className="text-danger">{this.state.errorMessage}</h3></div>
+          {(this.state.firstname.length > 0 && this.state.lastname.length > 0 && this.state.email.length > 0) &&
+            <Link to={`/bookinginfo/${car.regno}`} className="btn btn-success">Continue</Link>
+          }
+          <div><h3 className="text-danger">{this.state.errorMessage}</h3></div>
 
 
         </div>
@@ -435,7 +492,8 @@ class App extends Component {
     super(props);
     this.state = {
       loggedIn: false, locationURL: "", categoryURL: "", locValue: "", catValue: "", returnURL: "",
-      user: { firstname: "", lastname: "", email: "" }
+      user: { firstname: "", lastname: "", email: "" },
+      car: { reservations: [] }
     }
   }
 
@@ -454,7 +512,9 @@ class App extends Component {
   setReturnURL = (url) => {
     this.setState({ returnURL: url });
   }
-
+  setCar = (car) => {
+    this.setState({ car: car });
+  }
 
   setUserFname = (value) =>
     this.setState(prevState => ({
@@ -494,11 +554,12 @@ class App extends Component {
               <Route path="/showloccars" render={(props) => <ShowCars setReturnURL={this.setReturnURL} fetchURL={this.state.locationURL} {...props} />} />
               <Route path="/showcatcars" render={(props) => <ShowCars setReturnURL={this.setReturnURL} fetchURL={this.state.categoryURL} {...props} />} />
               <Route path="/details/:regno" render={(props) => <CarDetails setReturnURL={this.setReturnURL} returnURL={this.state.returnURL} {...props} />} />
-              <Route path="/bookinginfo/:regno" render={(props) => <BookingInfo returnURL={this.state.returnURL} firstname={this.state.user.firstname} lastname={this.state.user.lastname}email={this.state.user.email}{...props} />} />
-              <Route path="/clientdata/:regno" render={(props) => <ClientData returnURL={this.state.returnURL}
+              <Route path="/bookinginfo/:regno" render={(props) => <BookingInfo returnURL={this.state.returnURL} firstname={this.state.user.firstname} lastname={this.state.user.lastname} email={this.state.user.email}{...props} />} />
+              <Route path="/clientdata/:regno" render={(props) => <ClientData setCar={this.setCar} returnURL={this.state.returnURL}
                 firstname={this.state.user.firstname} lastname={this.state.user.lastname} email={this.state.user.email}
                 setUserFname={this.setUserFname} setUserLname={this.setUserLname} setUserEmail={this.setUserEmail}
                 {...props} />} />
+              <Route path="/confirmation/" render={(props) => <Confirmation returnURL={this.state.returnURL} firstname={this.state.user.firstname} lastname={this.state.user.lastname} email={this.state.user.email} car={this.state.car} {...props} />} />
 
 
               <Route component={NoMatch} />
