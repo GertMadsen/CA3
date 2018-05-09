@@ -7,21 +7,46 @@ import {
   Link
 } from 'react-router-dom'
 import facade from "./apiFacade";
+import Calendar from "react-calendar";
 
 const NoMatch = () => (
   <h1> No Match </h1>
 )
 
+function getFormattedDate(date) {
+  var year = date.getFullYear();
+
+  var month = (1 + date.getMonth()).toString();
+  month = month.length > 1 ? month : '0' + month;
+
+  var day = date.getDate().toString();
+  day = day.length > 1 ? day : '0' + day;
+  
+  return month + '/' + day + '/' + year;
+}
 
 class RentCar extends Component {
   constructor(props) {
     super(props);
-    this.state = { location: props.locValue, categori: props.catValue }
+    this.state = { location: props.locValue, categori: props.catValue, startDate: props.startDate, endDate: props.endDate }
 
+    this.onChangeStart = this.onChangeStart.bind(this);
+    this.onChangeEnd = this.onChangeEnd.bind(this);
     this.handleChangeLocation = this.handleChangeLocation.bind(this);
     this.handleChangeCategori = this.handleChangeCategori.bind(this);
   }
+  componentWillReceiveProps(props) {
+    this.setState({startDate: props.startDate, endDate: props.endDate});
+}
 
+  onChangeStart(date) {
+    this.props.setDateStart(date)
+    console.log("Start: " + getFormattedDate(date));
+  }
+  onChangeEnd(date) {
+    this.props.setDateEnd(date)
+    console.log("End: " + getFormattedDate(date));
+  }
 
   handleChangeLocation(event) {
     this.setState({ location: event.target.value });
@@ -51,7 +76,7 @@ class RentCar extends Component {
           <div className="col-sm-4 well well-lg"> <h2>Welcome to CarMondo</h2></div>
           <div className="col-sm-4"></div>
         </div>
-
+        <br />
         <div className="row">
           <div className="col-sm-5"> </div>
           <div className="col-sm-3">
@@ -69,7 +94,7 @@ class RentCar extends Component {
         </div>
 
         <div className="row">
-          <div className="col-sm-4"> </div>
+          <div className="col-sm-5"> </div>
           <div className="col-sm-4">
             <form className="form-inline">
               <div className="form group">
@@ -84,7 +109,7 @@ class RentCar extends Component {
               </div>
             </form>
           </div>
-          <div className="col-sm-4"> </div>
+          <div className="col-sm-3"> </div>
         </div>
 
         <div className="form-group">
@@ -92,7 +117,7 @@ class RentCar extends Component {
         </div>
 
         <div className="row">
-          <div className="col-sm-4"> </div>
+          <div className="col-sm-5"> </div>
           <div className="col-sm-4">
             <form className="form-inline">
               <div className="form group">
@@ -107,9 +132,43 @@ class RentCar extends Component {
               </div>
             </form>
           </div>
-          <div className="col-sm-4"> </div>
+          <div className="col-sm-3"> </div>
         </div>
+        <br/>
+        <div className="row">
+          <div className="col-sm-5"> </div>
+          <div className="col-sm-4">
+          <form className="form-inline">
+            <div className="form group">
+              <label> Dato: </label>
+              <br />
+              <div>
+              <p>{getFormattedDate(this.state.startDate)} {getFormattedDate(this.state.endDate)}</p>
+              </div>
 
+              <div className="btn-group dropleft">
+                <button type="button" className="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Start: 
+                </button>
+                <div className="dropdown-menu">
+                  <Calendar className="dropdown-item" href="#" onChange={this.onChangeStart} value={this.state.startDate} />
+                </div>
+              </div>
+            {" "}
+              <div className="btn-group dropright">
+                <button type="button" className="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Slut: 
+                </button>
+                <div className="dropdown-menu">
+                  <Calendar className="dropdown-item" href="#" onChange={this.onChangeEnd} value={this.state.endDate} />
+                </div>   
+              </div>
+            </div>
+          </form>
+          </div>
+          <div className="col-sm-3"> </div>
+       
+        </div>
       </div>
     )
   }
@@ -222,8 +281,6 @@ class CarDetails extends Component {
 
                 <td><Link to={`/clientdata/${car.regno}`} className="btn btn-success">Book</Link></td>
 
-                {/* <td><Link to='/details/{this.state.regno}' class="btn btn-success">Book</Link></td> */}
-
               </tr>
             </tbody>
           </table>
@@ -245,7 +302,7 @@ class CarDetails extends Component {
 class BookingInfo extends Component {
   constructor(props) {
     super(props);
-    this.state = { fetchURL: props.fetchURL, dataFromServer: {}, regno: props.match.params.regno , firstname: props.firstname, lastname: props.lastname, email: props.email };
+    this.state = { fetchURL: props.fetchURL, dataFromServer: {}, regno: props.match.params.regno, firstname: props.firstname, lastname: props.lastname, email: props.email };
   }
   componentDidMount() {
     facade.fetchSingleCar(this.state.regno).then(res => this.setState({ dataFromServer: res }));
@@ -268,7 +325,7 @@ class BookingInfo extends Component {
           <p> <b>Customer Info:</b> </p>
           <p> Name: <b>{this.state.firstname} {this.state.lastname} </b></p>
           <p> Email: <b>{this.state.email} </b></p>
-  
+
           <Link to={`/bookinginfo/${car.regno}`} className="btn btn-success">Continue</Link>
           <br /><br />
 
@@ -289,30 +346,23 @@ class Header extends Component {
     return (
       <div>
         <Router>
-          <nav className="navbar navbar-inverse">
-            <div className="container-fluid">
-              <div className="navbar-header">
-                <a className="navbar-brand">CarMondo</a>
-              </div>
-              <ul className="nav navbar-nav">
-                <li><NavLink exact to="/">Rent Car</NavLink></li>
-                {/* {this.state.userroles === "user" && <li><NavLink to="/userdata">UserData</NavLink></li>}
-                {this.state.userroles === "admin" && <li><NavLink to="/admindata">AdminData</NavLink></li>} */}
-                {/* <li><NavLink to="/swapi">Swapi</NavLink></li> */}
-              </ul>
-              <ul className="nav navbar-nav navbar-right">
-                {/* <li><button onClick={this.props.logout} class='btn btn-link'> <span class="glyphicon glyphicon-log-out"></span> Logout</button></li> */}
+          <nav className="navbar navbar-dark bg-dark">
+            <a className="navbar-brand" href="#">CarMondo</a>
+            <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+              <span className="navbar-toggler-icon"></span>
+            </button>
+            <div className="collapse navbar-collapse" id="navbarNav">
+              <ul className="navbar-nav">
               </ul>
             </div>
           </nav>
         </Router>
-        <div>
-          <span>
-            {/* <div class="well well-sm"><h4> Logged in as : {this.state.username}</h4></div> */}
-          </span>
-        </div>
       </div>
     )
+
+
+
+
   }
 }
 
@@ -320,17 +370,19 @@ class ClientData extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { firstname: props.firstname, lastname: props.lastname, email: props.email,
-                   regno: props.match.params.regno, dataFromServer: [], emptyState: "", errorMessage: "" }
+    this.state = {
+      firstname: props.firstname, lastname: props.lastname, email: props.email,
+      regno: props.match.params.regno, dataFromServer: [], emptyState: "", errorMessage: ""
+    }
     this.handleChangeFname = this.handleChangeFname.bind(this);
     this.handleChangeLname = this.handleChangeLname.bind(this);
     this.handleChangeEmail = this.handleChangeEmail.bind(this);
   }
- 
+
 
   componentDidMount() {
     facade.fetchSingleCar(this.state.regno).then(res => this.setState({ dataFromServer: res }));
-    {this.resetInformation()}
+    { this.resetInformation() }
   }
 
   handleChangeFname(event) {
@@ -346,27 +398,27 @@ class ClientData extends Component {
     this.props.setUserEmail(event.target.value);
   }
 
-  resetInformation(){
+  resetInformation() {
     this.setState({ email: this.state.emptyState })
     this.setState({ firstname: this.state.emptyState })
     this.setState({ lastname: this.state.emptyState })
-    this.setState({ message: this.state.emptyState})
+    this.setState({ message: this.state.emptyState })
     this.props.setUserEmail(this.state.emptyState);
     this.props.setUserFname(this.state.emptyState);
     this.props.setUserLname(this.state.emptyState);
-    }
+  }
 
-  errorHandling(){
-   this.setState({errorMessage: "All fields must be filled out"})
+  errorHandling() {
+    this.setState({ errorMessage: "All fields must be filled out" })
   }
 
   render() {
     var car = this.state.dataFromServer;
-   
+
     return (
-      
+
       <div className="row">
-       
+
         <div className="col-sm-2"></div>
         <div className="col-sm-8">
           <div className="well well-sm"> <h3> Kunde Data</h3> </div>
@@ -406,7 +458,7 @@ class ClientData extends Component {
             </div>
             All fields must be filled out to continue
           </form>
-     
+
           <br />
           <Link to={this.props.returnURL} className="btn btn-success">Back</Link>
           {" "}
@@ -414,10 +466,10 @@ class ClientData extends Component {
             <button onClick={this.errorHandling.bind(this)} className="btn btn-success">Continue</button>
           }
 
-         {(this.state.firstname.length >0 && this.state.lastname.length>0 && this.state.email.length>0) && 
-          <Link to={`/bookinginfo/${car.regno}`} className="btn btn-success">Continue</Link>
-         }
-         <div><h3 className="text-danger">{this.state.errorMessage}</h3></div>
+          {(this.state.firstname.length > 0 && this.state.lastname.length > 0 && this.state.email.length > 0) &&
+            <Link to={`/bookinginfo/${car.regno}`} className="btn btn-success">Continue</Link>
+          }
+          <div><h3 className="text-danger">{this.state.errorMessage}</h3></div>
 
 
         </div>
@@ -430,13 +482,21 @@ class ClientData extends Component {
 
 }
 
+
+
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
       loggedIn: false, locationURL: "", categoryURL: "", locValue: "", catValue: "", returnURL: "",
-      user: { firstname: "", lastname: "", email: "" }
+      user: { firstname: "", lastname: "", email: "" }, startDate: new Date(), endDate: new Date()
     }
+  }
+  setDateStart = (date) => {
+    this.setState({startDate: date})
+  }
+  setDateEnd = (date) => {
+    this.setState({endDate: date})
   }
 
   setLocationURL = (url) => {
@@ -489,12 +549,13 @@ class App extends Component {
 
           <Router>
             <Switch>
-              <Route exact path="/" render={(props) => <RentCar catValue={this.state.catValue} setCatValue={this.setCatValue} locValue={this.state.locValue} setLocValue={this.setLocValue} setCategoryURL={this.setCategoryURL} setLocationURL={this.setLocationURL} {...props} />} />
+              <Route exact path="/" render={(props) => <RentCar catValue={this.state.catValue} setCatValue={this.setCatValue} locValue={this.state.locValue} setLocValue={this.setLocValue} setCategoryURL={this.setCategoryURL} setLocationURL={this.setLocationURL} setDateEnd={this.setDateEnd} setDateStart={this.setDateStart} startDate={this.state.startDate} endDate={this.state.endDate}
+              {...props} />} />
               <Route path="/showallcars" render={(props) => <ShowCars setReturnURL={this.setReturnURL} fetchURL="" {...props} />} />
               <Route path="/showloccars" render={(props) => <ShowCars setReturnURL={this.setReturnURL} fetchURL={this.state.locationURL} {...props} />} />
               <Route path="/showcatcars" render={(props) => <ShowCars setReturnURL={this.setReturnURL} fetchURL={this.state.categoryURL} {...props} />} />
               <Route path="/details/:regno" render={(props) => <CarDetails setReturnURL={this.setReturnURL} returnURL={this.state.returnURL} {...props} />} />
-              <Route path="/bookinginfo/:regno" render={(props) => <BookingInfo returnURL={this.state.returnURL} firstname={this.state.user.firstname} lastname={this.state.user.lastname}email={this.state.user.email}{...props} />} />
+              <Route path="/bookinginfo/:regno" render={(props) => <BookingInfo returnURL={this.state.returnURL} firstname={this.state.user.firstname} lastname={this.state.user.lastname} email={this.state.user.email}{...props} />} />
               <Route path="/clientdata/:regno" render={(props) => <ClientData returnURL={this.state.returnURL}
                 firstname={this.state.user.firstname} lastname={this.state.user.lastname} email={this.state.user.email}
                 setUserFname={this.setUserFname} setUserLname={this.setUserLname} setUserEmail={this.setUserEmail}
