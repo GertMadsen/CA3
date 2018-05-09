@@ -298,14 +298,14 @@ class Confirmation extends Component {
     var insertion = { companyTag: "Carmondo", customerMail: this.state.email, fromDate: this.state.fromDate, toDate: this.state.toDate }
     reservations.push(insertion);
     car.reservations = reservations;
-    console.log(car);
+    
     var body = {
       car: car,
       booking: { regno: car.regno, fromDate: this.state.fromDate, toDate: this.state.toDate, companyTag: "Carmondo" },
       customer: { email: this.state.email, firstName: this.state.firstname, lastName: this.state.lastname }
     };
     this.state.body = body;
-    console.log(this.state)
+    
   }
 
   componentDidMount() {
