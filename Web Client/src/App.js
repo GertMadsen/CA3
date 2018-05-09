@@ -115,6 +115,8 @@ class RentCar extends Component {
   }
 }
 
+
+
 class ShowCars extends Component {
   constructor(props) {
     super(props);
@@ -135,7 +137,7 @@ class ShowCars extends Component {
           <td>{car.location}</td>
           <td>{car.priceperday}</td>
           <td><Link to={`details/${car.regno}`} className="btn btn-success">Show Details</Link></td>
-          <td><Link to={`bookinginfo/${car.regno}`} className="btn btn-success">Book</Link></td>
+          <td><Link to={`clientdata/${car.regno}`} className="btn btn-success">Book</Link></td>
         </tr>
       )
     });
@@ -217,7 +219,11 @@ class CarDetails extends Component {
                 <td>{"" + car.aircondition}</td>
                 <td>{car.location}</td>
                 <td>{car.priceperday}</td>
-                <td><Link to={`/bookinginfo/${car.regno}`} className="btn btn-success">Book</Link></td>
+
+                <td><Link to={`/clientdata/${car.regno}`} className="btn btn-success">Book</Link></td>
+
+                {/* <td><Link to='/details/{this.state.regno}' class="btn btn-success">Book</Link></td> */}
+
               </tr>
             </tbody>
           </table>
@@ -239,7 +245,7 @@ class CarDetails extends Component {
 class BookingInfo extends Component {
   constructor(props) {
     super(props);
-    this.state = { fetchURL: props.fetchURL, dataFromServer: {}, regno: props.match.params.regno };
+    this.state = { fetchURL: props.fetchURL, dataFromServer: {}, regno: props.match.params.regno , firstname: props.firstname, lastname: props.lastname, email: props.email };
   }
   componentDidMount() {
     facade.fetchSingleCar(this.state.regno).then(res => this.setState({ dataFromServer: res }));
@@ -255,9 +261,14 @@ class BookingInfo extends Component {
 
           <img src={car.picture} width="30%" height="30%" alt="" />
           <br /><br />
+          <p> <b>Car Info:</b> </p>
           <p>You want to rent a <b>{car.make} {car.model}</b> from the location <b>{car.location}</b> </p>
           <p>In the period from <b>04/05/2018</b> to <b>06/05/2018</b>. </p>
 
+          <p> <b>Customer Info:</b> </p>
+          <p> Name: <b>{this.state.firstname} {this.state.lastname} </b></p>
+          <p> Email: <b>{this.state.email} </b></p>
+  
           <Link to={`/bookinginfo/${car.regno}`} className="btn btn-success">Continue</Link>
           <br /><br />
 
@@ -273,6 +284,7 @@ class BookingInfo extends Component {
 
 
 class Header extends Component {
+
   render() {
     return (
       <div>
@@ -304,10 +316,127 @@ class Header extends Component {
   }
 }
 
+class ClientData extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = { firstname: props.firstname, lastname: props.lastname, email: props.email,
+                   regno: props.match.params.regno, dataFromServer: [], emptyState: "", errorMessage: "" }
+    this.handleChangeFname = this.handleChangeFname.bind(this);
+    this.handleChangeLname = this.handleChangeLname.bind(this);
+    this.handleChangeEmail = this.handleChangeEmail.bind(this);
+  }
+ 
+
+  componentDidMount() {
+    facade.fetchSingleCar(this.state.regno).then(res => this.setState({ dataFromServer: res }));
+    {this.resetInformation()}
+  }
+
+  handleChangeFname(event) {
+    this.setState({ firstname: event.target.value });
+    this.props.setUserFname(event.target.value);
+  }
+  handleChangeLname(event) {
+    this.setState({ lastname: event.target.value })
+    this.props.setUserLname(event.target.value);
+  }
+  handleChangeEmail(event) {
+    this.setState({ email: event.target.value })
+    this.props.setUserEmail(event.target.value);
+  }
+
+  resetInformation(){
+    this.setState({ email: this.state.emptyState })
+    this.setState({ firstname: this.state.emptyState })
+    this.setState({ lastname: this.state.emptyState })
+    this.setState({ message: this.state.emptyState})
+    this.props.setUserEmail(this.state.emptyState);
+    this.props.setUserFname(this.state.emptyState);
+    this.props.setUserLname(this.state.emptyState);
+    }
+
+  errorHandling(){
+   this.setState({errorMessage: "All fields must be filled out"})
+  }
+
+  render() {
+    var car = this.state.dataFromServer;
+   
+    return (
+      
+      <div className="row">
+       
+        <div className="col-sm-2"></div>
+        <div className="col-sm-8">
+          <div className="well well-sm"> <h3> Kunde Data</h3> </div>
+
+          <form >
+            <div className="form-group">
+
+              <label className="col-form-label">
+                Firstname:
+          <input
+                  className="form-control"
+                  name="firstname"
+                  type="text"
+                  placeholder="firstname"
+                  onChange={this.handleChangeFname} />
+              </label>
+              <br />
+              <label className="col-form-label">
+                Lastname:
+          <input
+                  className="form-control"
+                  name="lastname"
+                  type="text"
+                  placeholder="lastname"
+                  onChange={this.handleChangeLname} />
+              </label>
+              <br />
+              <label className="col-form-label">
+                Email:
+              <input
+                  className="form-control"
+                  name="email"
+                  type="email"
+                  placeholder="email"
+                  onChange={this.handleChangeEmail} />
+              </label>
+            </div>
+            All fields must be filled out to continue
+          </form>
+     
+          <br />
+          <Link to={this.props.returnURL} className="btn btn-success">Back</Link>
+          {" "}
+          {(this.state.firstname.length === 0 || this.state.lastname.length === 0 || this.state.email.length === 0) &&
+            <button onClick={this.errorHandling.bind(this)} className="btn btn-success">Continue</button>
+          }
+
+         {(this.state.firstname.length >0 && this.state.lastname.length>0 && this.state.email.length>0) && 
+          <Link to={`/bookinginfo/${car.regno}`} className="btn btn-success">Continue</Link>
+         }
+         <div><h3 className="text-danger">{this.state.errorMessage}</h3></div>
+
+
+        </div>
+        <div className="col-sm-2"></div>
+
+      </div>
+
+    )
+  }
+
+}
+
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = { loggedIn: false, locationURL: "", categoryURL: "", locValue: "", catValue: "", returnURL: "" }
+    this.state = {
+      loggedIn: false, locationURL: "", categoryURL: "", locValue: "", catValue: "", returnURL: "",
+      user: { firstname: "", lastname: "", email: "" }
+    }
   }
 
   setLocationURL = (url) => {
@@ -327,6 +456,31 @@ class App extends Component {
   }
 
 
+  setUserFname = (value) =>
+    this.setState(prevState => ({
+      user: {
+        ...prevState.user,
+        firstname: value
+      }
+    }))
+
+  setUserLname = (value) =>
+    this.setState(prevState => ({
+      user: {
+        ...prevState.user,
+        lastname: value
+      }
+
+    }))
+  setUserEmail = (value) =>
+    this.setState(prevState => ({
+      user: {
+        ...prevState.user,
+        email: value
+      }
+    }))
+
+
   render() {
     return (
       <div>
@@ -340,11 +494,13 @@ class App extends Component {
               <Route path="/showloccars" render={(props) => <ShowCars setReturnURL={this.setReturnURL} fetchURL={this.state.locationURL} {...props} />} />
               <Route path="/showcatcars" render={(props) => <ShowCars setReturnURL={this.setReturnURL} fetchURL={this.state.categoryURL} {...props} />} />
               <Route path="/details/:regno" render={(props) => <CarDetails setReturnURL={this.setReturnURL} returnURL={this.state.returnURL} {...props} />} />
-              <Route path="/bookinginfo/:regno" render={(props) => <BookingInfo returnURL={this.state.returnURL} {...props} />} />
+              <Route path="/bookinginfo/:regno" render={(props) => <BookingInfo returnURL={this.state.returnURL} firstname={this.state.user.firstname} lastname={this.state.user.lastname}email={this.state.user.email}{...props} />} />
+              <Route path="/clientdata/:regno" render={(props) => <ClientData returnURL={this.state.returnURL}
+                firstname={this.state.user.firstname} lastname={this.state.user.lastname} email={this.state.user.email}
+                setUserFname={this.setUserFname} setUserLname={this.setUserLname} setUserEmail={this.setUserEmail}
+                {...props} />} />
 
-              {/* <Route path="/swapi" render={() => <FetchSwapi />} /> 
-                  <Route path="/userdata" render={() => <UserData />} />
-                  <Route path="/admindata" render={() => <UserData />} /> */}
+
               <Route component={NoMatch} />
             </Switch>
           </Router>
@@ -353,8 +509,7 @@ class App extends Component {
         <div className="row">
           <br />
           <div className="col-md-5"></div>
-          {/* {this.state.loginError &&
-            <span><div class="col-md-2 alert alert-danger"> {this.state.loginError} </div></span> */}
+
           <div className="col-md-5"></div>
         </div>
       </div>
