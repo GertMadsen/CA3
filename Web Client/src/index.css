@@ -46,6 +46,79 @@ ul.header li a {
 .active {
   background-color: steelblue;
 }
+.rykLidtMere{
+  margin-left: 2.5%;
+}
+.flyvVenstre{
+  float:left;
+}
+.flyvHøjre{
+  float:right
+}
+.customBredde{
+  width: 200px;
+}
+.textColor{
+  color: #FFF;
+}
+.custBredde{
+  width: 60px !important;
+}
+.nonTransparent{
+    background-color: rgb(53, 53, 53);
+    opacity: 0.95;
+}
+.nonTransparent2{
+  
+  opacity: 0.95;
+}
+.nonTransparent1{
+  opacity: 0.8;
+}
+.lidtPlads{
+  margin-left: 2%;
+  margin-right: 2%;
+  margin-top: 2%;
+  margin-bottom: 2%;
+}
+.minNyeMargin{
+  margin-left: 8%;
+}
+.center-fit {
+  width: 100%;
+  height: 100%;
+  margin: auto;
+ }
+ .myMargin{
+  margin-right: 6px !important;
+ }
+ .minMargin{
+  padding-left: 65px !important;
+ }
+ .showsize{
+ margin-left: 39px;
+ width: 120px;
+ }
+
+.selecter{
+background-color: darkgray;
+}
+
+.transparent{    
+    background-color: rgba(0,0,0,0.15);
+}
+
+.panel{
+    background-color: transparent;
+    border: 1px #222;
+}
+
+body{
+  background-image: url('./images/carbg.png');
+  width: 100%;
+  height: 100%;
+  margin: auto;
+}
 
 .activeV2 {
   background-color: lightgoldenrodyellow;
