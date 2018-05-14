@@ -169,8 +169,6 @@ public class TestResource {
 
         if (fromDate != null && toDate != null) {
             try {
-                System.out.println("Second print: now in the if");
-
                 from = format2.parse(fromDate);
                 to = format2.parse(toDate);
 
@@ -185,7 +183,6 @@ public class TestResource {
             cars.add(c5);
 
             for (Car car : cars.getCars()) {
-                System.out.println("In first for loop");
                 boolean valid = true;
                 for (Reservation res : car.getReservations()) {
 
