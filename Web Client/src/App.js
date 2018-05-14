@@ -43,23 +43,31 @@ class RentCar extends Component {
 
   onChangeStart(date) {
     this.props.setDateStart(date)
-    if (this.props.startDate === this.props.endDate) {
-      this.props.setDateURL("");
-    } else {
-      let start = getFormattedDate(this.props.startDate)
-      let end = getFormattedDate(this.props.endDate)
-      this.props.setDateURL("?start=" + start + "&end=" + end)
-    }
+    this.setState({ startDate: date },
+      function (){
+        let s = getFormattedDate(this.state.startDate);
+        let e = getFormattedDate(this.state.endDate);
+        if (s === e) {
+          this.props.setDateURL("");
+        } else {
+          this.props.setDateURL("?start=" + s + "&end=" + e)
+        }
+      }
+      );
   }
   onChangeEnd(date) {
     this.props.setDateEnd(date)
-    if (this.props.startDate === this.props.endDate) {
-      this.props.setDateURL("");
-    } else {
-      let start = getFormattedDate(this.props.startDate)
-      let end = getFormattedDate(this.props.endDate)
-      this.props.setDateURL("?start=" + start + "&end=" + end)
-    }
+    this.setState({ endDate: date },
+      function (){
+        let s = getFormattedDate(this.state.startDate);
+        let e = getFormattedDate(this.state.endDate);
+        if (s === e) {
+          this.props.setDateURL("");
+        } else {
+          this.props.setDateURL("?start=" + s + "&end=" + e)
+        }
+      }
+      );
   }
 
   handleChangeLocation(event) {
