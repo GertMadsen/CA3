@@ -357,7 +357,11 @@ class CarDetails extends Component {
 class BookingInfo extends Component {
   constructor(props) {
     super(props);
-    this.state = { fetchURL: props.fetchURL, dataFromServer: {}, regno: props.match.params.regno, firstname: props.firstname, lastname: props.lastname, email: props.email };
+    this.state = { fetchURL: props.fetchURL, dataFromServer: {}, 
+                  regno: props.match.params.regno, 
+                  firstname: props.firstname, lastname: props.lastname, email: props.email,
+                  fromDate: props.start, toDate: props.end
+                   };
   }
   componentDidMount() {
     facade.fetchSingleCar(this.state.regno).then(res => this.setState({ dataFromServer: res }));
@@ -377,7 +381,7 @@ class BookingInfo extends Component {
           <br /><br />
           <p> <b>Car Info:</b> </p>
           <p>You want to rent a <b>{car.make} {car.model}</b> from the location <b>{car.location}</b> </p>
-          <p>In the period from <b>04/05/2018</b> to <b>06/05/2018</b>. </p>
+          <p>In the period from <b>{getFormattedDate(this.state.fromDate)}</b> to <b>{getFormattedDate(this.state.toDate)}</b>. </p>
 
           <p> <b>Customer Info:</b> </p>
           <p> Name: <b>{this.state.firstname} {this.state.lastname} </b></p>
@@ -404,7 +408,7 @@ class Confirmation extends Component {
       fetchURL: props.fetchURL, dataFromServer: [],
       firstname: props.firstname, lastname: props.lastname, email: props.email,
       car: props.car,
-      fromDate: "09/05/2018", toDate: "11/05/2018",
+      fromDate: props.start, toDate: props.end,
     };
 
     var car = this.state.car;
@@ -412,10 +416,11 @@ class Confirmation extends Component {
     var insertion = { companyTag: "Carmondo", customerMail: this.state.email, fromDate: this.state.fromDate, toDate: this.state.toDate }
     reservations.push(insertion);
     car.reservations = reservations;
-
+    let startDate = getFormattedDate(this.state.fromDate)
+    let endDate = getFormattedDate(this.state.toDate)
     var body = {
       car: car,
-      booking: { regno: car.regno, fromDate: this.state.fromDate, toDate: this.state.toDate, companyTag: "Carmondo" },
+      booking: { regno: car.regno, fromDate: startDate, toDate: endDate, companyTag: "Carmondo" },
       customer: { email: this.state.email, firstName: this.state.firstname, lastName: this.state.lastname }
     };
     this.state.body = body;
@@ -439,6 +444,7 @@ class Confirmation extends Component {
 
           <p> Mr./Mrs. <b>{this.state.firstname} {this.state.lastname}</b> </p>
           <p> Your reservation for a <b>{this.state.car.make} {this.state.car.model}</b> </p>
+          <p> from <b>{getFormattedDate(this.state.fromDate)}</b> to <b>{getFormattedDate(this.state.toDate)}</b></p>
           <p> located at <b>{this.state.car.location}</b> has been completed.</p>
 
           <Link to={this.props.returnURL} className="btn btn-success lidtPlads">Back</Link>
@@ -688,13 +694,13 @@ class App extends Component {
                 <Route path="/showdatecars" render={(props) => <ShowCars available={this.state.available} setReturnURL={this.setReturnURL} fetchURL={this.state.dateURL} {...props} />} />
                 <Route path="/showcatcars" render={(props) => <ShowCars available={this.state.available} setReturnURL={this.setReturnURL} fetchURL={this.state.categoryURL} {...props} />} />
                 <Route path="/details/:regno" render={(props) => <CarDetails available={this.state.available} setReturnURL={this.setReturnURL} returnURL={this.state.returnURL} {...props} />} />
-                <Route path="/bookinginfo/:regno" render={(props) => <BookingInfo returnURL={this.state.returnURL} firstname={this.state.user.firstname} lastname={this.state.user.lastname} email={this.state.user.email}{...props} />} />
+                <Route path="/bookinginfo/:regno" render={(props) => <BookingInfo returnURL={this.state.returnURL} firstname={this.state.user.firstname} lastname={this.state.user.lastname} email={this.state.user.email} start={this.state.startDate} end={this.state.endDate} {...props} />} />
                 <Route path="/clientdata/:regno" render={(props) => <ClientData setCar={this.setCar} returnURL={this.state.returnURL}
 
                   firstname={this.state.user.firstname} lastname={this.state.user.lastname} email={this.state.user.email}
                   setUserFname={this.setUserFname} setUserLname={this.setUserLname} setUserEmail={this.setUserEmail}
                   {...props} />} />
-                <Route path="/confirmation/" render={(props) => <Confirmation returnURL={this.state.returnURL} firstname={this.state.user.firstname} lastname={this.state.user.lastname} email={this.state.user.email} car={this.state.car} {...props} />} />
+                <Route path="/confirmation/" render={(props) => <Confirmation returnURL={this.state.returnURL} firstname={this.state.user.firstname} lastname={this.state.user.lastname} email={this.state.user.email} start={this.state.startDate} end={this.state.endDate} car={this.state.car} {...props} />} />
 
 
                 <Route component={NoMatch} />
