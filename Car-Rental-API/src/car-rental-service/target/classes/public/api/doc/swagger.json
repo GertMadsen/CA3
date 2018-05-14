@@ -1,0 +1,361 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "This is an api doc of car rental service.",
+        "version": "0.0.1",
+        "title": "Schwertz's Car Rental - API Doc",
+        "contact": {
+            "email": "suuport@schwertz.com"
+        }
+    },
+    "basePath": "/api",
+    "tags": [
+        {
+            "name": "car",
+            "description": "Car resource specific services."
+        }
+    ],
+    "schemes": [
+        "http"
+    ],
+    "paths": {
+        "/cars": {
+            "get": {
+                "tags": [
+                    "car"
+                ],
+                "summary": "Get cars.",
+                "description": "If search/url query parameter is not given, then gets all cars including rented as default.",
+                "operationId": "getCars",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "location",
+                        "in": "query",
+                        "description": "Search parameter to filter for only cars in a given location.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "category",
+                        "in": "query",
+                        "description": "Search parameter to filter for only cars in a given category.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "start",
+                        "in": "query",
+                        "required": false,
+                        "description": "Used with end parameter to specify date range. Search parameter to filter for only cars available in a given date range.",
+                        "type": "string"
+                    },
+                    {
+                        "name": "end",
+                        "in": "query",
+                        "required": false,
+                        "description": "Used with start parameter to specify date range. Search parameter to filter for only cars available in a given date range.",
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Request successfully processed.",
+                        "schema": {
+                            "$ref": "#/definitions/CarListResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request. Request doesn't conform api standard.",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Server Error. There's a problem in server.",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/cars/{regno}": {
+            "get": {
+                "tags": [
+                    "car"
+                ],
+                "summary": "Finds a car by registration no including its reservations.",
+                "description": "Finds a car identified by its registration no including its reservations. Only current and future reservations will be included by default.",
+                "operationId": "getCar",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "regno",
+                        "in": "path",
+                        "description": "Registration number of a car to return.",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Request successfully processed.",
+                        "schema": {
+                            "$ref": "#/definitions/CarResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request. Request doesn't conform api standard.",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Server Error. There's a problem in server.",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "car"
+                ],
+                "summary": "Updates existing car and stores its new reservations",
+                "description": "New reservation objects are optional if you are willing to update only car.",
+                "operationId": "updateCar",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "regno",
+                        "in": "path",
+                        "description": "Registration number of a car to update.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "Car object that needs to get an update. New reservations objects are optional.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/CarRequest"
+                        }
+
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Request successfully processed.",
+                        "schema": {
+                            "$ref": "#/definitions/CarResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request. Request doesn't conform api standard.",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Server Error. There's a problem in server.",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "CarResponse": {
+            "type": "object",
+            "properties": {
+                "logo": {
+                    "type": "string",
+                    "format": "uri"
+                },
+                "company": {
+                    "type": "string"
+                },
+                "category": {
+                    "type": "string"
+                },
+                "picture": {
+                    "type": "string"
+                },
+                "make": {
+                    "type": "string"
+                },
+                "model": {
+                    "type": "string"
+                },
+                "year": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "regno": {
+                    "type": "string"
+                },
+                "seats": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "doors": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "gear": {
+                    "type": "string"
+                },
+                "aircondition": {
+                    "type": "boolean"
+                },
+                "location": {
+                    "type": "string"
+                },
+                "priceperday": {
+                    "type": "number",
+                    "format": "double"
+                },
+                "reservations": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ReservationResponse"
+                    }
+                }
+            }
+        },
+        "CarListResponse": {
+            "type": "object",
+            "properties": {
+                "cars": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/CarResponse"
+                    }
+                }
+            }
+        },
+        "ReservationResponse": {
+            "type": "object",
+            "properties": {
+                "companyTag": {
+                    "type": "string"
+                },
+                "customerMail": {
+                    "type": "string",
+                    "format": "email"
+                },
+                "fromDate": {
+                    "type": "string",
+                    "format": "date"
+                },
+                "toDate": {
+                    "type": "string",
+                    "format": "date"
+                }
+            }
+        },
+        "CarRequest": {
+            "type": "object",
+            "properties": {
+                "logo": {
+                    "type": "string",
+                    "format": "uri"
+                },
+                "company": {
+                    "type": "string"
+                },
+                "category": {
+                    "type": "string"
+                },
+                "picture": {
+                    "type": "string"
+                },
+                "make": {
+                    "type": "string"
+                },
+                "model": {
+                    "type": "string"
+                },
+                "year": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "seats": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "doors": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "gear": {
+                    "type": "string"
+                },
+                "aircondition": {
+                    "type": "boolean"
+                },
+                "location": {
+                    "type": "string"
+                },
+                "priceperday": {
+                    "type": "number",
+                    "format": "double"
+                },
+                "reservations": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ReservationRequest"
+                    }
+                }
+            }
+        },
+        "ReservationRequest": {
+            "type": "object",
+            "properties": {
+                "customerMail": {
+                    "type": "string",
+                    "format": "email"
+                },
+                "fromDate": {
+                    "type": "string",
+                    "format": "date"
+                },
+                "toDate": {
+                    "type": "string",
+                    "format": "date"
+                }
+            }
+        },
+        "Error": {
+            "type": "object",
+            "properties": {
+                "errors": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        }
+    }
+}
