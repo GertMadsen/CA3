@@ -43,23 +43,31 @@ class RentCar extends Component {
 
   onChangeStart(date) {
     this.props.setDateStart(date)
-    if (this.props.startDate === this.props.endDate) {
-      this.props.setDateURL("");
-    } else {
-      let start = getFormattedDate(this.props.startDate)
-      let end = getFormattedDate(this.props.endDate)
-      this.props.setDateURL("?start=" + start + "&end=" + end)
-    }
+    this.setState({ startDate: date },
+      function (){
+        let s = getFormattedDate(this.state.startDate);
+        let e = getFormattedDate(this.state.endDate);
+        if (s === e) {
+          this.props.setDateURL("");
+        } else {
+          this.props.setDateURL("?start=" + s + "&end=" + e)
+        }
+      }
+      );
   }
   onChangeEnd(date) {
     this.props.setDateEnd(date)
-    if (this.props.startDate === this.props.endDate) {
-      this.props.setDateURL("");
-    } else {
-      let start = getFormattedDate(this.props.startDate)
-      let end = getFormattedDate(this.props.endDate)
-      this.props.setDateURL("?start=" + start + "&end=" + end)
-    }
+    this.setState({ endDate: date },
+      function (){
+        let s = getFormattedDate(this.state.startDate);
+        let e = getFormattedDate(this.state.endDate);
+        if (s === e) {
+          this.props.setDateURL("");
+        } else {
+          this.props.setDateURL("?start=" + s + "&end=" + e)
+        }
+      }
+      );
   }
 
   handleChangeLocation(event) {
@@ -79,6 +87,10 @@ class RentCar extends Component {
     } else {
       this.props.setCategoryURL("?category=" + event.target.value);
     }
+  }
+
+  handleMonthClick(){
+    console.log("Hej")
   }
 
   render() {
@@ -140,7 +152,7 @@ class RentCar extends Component {
                   {getFormattedDate(this.state.startDate)}
                 </button>
                 <div className="dropdown-menu">
-                  <Calendar className="dropdown-item" href="#" onChange={this.onChangeStart} value={this.state.startDate} />
+                  <Calendar className="dropdown-item" href="#" onChange={this.onChangeStart} value={this.state.startDate} onClickMonth={this.handleMonthClick}/>
                 </div>
 
               </div>
@@ -155,7 +167,7 @@ class RentCar extends Component {
                   {getFormattedDate(this.state.endDate)}
                 </button>
                 <div className="dropdown-menu">
-                  <Calendar className="dropdown-item" href="#" onChange={this.onChangeEnd} value={this.state.endDate} />
+                  <Calendar className="dropdown-item" href="#" onChange={this.onChangeEnd} value={this.state.endDate} onClickMonth={this.handleMonthClick} />
                 </div>
                 <br />
               </div>
@@ -164,19 +176,6 @@ class RentCar extends Component {
             </div>
           </div>
 
-        </div>
-        <br /><br />
-
-        <div className="row">
-          <div className="col-md-5"> </div>
-          <div className="col-md-2">
-            <form>
-              <div className="form group">
-                <Link onClick={this.setBookingAvailable} to="/showcombicars" className="btn btn-success btn-lg btn-block">Show Selected Cars</Link>
-              </div>
-            </form>
-          </div>
-          <div className="col-md-5"> </div>
         </div>
 
         <br /><br />
@@ -245,7 +244,7 @@ class ShowCars extends Component {
                 <th scope="col">Location</th>
                 <th scope="col">PricePerDay</th>
                 <th scope="col">Details</th>
-                {this.state.available === true &&
+                {this.state.search === true &&
                   <th scope="col">Booking</th>
                 }
 
@@ -326,14 +325,14 @@ class CarDetails extends Component {
           <div className="col-md-3"></div>
             <div className="col-md-6 nonTransparent rounded border border-dark text-center">
              <div className="flyvVenstre lidtPlads">
-               <img  src={car.logo} width="150px" height="150px" />
+               <img  src={car.logo} width="150px" height="150px" alt=""/>
                <h2 className="textColor">{car.company}</h2>
              </div>
 
-            <img className="lidtPlads" src={car.picture} width="40%" height="80%"/>
+            <img className="lidtPlads" src={car.picture} width="40%" height="80%" alt=""/>
  
             <div className="flyvHøjre lidtPlads">
-              <img  src={car.logo} width="150px" height="150px" />
+              <img  src={car.logo} width="150px" height="150px" alt="" />
               <h2 className="textColor">{car.company}</h2>
             </div>
           </div>
@@ -610,11 +609,13 @@ class App extends Component {
     this.state = {
       loggedIn: false, locationURL: "", categoryURL: "", locValue: "", catValue: "", returnURL: "", dateURL: "", startDate: new Date(), endDate: new Date(),
       user: { firstname: "", lastname: "", email: "" },
-      car: { reservations: [] }
+      car: { reservations: [] }, available: true
 
     }
   }
-
+  setBookingAvailable = (boolean) => {
+    this.setState({ available: boolean })
+  }
   setDateStart = (date) => {
     this.setState({ startDate: date })
   }
@@ -671,35 +672,6 @@ class App extends Component {
 
 
   render() {
-
-    var combiURL = "";
-    var locStr = this.state.locationURL;
-    var locURL = "&" + locStr.substring(1, locStr.length);
-    var catStr = this.state.categoryURL;
-    var catURL = "&" + catStr.substring(1, catStr.length);
-    var dateDummy = "?start="+getFormattedDate(this.state.startDate)+"&end="+getFormattedDate(this.state.endDate);
-
-    if (this.state.dateURL !== "") {
-      combiURL += this.state.dateURL;
-      if (locStr !== "") {
-        combiURL += locURL;
-      }
-      if (catStr !== "") {
-        combiURL += catURL;
-      }
-    } else {
-      if (locStr !== "") {
-        combiURL += dateDummy+locURL;
-        if (catStr !== "") {
-          combiURL += catURL;
-        }
-      } else {
-        if (catStr !== "") {
-          combiURL += dateDummy+catURL;
-        }
-      }
-    }
-
     return (
       <div>
         <div>
@@ -709,15 +681,12 @@ class App extends Component {
           <div className="p">
             <Router>
               <Switch>
-                <Route exact path="/" render={(props) => <RentCar catValue={this.state.catValue} setCatValue={this.setCatValue} locValue={this.state.locValue} setLocValue={this.setLocValue} setCategoryURL={this.setCategoryURL} setLocationURL={this.setLocationURL} setDateEnd={this.setDateEnd} setDateStart={this.setDateStart} startDate={this.state.startDate} endDate={this.state.endDate} setDateURL={this.setDateURL}
+                <Route exact path="/" render={(props) => <RentCar available={this.state.available} setBookingAvailable={this.setBookingAvailable} catValue={this.state.catValue} setCatValue={this.setCatValue} locValue={this.state.locValue} setLocValue={this.setLocValue} setCategoryURL={this.setCategoryURL} setLocationURL={this.setLocationURL} setDateEnd={this.setDateEnd} setDateStart={this.setDateStart} startDate={this.state.startDate} endDate={this.state.endDate} setDateURL={this.setDateURL}
                   {...props} />} />
-                <Route path="/showallcars" render={(props) => <ShowCars available={false} setReturnURL={this.setReturnURL} fetchURL="" {...props} />} />
-                <Route path="/showloccars" render={(props) => <ShowCars available={false} setReturnURL={this.setReturnURL} fetchURL={this.state.locationURL} {...props} />} />
-                <Route path="/showdatecars" render={(props) => <ShowCars available={true} setReturnURL={this.setReturnURL} fetchURL={this.state.dateURL} {...props} />} />
-                <Route path="/showcatcars" render={(props) => <ShowCars available={false} setReturnURL={this.setReturnURL} fetchURL={this.state.categoryURL} {...props} />} />
-                <Route path="/showcombicars" render={(props) => <ShowCars available={true} setReturnURL={this.setReturnURL} fetchURL={"/combined" + combiURL} {...props} />} />
-
-                
+                <Route path="/showallcars" render={(props) => <ShowCars available={this.state.available} setReturnURL={this.setReturnURL} fetchURL="" {...props} />} />
+                <Route path="/showloccars" render={(props) => <ShowCars available={this.state.available} setReturnURL={this.setReturnURL} fetchURL={this.state.locationURL} {...props} />} />
+                <Route path="/showdatecars" render={(props) => <ShowCars available={this.state.available} setReturnURL={this.setReturnURL} fetchURL={this.state.dateURL} {...props} />} />
+                <Route path="/showcatcars" render={(props) => <ShowCars available={this.state.available} setReturnURL={this.setReturnURL} fetchURL={this.state.categoryURL} {...props} />} />
                 <Route path="/details/:regno" render={(props) => <CarDetails available={this.state.available} setReturnURL={this.setReturnURL} returnURL={this.state.returnURL} {...props} />} />
                 <Route path="/bookinginfo/:regno" render={(props) => <BookingInfo returnURL={this.state.returnURL} firstname={this.state.user.firstname} lastname={this.state.user.lastname} email={this.state.user.email}{...props} />} />
                 <Route path="/clientdata/:regno" render={(props) => <ClientData setCar={this.setCar} returnURL={this.state.returnURL}
