@@ -150,7 +150,6 @@ public class TestResource {
     public String getCarsOriginal(@QueryParam("location") String location, @QueryParam("category") String category,
             @QueryParam("start") String fromDate, @QueryParam("end") String toDate) {
         Cars cars = new Cars();
-        //
         Reservation r1 = new Reservation("Carmondo", "test@tesersen.dk", "09/05/2018", "12/05/2018");
         c1.addReservation(r1);
         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
