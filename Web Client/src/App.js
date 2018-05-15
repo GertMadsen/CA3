@@ -219,7 +219,11 @@ class ShowCars extends Component {
   }
   componentDidMount() {
     facade.fetchCars(this.state.fetchURL).then(res => this.setState({ dataFromServer: res }));
-    this.props.setBookingBoolean(this.state.bookingAvailable);
+    if(this.state.fetchURL.search("start")>0){
+      this.props.setBookingBoolean(this.state.bookingAvailable);
+    }else{
+      this.props.setBookingBoolean(false);
+    }
   }
   render() {
     var cars = this.state.dataFromServer.cars;
@@ -233,7 +237,7 @@ class ShowCars extends Component {
           <td>{car.location}</td>
           <td>{car.priceperday}</td>
           <td><Link to={`details/${car.regno}`} className="btn btn-success">Show Details</Link></td>
-          {this.state.bookingAvailable === true &&
+          {this.state.fetchURL.search("start")>0 &&
             <td><Link to={`clientdata/${car.regno}`} className="btn btn-success">Book</Link></td>
           }
 
@@ -255,7 +259,7 @@ class ShowCars extends Component {
                 <th scope="col">Location</th>
                 <th scope="col">PricePerDay</th>
                 <th scope="col">Details</th>
-                {this.state.bookingAvailable === true &&
+                {this.state.fetchURL.search("start")>0 &&
                   <th scope="col">Booking</th>
                 }
 
