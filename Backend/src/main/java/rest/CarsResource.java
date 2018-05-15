@@ -71,6 +71,8 @@ public class CarsResource {
             urlStr += "?";
         }
         if(fromDate != null && toDate != null){
+            fromDate = fromDate.replace("-", "/");
+            toDate = toDate.replace("-", "/");
             urlStr += "start=" + fromDate + "&end=" + toDate;
             if(location != null){
                location = location.replace(" ", "%20");
