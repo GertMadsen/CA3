@@ -52,6 +52,18 @@ ul.header li a {
 .flyvVenstre{
   float:left;
 }
+.flyvVenstreMerePlads{
+  float:left;
+  margin-left: 9.5%;
+}
+.flyvMidt{
+  float:none;
+}
+.whiteBackground{
+  background-color: #FFF;
+  height: 150px;
+  width: 225px;
+}
 .flyvHøjre{
   float:right
 }
@@ -60,6 +72,9 @@ ul.header li a {
 }
 .textColor{
   color: #FFF;
+}
+.marginVenstre{
+  margin-left: 10% !important;
 }
 .custBredde{
   width: 60px !important;

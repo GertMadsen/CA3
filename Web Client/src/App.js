@@ -333,21 +333,28 @@ class CarDetails extends Component {
           </div>
          
           <div className="row">
-          <div className="col-md-3"></div>
+
+           <div className="col-md-3"></div>
+
             <div className="col-md-6 nonTransparent rounded border border-dark text-center">
-             <div className="flyvVenstre lidtPlads">
+
+              <div className="flyvVenstre ">
                <img  src={car.logo} width="150px" height="150px"  alt=""/>
                <h2 className="textColor">{car.company}</h2>
-             </div>
+              </div> 
 
-            <img className="lidtPlads" src={car.picture} width="40%" height="80%" alt=""/>
- 
-            <div className="flyvHøjre lidtPlads">
+              <div className="flyvVenstreMerePlads whiteBackground">
+               <img className="" src={car.picture} width="225px" height="150px" alt=""/>
+              </div>
+
+            <div className="flyvHøjre ">
               <img  src={car.logo} width="150px" height="150px" alt="" />
               <h2 className="textColor">{car.company}</h2>
             </div>
           </div>
+
           <div className="col-md-3"></div>
+
           </div>
         
           <div className="row">
