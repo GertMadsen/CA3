@@ -41,6 +41,7 @@ public class CarsResource {
 
     /**
      * Retrieves representation of an instance of rest.CarsResource
+     *
      * @return an instance of java.lang.String
      */
     @GET
@@ -54,38 +55,33 @@ public class CarsResource {
         con.setRequestMethod("GET");
         con.setRequestProperty("Accept", "application/json;charset=UTF-8");
         Scanner scan = new Scanner(con.getInputStream());
-        if(scan.hasNext()){
+        if (scan.hasNext()) {
             jsonStr = scan.nextLine();
         }
         scan.close();
         return jsonStr;
     }
-    
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public String getCars(@QueryParam("location") String location, @QueryParam("category") String category,
-            @QueryParam("start") String fromDate, @QueryParam("end") String toDate) throws MalformedURLException, ProtocolException, IOException{
-        String urlStr = "http://www.ramsbone.dk:8081/api/cars";
-        
+
+    public String getDataMethod(String urlStr, String location, String category, String fromDate, String toDate) throws MalformedURLException, IOException {
         if (location != null || category != null || fromDate != null || toDate != null) {
             urlStr += "?";
         }
-        if(fromDate != null && toDate != null){
+        if (fromDate != null && toDate != null) {
             urlStr += "start=" + fromDate + "&end=" + toDate;
-            if(location != null){
-               location = location.replace(" ", "%20");
+            if (location != null) {
+                location = location.replace(" ", "%20");
                 urlStr += "&location=" + location;
             }
-            if(category != null){
+            if (category != null) {
                 category = category.replace(" ", "%20");
                 urlStr += "&category=" + category;
             }
-        }else{
-            if(location != null){
+        } else {
+            if (location != null) {
                 location = location.replace(" ", "%20");
                 urlStr += "location=" + location;
             }
-            if(category != null){
+            if (category != null) {
                 category = category.replace(" ", "%20");
                 urlStr += "category=" + category;
             }
@@ -96,17 +92,35 @@ public class CarsResource {
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("GET");
         con.setRequestProperty("Accept", "application/json;charset=UTF-8");
-        
+
         Scanner scan = new Scanner(con.getInputStream());
-        if(scan.hasNext()){
+        if (scan.hasNext()) {
             jsonStr = scan.nextLine();
         }
         scan.close();
         return jsonStr;
     }
 
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public String getCars(@QueryParam("location") String location, @QueryParam("category") String category,
+            @QueryParam("start") String fromDate, @QueryParam("end") String toDate) throws MalformedURLException, ProtocolException, IOException {
+        String urlStr1 = "http://www.ramsbone.dk:8081/api/cars";
+        String urlStr2 = "https://stanitech.dk/carrentalapi/api/cars";
+
+        
+        String jsonStr = getDataMethod(urlStr1, location, category, fromDate, toDate);
+       // jsonStr += getDataMethod(urlStr2, location, category, fromDate, toDate);
+        
+    //TODO    
+    //Kan stadig bruges, men husk at bruge gsonFromjson til at konvertere til cars-objecter merge dem og så gsontojson.
+
+        return jsonStr;
+    }
+
     /**
      * PUT method for updating or creating an instance of CarsResource
+     *
      * @param content representation for the resource
      */
     @PUT
