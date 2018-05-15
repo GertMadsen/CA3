@@ -70,7 +70,7 @@ class RentCar extends Component {
       );
   }
 
-  
+
   handleChangeLocation(event) {
     this.setState({ location: event.target.value });
     this.props.setLocValue(event.target.value);
@@ -214,11 +214,12 @@ class RentCar extends Component {
 class ShowCars extends Component {
   constructor(props) {
     super(props);
-    this.state = { fetchURL: props.fetchURL, dataFromServer: { cars: [] }, available: props.available };
+    this.state = { fetchURL: props.fetchURL, dataFromServer: { cars: [] }, bookingAvailable: props.bookingAvailable };
     this.props.setReturnURL(props.match.url);
   }
   componentDidMount() {
     facade.fetchCars(this.state.fetchURL).then(res => this.setState({ dataFromServer: res }));
+    this.props.setBookingBoolean(this.state.bookingAvailable);
   }
   render() {
     var cars = this.state.dataFromServer.cars;
@@ -232,7 +233,7 @@ class ShowCars extends Component {
           <td>{car.location}</td>
           <td>{car.priceperday}</td>
           <td><Link to={`details/${car.regno}`} className="btn btn-success">Show Details</Link></td>
-          {this.state.available === true &&
+          {this.state.bookingAvailable === true &&
             <td><Link to={`clientdata/${car.regno}`} className="btn btn-success">Book</Link></td>
           }
 
@@ -254,7 +255,7 @@ class ShowCars extends Component {
                 <th scope="col">Location</th>
                 <th scope="col">PricePerDay</th>
                 <th scope="col">Details</th>
-                {this.state.available === true &&
+                {this.state.bookingAvailable === true &&
                   <th scope="col">Booking</th>
                 }
 
@@ -277,7 +278,7 @@ class ShowCars extends Component {
 class CarDetails extends Component {
   constructor(props) {
     super(props);
-    this.state = { fetchURL: props.fetchURL, dataFromServer: {}, regno: props.match.params.regno, available: props.available };
+    this.state = { fetchURL: props.fetchURL, dataFromServer: {}, regno: props.match.params.regno, bookingBoolean: props.bookingBoolean };
   }
   componentDidMount() {
     facade.fetchSingleCar(this.state.regno).then(res => this.setState({ dataFromServer: res }));
@@ -305,7 +306,7 @@ class CarDetails extends Component {
                 <th scope="col">Aircondition</th>
                 <th scope="col">Location</th>
                 <th scope="col">PricePerDay</th>
-                {this.state.available === true &&
+                {this.state.bookingBoolean === true &&
                   <th scope="col">Booking</th>
                 }
               </tr>
@@ -321,7 +322,7 @@ class CarDetails extends Component {
                 <td>{"" + car.aircondition}</td>
                 <td>{car.location}</td>
                 <td>{car.priceperday}</td>
-                {this.state.available === true &&
+                {this.state.bookingBoolean === true &&
                  <td><Link to={`../clientdata/${car.regno}`} className="btn btn-success">Book</Link></td>
                  }
               </tr>
@@ -335,14 +336,14 @@ class CarDetails extends Component {
           <div className="col-md-3"></div>
             <div className="col-md-6 nonTransparent rounded border border-dark text-center">
              <div className="flyvVenstre lidtPlads">
-               <img  src={car.logo} width="150px" height="150px" />
+               <img  src={car.logo} width="150px" height="150px"  alt=""/>
                <h2 className="textColor">{car.company}</h2>
              </div>
 
-            <img className="lidtPlads" src={car.picture} width="40%" height="80%"/>
+            <img className="lidtPlads" src={car.picture} width="40%" height="80%" alt=""/>
  
             <div className="flyvHøjre lidtPlads">
-              <img  src={car.logo} width="150px" height="150px" />
+              <img  src={car.logo} width="150px" height="150px" alt="" />
               <h2 className="textColor">{car.company}</h2>
             </div>
           </div>
@@ -625,9 +626,12 @@ class App extends Component {
     this.state = {
       loggedIn: false, locationURL: "", categoryURL: "", locValue: "", catValue: "", returnURL: "", dateURL: "", startDate: new Date(), endDate: new Date(),
       user: { firstname: "", lastname: "", email: "" },
-      car: { reservations: [] }
-
+      car: { reservations: [] }, bookingBoolean: false
     }
+  }
+
+  setBookingAvailable = (boolean) => {
+    this.setState({bookingBoolean: boolean})
   }
 
   setDateStart = (date) => {
@@ -726,14 +730,14 @@ class App extends Component {
               <Switch>
                 <Route exact path="/" render={(props) => <RentCar catValue={this.state.catValue} setCatValue={this.setCatValue} locValue={this.state.locValue} setLocValue={this.setLocValue} setCategoryURL={this.setCategoryURL} setLocationURL={this.setLocationURL} setDateEnd={this.setDateEnd} setDateStart={this.setDateStart} startDate={this.state.startDate} endDate={this.state.endDate} setDateURL={this.setDateURL}
                   {...props} />} />
-                <Route path="/showallcars" render={(props) => <ShowCars available={false} setReturnURL={this.setReturnURL} fetchURL="" {...props} />} />
-                <Route path="/showloccars" render={(props) => <ShowCars available={false} setReturnURL={this.setReturnURL} fetchURL={this.state.locationURL} {...props} />} />
-                <Route path="/showdatecars" render={(props) => <ShowCars available={true} setReturnURL={this.setReturnURL} fetchURL={this.state.dateURL} {...props} />} />
-                <Route path="/showcatcars" render={(props) => <ShowCars available={false} setReturnURL={this.setReturnURL} fetchURL={this.state.categoryURL} {...props} />} />
-                <Route path="/showcombicars" render={(props) => <ShowCars available={true} setReturnURL={this.setReturnURL} fetchURL={"/combined" + combiURL} {...props} />} />
+                <Route path="/showallcars" render={(props) => <ShowCars setBookingBoolean={this.setBookingAvailable} bookingAvailable={false} setReturnURL={this.setReturnURL} fetchURL="" {...props} />} />
+                <Route path="/showloccars" render={(props) => <ShowCars setBookingBoolean={this.setBookingAvailable} bookingAvailable={false} setReturnURL={this.setReturnURL} fetchURL={this.state.locationURL} {...props} />} />
+                <Route path="/showdatecars" render={(props) => <ShowCars setBookingBoolean={this.setBookingAvailable} bookingAvailable={true} setReturnURL={this.setReturnURL} fetchURL={this.state.dateURL} {...props} />} />
+                <Route path="/showcatcars" render={(props) => <ShowCars setBookingBoolean={this.setBookingAvailable} bookingAvailable={false} setReturnURL={this.setReturnURL} fetchURL={this.state.categoryURL} {...props} />} />
+                <Route path="/showcombicars" render={(props) => <ShowCars setBookingBoolean={this.setBookingAvailable} bookingAvailable={true} setReturnURL={this.setReturnURL} fetchURL={"/combined" + combiURL} {...props} />} />
 
                 
-                <Route path="/details/:regno" render={(props) => <CarDetails available={this.state.available} setReturnURL={this.setReturnURL} returnURL={this.state.returnURL} {...props} />} />
+                <Route path="/details/:regno" render={(props) => <CarDetails bookingBoolean={this.state.bookingBoolean} setReturnURL={this.setReturnURL} returnURL={this.state.returnURL} {...props} />} />
                 <Route path="/bookinginfo/:regno" render={(props) => <BookingInfo returnURL={this.state.returnURL} firstname={this.state.user.firstname} lastname={this.state.user.lastname} email={this.state.user.email} start={this.state.startDate} end={this.state.endDate} {...props} />} />
                 <Route path="/clientdata/:regno" render={(props) => <ClientData setCar={this.setCar} returnURL={this.state.returnURL}
 
