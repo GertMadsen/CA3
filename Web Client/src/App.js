@@ -70,6 +70,7 @@ class RentCar extends Component {
       );
   }
 
+  
   handleChangeLocation(event) {
     this.setState({ location: event.target.value });
     this.props.setLocValue(event.target.value);
