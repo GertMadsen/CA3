@@ -6,6 +6,7 @@
 package entity;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  *
@@ -28,5 +29,27 @@ public class Cars {
 
     public ArrayList<Car> getCars() {
         return cars;
-    }   
+    }  
+
+ 
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Cars other = (Cars) obj;
+        if (!Objects.equals(this.cars, other.cars)) {
+            return false;
+        }
+        return true;
+    }
+    
+    
 }
