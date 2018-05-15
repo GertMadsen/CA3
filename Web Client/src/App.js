@@ -117,8 +117,23 @@ class RentCar extends Component {
               <select className="form-control" value={this.state.categori} onChange={this.handleChangeCategori}>
                 <option value="All">Alle</option>
                 <option value="Mini">Mini</option>
+                <option value="Mini Elite">Mini Elite</option>
                 <option value="Economy">Economy</option>
+                <option value="Economy Elite">Economy Elite</option>
+                <option value="Compact">Compact</option>
+                <option value="Compact Elite">Compact Elite</option>
+                <option value="Intermediate">Intermediate</option>
+                <option value="Intermediate Elite">Intermediate Elite</option>
+                <option value="Standard">Standard</option>
+                <option value="Standard Elite">Standard Elite</option>
                 <option value="Fullsize">Fullsize</option>
+                <option value="Fullsize Elite">Fullsize Elite</option>
+                <option value="Premium">Premium</option>
+                <option value="Premium Elite">Premium Elite</option>
+                <option value="Luxury">Luxury</option>
+                <option value="Luxury Elite">Luxury Elite</option>
+                <option value="Oversize">Oversize</option>
+                <option value="Special">Special</option>
               </select>
               <Link onClick={this.setBookingAvailable} to="/showcatcars" className="btn btn-info custBredde">Show</Link>
             </div>
@@ -132,8 +147,15 @@ class RentCar extends Component {
             <div className="btn-group customBredde">
               <select className="form-control" value={this.state.location} onChange={this.handleChangeLocation}>
                 <option value="All">Alle</option>
-                <option value="Cph Airport">CPH Airport</option>
+                <option value="Cph (Copenhagen Airport)">Cph (Copenhagen Airport)</option>
+                <option value="Billund Lufthavn">Billund Lufthavn</option>
+                <option value="Aalborg Lufthavn">Aalborg Lufthavn</option>
+                <option value="Copenhagen City">Copenhagen City</option>
                 <option value="Aarhus City">Aarhus City</option>
+                <option value="Odense">Odense</option>
+                <option value="Herning">Herning</option>
+                <option value="Roskilde">Roskilde</option>
+                <option value="Esbjerg">Esbjerg</option>
                 <option value="Naestved">Næstved</option>
               </select>
               <Link onClick={this.setBookingAvailable} to="/showloccars" className="btn btn-info btn-block custBredde">Show</Link>
@@ -745,7 +767,7 @@ class App extends Component {
                 <Route path="/showloccars" render={(props) => <ShowCars setBookingBoolean={this.setBookingAvailable} bookingAvailable={false} setReturnURL={this.setReturnURL} fetchURL={this.state.locationURL} {...props} />} />
                 <Route path="/showdatecars" render={(props) => <ShowCars setBookingBoolean={this.setBookingAvailable} bookingAvailable={true} setReturnURL={this.setReturnURL} fetchURL={this.state.dateURL} {...props} />} />
                 <Route path="/showcatcars" render={(props) => <ShowCars setBookingBoolean={this.setBookingAvailable} bookingAvailable={false} setReturnURL={this.setReturnURL} fetchURL={this.state.categoryURL} {...props} />} />
-                <Route path="/showcombicars" render={(props) => <ShowCars setBookingBoolean={this.setBookingAvailable} bookingAvailable={true} setReturnURL={this.setReturnURL} fetchURL={"/combined" + combiURL} {...props} />} />
+                <Route path="/showcombicars" render={(props) => <ShowCars setBookingBoolean={this.setBookingAvailable} bookingAvailable={true} setReturnURL={this.setReturnURL} fetchURL={combiURL} {...props} />} />
 
                 
                 <Route path="/details/:regno" render={(props) => <CarDetails bookingBoolean={this.state.bookingBoolean} setReturnURL={this.setReturnURL} returnURL={this.state.returnURL} {...props} />} />

@@ -37,25 +37,18 @@ class ApiFacade {
 
     fetchCars = (urlExtension) => {
         const options = this.makeFetchOptions("GET");
-        return fetch(URL + "/api/test"+urlExtension, options).then(handleHttpErrors);
+        return fetch(URL + "/api/cars"+urlExtension, options).then(handleHttpErrors);
     }
     
     fetchSingleCar = (regno) => {
         const options = this.makeFetchOptions("GET");
-        return fetch(URL + "/api/test/"+regno, options).then(handleHttpErrors);
+        return fetch(URL + "/api/cars/"+regno, options).then(handleHttpErrors);
     }
 
     fetchBooking = (body) => {
         const options = this.makeFetchOptions("POST",body);
         return fetch(URL + "/api/test/", options).then(handleHttpErrors);
     }
-
-    // fetchPerson = () => {
-    //     var number = Math.floor(Math.random() * 88);
-    //     const options = this.makeFetchOptions("GET");
-    //     return fetch(URL + "/api/info/people/" + number, options).then(handleHttpErrors);
-    // }
-
 
 
     makeFetchOptions = (type, b) => {
