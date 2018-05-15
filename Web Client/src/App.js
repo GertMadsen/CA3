@@ -181,7 +181,7 @@ class RentCar extends Component {
           <div className="col-md-2">
             <form>
               <div className="form group">
-                <Link onClick={this.setBookingAvailable} to="/showcombicars" className="btn btn-success btn-lg btn-block">Show Selected Cars</Link>
+                <Link onClick={this.setBookingAvailable} to="/showcombicars" className="btn btn-success btn-lg btn-block">Show Combination</Link>
               </div>
             </form>
           </div>
