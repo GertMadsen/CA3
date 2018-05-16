@@ -44,7 +44,7 @@ class RentCar extends Component {
   onChangeStart(date) {
     this.props.setDateStart(date)
     this.setState({ startDate: date },
-      function (){
+      function () {
         let s = getFormattedDate(this.state.startDate);
         let e = getFormattedDate(this.state.endDate);
         if (s === e) {
@@ -53,12 +53,12 @@ class RentCar extends Component {
           this.props.setDateURL("?start=" + s + "&end=" + e)
         }
       }
-      );
+    );
   }
   onChangeEnd(date) {
     this.props.setDateEnd(date)
     this.setState({ endDate: date },
-      function (){
+      function () {
         let s = getFormattedDate(this.state.startDate);
         let e = getFormattedDate(this.state.endDate);
         if (s === e) {
@@ -67,10 +67,10 @@ class RentCar extends Component {
           this.props.setDateURL("?start=" + s + "&end=" + e)
         }
       }
-      );
+    );
   }
 
-  
+
   handleChangeLocation(event) {
     this.setState({ location: event.target.value });
     this.props.setLocValue(event.target.value);
@@ -164,7 +164,7 @@ class RentCar extends Component {
                   {getFormattedDate(this.state.endDate)}
                 </button>
                 <div className="dropdown-menu">
-                  <Calendar className="dropdown-item" href="#" onClickDay={this.onChangeEnd}  value={this.state.endDate} />
+                  <Calendar className="dropdown-item" href="#" onClickDay={this.onChangeEnd} value={this.state.endDate} />
                 </div>
                 <br />
               </div>
@@ -181,19 +181,23 @@ class RentCar extends Component {
           <div className="col-md-2">
             <form>
               <div className="form group">
-              {(getFormattedDate(this.state.startDate) === getFormattedDate(this.state.endDate)) &&
-                <button className="btn btn-success btn-lg btn-block lidtPlads"  data-toggle="popover" data-trigger="focus" data-placement="right" data-content="Only available when two different dates">Combi knap</button>
-              }
-              {(getFormattedDate(this.state.startDate) !== getFormattedDate(this.state.endDate)) &&
-                <Link onClick={this.setBookingAvailable} to="/showcombicars" className="btn btn-success btn-lg btn-block">Show Selected Cars</Link>
+                
+                {(getFormattedDate(this.state.startDate) === getFormattedDate(this.state.endDate)) &&
+                  <div className="Useeme">
+                    <button className="btn btn-success btn-lg btn-block lidtPlads myPopover">Combi knap</button>
+                  </div>
                 }
                 
+                {(getFormattedDate(this.state.startDate) !== getFormattedDate(this.state.endDate)) &&
+                  <Link onClick={this.setBookingAvailable} to="/showcombicars" className="btn btn-success btn-lg btn-block">Show Selected Cars</Link>
+                }
+
               </div>
-              
+
             </form>
           </div>
           <div className="col-md-5">  </div>
-          
+
         </div>
 
         <br /><br />
@@ -207,7 +211,7 @@ class RentCar extends Component {
               </div>
             </form>
           </div>
-          
+
 
           <div className="col-md-5"> </div>
         </div>
@@ -254,7 +258,7 @@ class ShowCars extends Component {
       <div className="row">
         <div className="col-sm-2"></div>
         <div className="col-sm-8">
-        <div className="alert alert-info text-center overskriftSize1"> <h3> List of Cars</h3> </div>
+          <div className="alert alert-info text-center overskriftSize1"> <h3> List of Cars</h3> </div>
           <table className="table table-dark table-sm table-hover" key="tableList">
             <tbody>
               <tr>
@@ -297,77 +301,77 @@ class CarDetails extends Component {
 
     return (
       <div className="">
-       <div className="row">
-        <div className="col-sm-2"></div>
-        <div className="col-sm-8">
-        <div className="alert alert-info text-center overskriftSize"> <h3> Car Details</h3> </div>
-          <table className="table table-sm table-dark nonTransparent1 rounded" key="tableList">
-            <tbody>
-              <tr>
-                <th scope="col">Category</th>
-                <th scope="col">Make</th>
-                <th scope="col">Model</th>
-                <th scope="col">Year</th>
-                <th scope="col">Regno</th>
-                <th scope="col">Seats</th>
-                <th scope="col">Doors</th>
-                <th scope="col">Gear</th>
-                <th scope="col">Aircondition</th>
-                <th scope="col">Location</th>
-                <th scope="col">PricePerDay</th>
-                {this.state.available === true &&
-                  <th scope="col">Booking</th>
-                }
-              </tr>
-              <tr key={car.regno}>
-                <td>{car.category}</td>
-                <td>{car.model}</td>
-                <td>{car.make}</td>
-                <td>{car.year}</td>
-                <td>{car.regno}</td>
-                <td>{car.seats}</td>
-                <td>{car.doors}</td>
-                <td>{car.gear}</td>
-                <td>{"" + car.aircondition}</td>
-                <td>{car.location}</td>
-                <td>{car.priceperday}</td>
-                {this.state.available === true &&
-                 <td><Link to={`../clientdata/${car.regno}`} className="btn btn-success">Book</Link></td>
-                 }
-              </tr>
-            </tbody>
-          </table>
+        <div className="row">
+          <div className="col-sm-2"></div>
+          <div className="col-sm-8">
+            <div className="alert alert-info text-center overskriftSize"> <h3> Car Details</h3> </div>
+            <table className="table table-sm table-dark nonTransparent1 rounded" key="tableList">
+              <tbody>
+                <tr>
+                  <th scope="col">Category</th>
+                  <th scope="col">Make</th>
+                  <th scope="col">Model</th>
+                  <th scope="col">Year</th>
+                  <th scope="col">Regno</th>
+                  <th scope="col">Seats</th>
+                  <th scope="col">Doors</th>
+                  <th scope="col">Gear</th>
+                  <th scope="col">Aircondition</th>
+                  <th scope="col">Location</th>
+                  <th scope="col">PricePerDay</th>
+                  {this.state.available === true &&
+                    <th scope="col">Booking</th>
+                  }
+                </tr>
+                <tr key={car.regno}>
+                  <td>{car.category}</td>
+                  <td>{car.model}</td>
+                  <td>{car.make}</td>
+                  <td>{car.year}</td>
+                  <td>{car.regno}</td>
+                  <td>{car.seats}</td>
+                  <td>{car.doors}</td>
+                  <td>{car.gear}</td>
+                  <td>{"" + car.aircondition}</td>
+                  <td>{car.location}</td>
+                  <td>{car.priceperday}</td>
+                  {this.state.available === true &&
+                    <td><Link to={`../clientdata/${car.regno}`} className="btn btn-success">Book</Link></td>
+                  }
+                </tr>
+              </tbody>
+            </table>
           </div>
           <div className="col-sm-2"></div>
-          </div>
-         
-          <div className="row">
-          <div className="col-md-3"></div>
-            <div className="col-md-6 nonTransparent rounded border border-dark text-center">
-             <div className="flyvVenstre lidtPlads">
-               <img  src={car.logo} width="150px" height="150px" />
-               <h2 className="textColor">{car.company}</h2>
-             </div>
+        </div>
 
-            <img className="lidtPlads" src={car.picture} width="40%" height="80%"/>
- 
+        <div className="row">
+          <div className="col-md-3"></div>
+          <div className="col-md-6 nonTransparent rounded border border-dark text-center">
+            <div className="flyvVenstre lidtPlads">
+              <img src={car.logo} width="150px" height="150px" />
+              <h2 className="textColor">{car.company}</h2>
+            </div>
+
+            <img className="lidtPlads" src={car.picture} width="40%" height="80%" />
+
             <div className="flyvHøjre lidtPlads">
-              <img  src={car.logo} width="150px" height="150px" />
+              <img src={car.logo} width="150px" height="150px" />
               <h2 className="textColor">{car.company}</h2>
             </div>
           </div>
           <div className="col-md-3"></div>
-          </div>
-        
-          <div className="row">
+        </div>
+
+        <div className="row">
           <div className="col-sm-3"></div>
           <div className="col-sm-6">
-          <br/>
-           <Link to={this.props.returnURL} className="btn btn-success">Back</Link>
+            <br />
+            <Link to={this.props.returnURL} className="btn btn-success">Back</Link>
           </div>
           <div className="col-sm-3"></div>
-         </div>
-        
+        </div>
+
       </div>
 
     )
@@ -377,11 +381,12 @@ class CarDetails extends Component {
 class BookingInfo extends Component {
   constructor(props) {
     super(props);
-    this.state = { fetchURL: props.fetchURL, dataFromServer: {}, 
-                  regno: props.match.params.regno, 
-                  firstname: props.firstname, lastname: props.lastname, email: props.email,
-                  fromDate: props.start, toDate: props.end
-                   };
+    this.state = {
+      fetchURL: props.fetchURL, dataFromServer: {},
+      regno: props.match.params.regno,
+      firstname: props.firstname, lastname: props.lastname, email: props.email,
+      fromDate: props.start, toDate: props.end
+    };
   }
   componentDidMount() {
     facade.fetchSingleCar(this.state.regno).then(res => this.setState({ dataFromServer: res }));
@@ -393,25 +398,25 @@ class BookingInfo extends Component {
       <div className="row">
         <div className="col-sm-4"></div>
         <div className="col-sm-4">
-        <br/>
-         <div className="nonTransparent text-center textColor rounded">
-          <div className=""> <h3> Booking info</h3> </div>
+          <br />
+          <div className="nonTransparent text-center textColor rounded">
+            <div className=""> <h3> Booking info</h3> </div>
 
-          <img src={car.picture} width="50%" height="30%" alt="" />
-          <br /><br />
-          <p> <b>Car Info:</b> </p>
-          <p>You want to rent a <b>{car.make} {car.model}</b> from the location <b>{car.location}</b> </p>
-          <p>In the period from <b>{getFormattedDate(this.state.fromDate)}</b> to <b>{getFormattedDate(this.state.toDate)}</b>. </p>
+            <img src={car.picture} width="50%" height="30%" alt="" />
+            <br /><br />
+            <p> <b>Car Info:</b> </p>
+            <p>You want to rent a <b>{car.make} {car.model}</b> from the location <b>{car.location}</b> </p>
+            <p>In the period from <b>{getFormattedDate(this.state.fromDate)}</b> to <b>{getFormattedDate(this.state.toDate)}</b>. </p>
 
-          <p> <b>Customer Info:</b> </p>
-          <p> Name: <b>{this.state.firstname} {this.state.lastname} </b></p>
-          <p> Email: <b>{this.state.email} </b></p>
-          <Link to={this.props.returnURL} className="btn btn-success flyvVenstre lidtPladsBund">Back</Link>
-          <Link to="/confirmation" className="btn btn-success flyvHøjre lidtPladsBund">Confirm Booking</Link>
+            <p> <b>Customer Info:</b> </p>
+            <p> Name: <b>{this.state.firstname} {this.state.lastname} </b></p>
+            <p> Email: <b>{this.state.email} </b></p>
+            <Link to={this.props.returnURL} className="btn btn-success flyvVenstre lidtPladsBund">Back</Link>
+            <Link to="/confirmation" className="btn btn-success flyvHøjre lidtPladsBund">Confirm Booking</Link>
 
-          <br /><br />
+            <br /><br />
 
-        </div>
+          </div>
         </div>
         <div className="col-sm-4"></div>
       </div>
@@ -457,20 +462,20 @@ class Confirmation extends Component {
       <div className="row">
         <div className="col-sm-4"></div>
         <div className="col-sm-4 ">
-        <br /><br /><br />
-        <div className="nonTransparent text-center textColor rounded">
-        
-          <div className=""> <h3> Confirmation</h3> </div>
+          <br /><br /><br />
+          <div className="nonTransparent text-center textColor rounded">
 
-          <p> Mr./Mrs. <b>{this.state.firstname} {this.state.lastname}</b> </p>
-          <p> Your reservation for a <b>{this.state.car.make} {this.state.car.model}</b> </p>
-          <p> from <b>{getFormattedDate(this.state.fromDate)}</b> to <b>{getFormattedDate(this.state.toDate)}</b></p>
-          <p> Company: <b>{this.state.car.company} </b> </p>
-          <p> located at <b>{this.state.car.location}</b> has been completed.</p>
+            <div className=""> <h3> Confirmation</h3> </div>
 
-          <Link to={this.props.returnURL} className="btn btn-success lidtPlads">Back</Link>
+            <p> Mr./Mrs. <b>{this.state.firstname} {this.state.lastname}</b> </p>
+            <p> Your reservation for a <b>{this.state.car.make} {this.state.car.model}</b> </p>
+            <p> from <b>{getFormattedDate(this.state.fromDate)}</b> to <b>{getFormattedDate(this.state.toDate)}</b></p>
+            <p> Company: <b>{this.state.car.company} </b> </p>
+            <p> located at <b>{this.state.car.location}</b> has been completed.</p>
 
-        </div>
+            <Link to={this.props.returnURL} className="btn btn-success lidtPlads">Back</Link>
+
+          </div>
         </div>
         <div className="col-sm-4"></div>
       </div>
@@ -524,7 +529,7 @@ class ClientData extends Component {
 
   componentDidMount() {
     facade.fetchSingleCar(this.state.regno).then(res => this.setState({ dataFromServer: res }));
-      this.resetInformation()
+    this.resetInformation()
   }
 
   handleChangeFname(event) {
@@ -564,63 +569,63 @@ class ClientData extends Component {
 
         <div className="col-sm-4"></div>
         <div className="col-sm-4">
-        <br />
-        <div className="nonTransparent text-center textColor rounded">
-          <div className="well well-sm"> <h3> Customer Data</h3> </div>
+          <br />
+          <div className="nonTransparent text-center textColor rounded">
+            <div className="well well-sm"> <h3> Customer Data</h3> </div>
 
-          <form >
-            <div className="form-group ">
+            <form >
+              <div className="form-group ">
 
-              <label className="col-form-label">
-                Firstname:
+                <label className="col-form-label">
+                  Firstname:
           <input
-                  className="form-control"
-                  name="firstname"
-                  type="text"
-                  placeholder="firstname"
-                  onChange={this.handleChangeFname} />
-              </label>
-              <br />
-              <label className="col-form-label">
-                Lastname:
+                    className="form-control"
+                    name="firstname"
+                    type="text"
+                    placeholder="firstname"
+                    onChange={this.handleChangeFname} />
+                </label>
+                <br />
+                <label className="col-form-label">
+                  Lastname:
           <input
-                  className="form-control"
-                  name="lastname"
-                  type="text"
-                  placeholder="lastname"
-                  onChange={this.handleChangeLname} />
-              </label>
-              <br />
-              <label className="col-form-label">
-                Email:
+                    className="form-control"
+                    name="lastname"
+                    type="text"
+                    placeholder="lastname"
+                    onChange={this.handleChangeLname} />
+                </label>
+                <br />
+                <label className="col-form-label">
+                  Email:
               <input
-                  className="form-control"
-                  name="email"
-                  type="email"
-                  placeholder="email"
-                  onChange={this.handleChangeEmail} />
-              </label>
-            </div>
-            All fields must be filled out to continue
+                    className="form-control"
+                    name="email"
+                    type="email"
+                    placeholder="email"
+                    onChange={this.handleChangeEmail} />
+                </label>
+              </div>
+              All fields must be filled out to continue
           </form>
 
-          <br />
-          <Link to={this.props.returnURL} className="btn btn-success lidtPlads">Back</Link>
-          {" "}
-          {(this.state.firstname.length === 0 || this.state.lastname.length === 0 || this.state.email.length === 0) &&
-            <button onClick={this.errorHandling.bind(this)} className="btn btn-success lidtPlads">Continue</button>
-          }
+            <br />
+            <Link to={this.props.returnURL} className="btn btn-success lidtPlads">Back</Link>
+            {" "}
+            {(this.state.firstname.length === 0 || this.state.lastname.length === 0 || this.state.email.length === 0) &&
+              <button onClick={this.errorHandling.bind(this)} className="btn btn-success lidtPlads">Continue</button>
+            }
 
-          {(this.state.firstname.length > 0 && this.state.lastname.length > 0 && this.state.email.length > 0) &&
-            <Link to={`/bookinginfo/${car.regno}`} className="btn btn-success">Continue</Link>
-          }
-          <div><h3 className="text-danger">{this.state.errorMessage}</h3></div>
+            {(this.state.firstname.length > 0 && this.state.lastname.length > 0 && this.state.email.length > 0) &&
+              <Link to={`/bookinginfo/${car.regno}`} className="btn btn-success">Continue</Link>
+            }
+            <div><h3 className="text-danger">{this.state.errorMessage}</h3></div>
 
 
-        </div>
+          </div>
         </div>
         <div className="col-sm-4"></div>
-        
+
       </div>
 
     )
@@ -703,7 +708,7 @@ class App extends Component {
     var locURL = "&" + locStr.substring(1, locStr.length);
     var catStr = this.state.categoryURL;
     var catURL = "&" + catStr.substring(1, catStr.length);
-    var dateDummy = "?start="+getFormattedDate(this.state.startDate)+"&end="+getFormattedDate(this.state.endDate);
+    var dateDummy = "?start=" + getFormattedDate(this.state.startDate) + "&end=" + getFormattedDate(this.state.endDate);
 
     if (this.state.dateURL !== "") {
       combiURL += this.state.dateURL;
@@ -715,13 +720,13 @@ class App extends Component {
       }
     } else {
       if (locStr !== "") {
-        combiURL += dateDummy+locURL;
+        combiURL += dateDummy + locURL;
         if (catStr !== "") {
           combiURL += catURL;
         }
       } else {
         if (catStr !== "") {
-          combiURL += dateDummy+catURL;
+          combiURL += dateDummy + catURL;
         }
       }
     }
@@ -743,7 +748,7 @@ class App extends Component {
                 <Route path="/showcatcars" render={(props) => <ShowCars available={false} setReturnURL={this.setReturnURL} fetchURL={this.state.categoryURL} {...props} />} />
                 <Route path="/showcombicars" render={(props) => <ShowCars available={true} setReturnURL={this.setReturnURL} fetchURL={"/combined" + combiURL} {...props} />} />
 
-                
+
                 <Route path="/details/:regno" render={(props) => <CarDetails available={this.state.available} setReturnURL={this.setReturnURL} returnURL={this.state.returnURL} {...props} />} />
                 <Route path="/bookinginfo/:regno" render={(props) => <BookingInfo returnURL={this.state.returnURL} firstname={this.state.user.firstname} lastname={this.state.user.lastname} email={this.state.user.email} start={this.state.startDate} end={this.state.endDate} {...props} />} />
                 <Route path="/clientdata/:regno" render={(props) => <ClientData setCar={this.setCar} returnURL={this.state.returnURL}
