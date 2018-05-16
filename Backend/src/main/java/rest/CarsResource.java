@@ -174,7 +174,7 @@ public class CarsResource {
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public String testDataSet(String json) throws MalformedURLException, ProtocolException, IOException {
+    public String testDataSet(String json) throws MalformedURLException, IOException {
 
         //TODO kalde api-put med bilens regno.
         //Henter DataSet-Objekt
@@ -197,20 +197,23 @@ public class CarsResource {
                 companyUrl = null;
         }
 
+        companyUrl += "/"+regno;
+                
         BookingFacade bf = new BookingFacade();
         //Lægger bookingen og kunden ned i databasen 
         bf.createBooking(ds.getBooking(), ds.getCustomer());
 
-//        URL obj = new URL(companyUrl + "/" + regno);
-//        HttpsURLConnection con = (HttpsURLConnection) obj.openConnection();
-//
-//        con.setRequestMethod("PUT");
-//        con.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
-//
-//        con.setDoOutput(true);
-//        OutputStreamWriter outputStreamWriter = new OutputStreamWriter(con.getOutputStream());
-//        outputStreamWriter.write(gson.toJson(updatedCar));
-//        outputStreamWriter.flush();
+        URL url = new URL(companyUrl);
+        HttpURLConnection httpCon = (HttpURLConnection) url.openConnection();
+        httpCon.setDoOutput(true);
+        httpCon.setRequestMethod("PUT");
+        httpCon.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
+
+        OutputStreamWriter out = new OutputStreamWriter(
+                httpCon.getOutputStream());
+        out.write(gson.toJson(updatedCar));
+        out.close();
+        //httpCon.getInputStream();
 
         //returnerer bil objekt som json.
         return gson.toJson(ds.getCar());
