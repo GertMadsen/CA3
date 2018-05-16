@@ -468,7 +468,7 @@ class Confirmation extends Component {
       customer: { email: this.state.email, firstName: this.state.firstname, lastName: this.state.lastname }
     };
     this.state.body = body;
-
+    
   }
 
   componentDidMount() {

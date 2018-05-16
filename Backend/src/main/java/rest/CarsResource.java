@@ -6,6 +6,7 @@
 package rest;
 
 import com.google.gson.Gson;
+import entity.Car;
 import entity.Cars;
 import entity.CarsFacade;
 import java.io.IOException;
@@ -81,6 +82,15 @@ public class CarsResource {
             jsonStr = scan.nextLine();
         }
         scan.close();
+        
+        if(regStart == 'B') {
+            Cars BiglerCars = gson.fromJson(jsonStr, Cars.class);
+            Car BiglerCar = BiglerCars.getCars().get(0);
+            jsonStr = gson.toJson(BiglerCar);           
+        }
+        
+        
+        
         return jsonStr;
     }
 
