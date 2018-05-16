@@ -88,9 +88,7 @@ public class CarsResource {
             Car BiglerCar = BiglerCars.getCars().get(0);
             jsonStr = gson.toJson(BiglerCar);           
         }
-        
-        
-        
+    
         return jsonStr;
     }
 
