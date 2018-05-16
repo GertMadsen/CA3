@@ -64,17 +64,11 @@ ul.header li a {
 .custBredde{
   width: 60px !important;
 }
-.overskriftSize{
-  margin-top: 1%;
-  margin-left: 30%;
-  width: 40%;
-  height: 32%;
-}
 .overskriftSize1{
   margin-top: 1%;
-  margin-left: 30%;
-  width: 40%;
-  height: 13%;
+  margin-left: 35%;
+  width: 250px;
+  height: 60px;
 }
 .nonTransparent{
     background-color: rgb(53, 53, 53);

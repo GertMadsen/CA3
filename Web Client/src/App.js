@@ -182,12 +182,11 @@ class RentCar extends Component {
             <form>
               <div className="form group">
                 
-                {(getFormattedDate(this.state.startDate) === getFormattedDate(this.state.endDate)) &&
-                  <div className="Useeme">
-                    <button className="btn btn-success btn-lg btn-block myPopover">Show Combination</button>
-                  </div>
+                {(getFormattedDate(this.state.startDate) === getFormattedDate(this.state.endDate)) &&    
+                      <button className="btn btn-success btn-lg btn-block" data-toggle="popover" data-trigger="focus" data-placement="right" data-content="Only available with two different dates">Show Combination</button>  
+                      
                 }
-                
+
                 {(getFormattedDate(this.state.startDate) !== getFormattedDate(this.state.endDate)) &&
                   <Link onClick={this.setBookingAvailable} to="/showcombicars" className="btn btn-success btn-lg btn-block">Show Combination</Link>
                 }
@@ -304,7 +303,7 @@ class CarDetails extends Component {
         <div className="row">
           <div className="col-sm-2"></div>
           <div className="col-sm-8">
-            <div className="alert alert-info text-center overskriftSize"> <h3> Car Details</h3> </div>
+            <div className="alert alert-info text-center overskriftSize1"> <h3> Car Details</h3> </div>
             <table className="table table-sm table-dark nonTransparent1 rounded" key="tableList">
               <tbody>
                 <tr>
