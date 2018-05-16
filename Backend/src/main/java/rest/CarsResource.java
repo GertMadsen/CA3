@@ -117,20 +117,14 @@ public class CarsResource {
         String carmondoUrl = "http://www.ramsbone.dk:8081/api/cars";
         String biglersUrl = "https://stanitech.dk/carrentalapi/api/cars";
 
-        
-        String jsonCarmondo = getDataMethod(carmondoUrl, location, category, fromDate, toDate);
+        String jsonSchwertz = getDataMethod(carmondoUrl, location, category, fromDate, toDate);
         String jsonBiglers = getDataMethod(biglersUrl, location, category, fromDate, toDate);
         
         CarsFacade cf = new CarsFacade();
-        Cars carmondoList = gson.fromJson(jsonCarmondo, Cars.class);
-        System.out.println("Size of cardmondoList: " + carmondoList.getCars().size());
-        Cars biglerList = gson.fromJson(jsonBiglers, Cars.class);
-        System.out.println("Size of biglerList: " + biglerList.getCars().size());
         
-        Cars merged = cf.mergeCars(carmondoList, biglerList);
-        System.out.println("Size of merged: " + merged.getCars().size());
-    //TODO    
-    //Kan stadig bruges, men husk at bruge gsonFromjson til at konvertere til cars-objecter merge dem og så gsontojson.
+        Cars schwertzList = gson.fromJson(jsonSchwertz, Cars.class);
+        Cars biglerList = gson.fromJson(jsonBiglers, Cars.class);
+        Cars merged = cf.mergeCars(schwertzList, biglerList);
         
         String resultStr =gson.toJson(merged);
         return resultStr;
