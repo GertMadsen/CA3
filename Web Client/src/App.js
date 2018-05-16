@@ -28,7 +28,7 @@ function getFormattedDate(date) {
 class RentCar extends Component {
   constructor(props) {
     super(props);
-    this.state = { location: props.locValue, categori: props.catValue, startDate: props.startDate, endDate: props.endDate }
+    this.state = { location: props.locValue, categori: props.catValue, startDate: props.startDate, endDate: props.endDate, errorMessage: "Please pick dates with at least one day in difference" }
 
     this.onChangeStart = this.onChangeStart.bind(this);
     this.onChangeEnd = this.onChangeEnd.bind(this);
@@ -89,16 +89,7 @@ class RentCar extends Component {
       this.props.setCategoryURL("?category=" + event.target.value);
     }
   }
-   
-  monthClick(event){
-    console.log("hejsa");
-    return event;
-  }
-  yearClick(event){
-    console.log("hey");
-  }
   
-
   render() {
     return (
       <div className="panel-body transparent">
@@ -120,11 +111,11 @@ class RentCar extends Component {
 
           <div className="col-md-2 text-center">
 
-            <h3><span className="label label-default">Kategori</span></h3>
+            <h3><span className="label label-default">Category</span></h3>
             <br />
             <div className="btn-group customBredde">
               <select className="form-control" value={this.state.categori} onChange={this.handleChangeCategori}>
-                <option value="All">Alle</option>
+                <option value="All">All</option>
                 <option value="Mini">Mini</option>
                 <option value="Economy">Economy</option>
                 <option value="Fullsize">Fullsize</option>
@@ -136,11 +127,11 @@ class RentCar extends Component {
 
           <div className="col-md-2 text-center">
 
-            <h3><span className="label label-default">Lokation</span></h3>
+            <h3><span className="label label-default">Location</span></h3>
             <br />
             <div className="btn-group customBredde">
               <select className="form-control" value={this.state.location} onChange={this.handleChangeLocation}>
-                <option value="All">Alle</option>
+                <option value="All">All</option>
                 <option value="Cph Airport">CPH Airport</option>
                 <option value="Aarhus City">Aarhus City</option>
                 <option value="Naestved">Næstved</option>
@@ -151,7 +142,7 @@ class RentCar extends Component {
 
           <div className="col-md-2 ">
             <div className="">
-              <h3><span className="label label-default minMargin" >Dato</span></h3>
+              <h3><span className="label label-default minMargin" >Date</span></h3>
               Start:
             <div className="btn-group dropright">
                 <button type="button" className="btn btn-secondary dropdown-toggle btn-block" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -173,7 +164,7 @@ class RentCar extends Component {
                   {getFormattedDate(this.state.endDate)}
                 </button>
                 <div className="dropdown-menu">
-                  <Calendar className="dropdown-item" href="#" onChange={this.onChangeEnd} onClickMonth={this.monthClick}  onClickYear={this.yearClick} value={this.state.endDate} />
+                  <Calendar className="dropdown-item" href="#" onClickDay={this.onChangeEnd}  value={this.state.endDate} />
                 </div>
                 <br />
               </div>
@@ -190,13 +181,30 @@ class RentCar extends Component {
           <div className="col-md-2">
             <form>
               <div className="form group">
+              {(getFormattedDate(this.state.startDate) === getFormattedDate(this.state.endDate)) &&
+                <button className="btn btn-success btn-lg btn-block lidtPlads">Combi knap</button>
+              }
+              {(getFormattedDate(this.state.startDate) !== getFormattedDate(this.state.endDate)) &&
                 <Link onClick={this.setBookingAvailable} to="/showcombicars" className="btn btn-success btn-lg btn-block">Show Selected Cars</Link>
+                }
+                
               </div>
+              
             </form>
           </div>
-          <div className="col-md-5"> </div>
+          <div className="col-md-5">  </div>
+          
         </div>
+        <div className="row">
+           <div className="col-md-4"></div>
 
+           {(getFormattedDate(this.state.startDate) === getFormattedDate(this.state.endDate)) &&
+                 <div className="col-md-4"><p className="text-warning rounded darkBackground">{this.state.errorMessage}</p></div>
+              }
+          
+
+           <div className="col-md-4"></div>
+        </div>
         <br /><br />
 
         <div className="row">
@@ -208,6 +216,8 @@ class RentCar extends Component {
               </div>
             </form>
           </div>
+          
+
           <div className="col-md-5"> </div>
         </div>
         <br /><br /><br /><br /><br /><br /><br />
@@ -464,6 +474,7 @@ class Confirmation extends Component {
           <p> Mr./Mrs. <b>{this.state.firstname} {this.state.lastname}</b> </p>
           <p> Your reservation for a <b>{this.state.car.make} {this.state.car.model}</b> </p>
           <p> from <b>{getFormattedDate(this.state.fromDate)}</b> to <b>{getFormattedDate(this.state.toDate)}</b></p>
+          <p> Company: <b>{this.state.car.company} </b> </p>
           <p> located at <b>{this.state.car.location}</b> has been completed.</p>
 
           <Link to={this.props.returnURL} className="btn btn-success lidtPlads">Back</Link>
