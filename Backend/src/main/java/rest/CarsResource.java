@@ -5,6 +5,9 @@
  */
 package rest;
 
+import com.google.gson.Gson;
+import entity.BookingFacade;
+import entity.DataSet;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -16,11 +19,14 @@ import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
+import jsonmessages.DataSetMessage;
+import jsonmessages.MessageFacade;
 
 /**
  * REST Web Service
@@ -29,6 +35,7 @@ import javax.ws.rs.core.MediaType;
  */
 @Path("cars")
 public class CarsResource {
+    private static Gson gson = new Gson();
 
     @Context
     private UriInfo context;
@@ -114,5 +121,20 @@ public class CarsResource {
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     public void putJson(String content) {
+    }
+    
+     @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    public String testDataSet(String json) {
+        
+        //TODO kalde api-put med bilens regno.
+        
+        //Henter DataSet-Objekt
+        DataSet ds = MessageFacade.fromJson(json, DataSetMessage.class);
+        BookingFacade bf = new BookingFacade();
+        //Lægger bookingen og kunden ned i databasen 
+        bf.createBooking(ds.getBooking(), ds.getCustomer());
+        //returnerer bil objekt som json.
+        return gson.toJson(ds.getCar());
     }
 }
