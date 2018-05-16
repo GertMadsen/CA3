@@ -5,6 +5,9 @@
  */
 package rest;
 
+import com.google.gson.Gson;
+import entity.Cars;
+import entity.CarsFacade;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -29,9 +32,11 @@ import javax.ws.rs.core.MediaType;
  */
 @Path("cars")
 public class CarsResource {
+    private static Gson gson = new Gson();
 
     @Context
     private UriInfo context;
+    
 
     /**
      * Creates a new instance of CarsResource
@@ -109,17 +114,26 @@ public class CarsResource {
     @Produces(MediaType.APPLICATION_JSON)
     public String getCars(@QueryParam("location") String location, @QueryParam("category") String category,
             @QueryParam("start") String fromDate, @QueryParam("end") String toDate) throws MalformedURLException, ProtocolException, IOException {
-        String urlStr1 = "http://www.ramsbone.dk:8081/api/cars";
-        String urlStr2 = "https://stanitech.dk/carrentalapi/api/cars";
+        String carmondoUrl = "http://www.ramsbone.dk:8081/api/cars";
+        String biglersUrl = "https://stanitech.dk/carrentalapi/api/cars";
 
         
-        String jsonStr = getDataMethod(urlStr1, location, category, fromDate, toDate);
-       // jsonStr += getDataMethod(urlStr2, location, category, fromDate, toDate);
+        String jsonCarmondo = getDataMethod(carmondoUrl, location, category, fromDate, toDate);
+        String jsonBiglers = getDataMethod(biglersUrl, location, category, fromDate, toDate);
         
+        CarsFacade cf = new CarsFacade();
+        Cars carmondoList = gson.fromJson(jsonCarmondo, Cars.class);
+        System.out.println("Size of cardmondoList: " + carmondoList.getCars().size());
+        Cars biglerList = gson.fromJson(jsonBiglers, Cars.class);
+        System.out.println("Size of biglerList: " + biglerList.getCars().size());
+        
+        Cars merged = cf.mergeCars(carmondoList, biglerList);
+        System.out.println("Size of merged: " + merged.getCars().size());
     //TODO    
     //Kan stadig bruges, men husk at bruge gsonFromjson til at konvertere til cars-objecter merge dem og så gsontojson.
-
-        return jsonStr;
+        
+        String resultStr =gson.toJson(merged);
+        return resultStr;
     }
 
     /**
