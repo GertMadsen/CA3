@@ -184,12 +184,12 @@ class RentCar extends Component {
                 
                 {(getFormattedDate(this.state.startDate) === getFormattedDate(this.state.endDate)) &&
                   <div className="Useeme">
-                    <button className="btn btn-success btn-lg btn-block lidtPlads myPopover">Combi knap</button>
+                    <button className="btn btn-success btn-lg btn-block myPopover">Show Combination</button>
                   </div>
                 }
                 
                 {(getFormattedDate(this.state.startDate) !== getFormattedDate(this.state.endDate)) &&
-                  <Link onClick={this.setBookingAvailable} to="/showcombicars" className="btn btn-success btn-lg btn-block">Show Selected Cars</Link>
+                  <Link onClick={this.setBookingAvailable} to="/showcombicars" className="btn btn-success btn-lg btn-block">Show Combination</Link>
                 }
 
               </div>
