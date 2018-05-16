@@ -35,7 +35,7 @@ import javax.ws.rs.core.MediaType;
 public class CarsResource {
     private static Gson gson = new Gson();
     
-    private String schwertzUrl = "http://www.ramsbone.dk:8081/api/cars";
+    private String schwertzUrl = "http://www.ramsbone.dk:8085/api/cars";
     private String biglersUrl = "https://stanitech.dk/carrentalapi/api/cars";
 
     @Context
