@@ -33,6 +33,9 @@ import javax.ws.rs.core.MediaType;
 @Path("cars")
 public class CarsResource {
     private static Gson gson = new Gson();
+    
+    private String schwertzUrl = "http://www.ramsbone.dk:8081/api/cars";
+    private String biglersUrl = "https://stanitech.dk/carrentalapi/api/cars";
 
     @Context
     private UriInfo context;
@@ -53,9 +56,23 @@ public class CarsResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("{regno}")
     public String getCar(@PathParam("regno") String regno) throws MalformedURLException, IOException {
+        char regStart = regno.charAt(0);
+        String companyUrl = "";
+        
+        switch(regStart){
+            case 'B': 
+                companyUrl = biglersUrl;
+                break;
+            case 'L': 
+                companyUrl = schwertzUrl;
+                break;
+            default:
+                companyUrl = null;
+        }
+        
         URL url;
         String jsonStr = null;
-        url = new URL("http://www.ramsbone.dk:8081/api/cars/" + regno);
+        url = new URL(companyUrl + "/" + regno);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("GET");
         con.setRequestProperty("Accept", "application/json;charset=UTF-8");
@@ -68,36 +85,37 @@ public class CarsResource {
     }
 
     public String getDataMethod(String urlStr, String location, String category, String fromDate, String toDate) throws MalformedURLException, IOException {
+        String newUrl = urlStr;
         if (location != null || category != null || fromDate != null || toDate != null) {
-            urlStr += "?";
+            newUrl += "?";
         }
         
         if(fromDate != null && toDate != null){
             fromDate = fromDate.replace("-", "/");
             toDate = toDate.replace("-", "/");
 
-            urlStr += "start=" + fromDate + "&end=" + toDate;
+            newUrl += "start=" + fromDate + "&end=" + toDate;
             if (location != null) {
                 location = location.replace(" ", "%20");
-                urlStr += "&location=" + location;
+                newUrl += "&location=" + location;
             }
             if (category != null) {
                 category = category.replace(" ", "%20");
-                urlStr += "&category=" + category;
+                newUrl += "&category=" + category;
             }
         } else {
             if (location != null) {
                 location = location.replace(" ", "%20");
-                urlStr += "location=" + location;
+                newUrl += "location=" + location;
             }
             if (category != null) {
                 category = category.replace(" ", "%20");
-                urlStr += "category=" + category;
+                newUrl += "category=" + category;
             }
         }
         URL url;
         String jsonStr = null;
-        url = new URL(urlStr);
+        url = new URL(newUrl);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("GET");
         con.setRequestProperty("Accept", "application/json;charset=UTF-8");
@@ -114,10 +132,9 @@ public class CarsResource {
     @Produces(MediaType.APPLICATION_JSON)
     public String getCars(@QueryParam("location") String location, @QueryParam("category") String category,
             @QueryParam("start") String fromDate, @QueryParam("end") String toDate) throws MalformedURLException, ProtocolException, IOException {
-        String carmondoUrl = "http://www.ramsbone.dk:8081/api/cars";
-        String biglersUrl = "https://stanitech.dk/carrentalapi/api/cars";
+        
 
-        String jsonSchwertz = getDataMethod(carmondoUrl, location, category, fromDate, toDate);
+        String jsonSchwertz = getDataMethod(schwertzUrl, location, category, fromDate, toDate);
         String jsonBiglers = getDataMethod(biglersUrl, location, category, fromDate, toDate);
         
         CarsFacade cf = new CarsFacade();
