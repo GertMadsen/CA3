@@ -28,7 +28,7 @@ function getFormattedDate(date) {
 class RentCar extends Component {
   constructor(props) {
     super(props);
-    this.state = { location: props.locValue, categori: props.catValue, startDate: props.startDate, endDate: props.endDate, errorMessage: "Please pick dates with at least one day in difference" }
+    this.state = { location: props.locValue, categori: props.catValue, startDate: props.startDate, endDate: props.endDate }
 
     this.onChangeStart = this.onChangeStart.bind(this);
     this.onChangeEnd = this.onChangeEnd.bind(this);
@@ -89,7 +89,7 @@ class RentCar extends Component {
       this.props.setCategoryURL("?category=" + event.target.value);
     }
   }
-  
+
   render() {
     return (
       <div className="panel-body transparent">
@@ -182,7 +182,7 @@ class RentCar extends Component {
             <form>
               <div className="form group">
               {(getFormattedDate(this.state.startDate) === getFormattedDate(this.state.endDate)) &&
-                <button className="btn btn-success btn-lg btn-block lidtPlads">Combi knap</button>
+                <button className="btn btn-success btn-lg btn-block lidtPlads"  data-toggle="popover" data-trigger="focus" data-placement="right" data-content="Only available when two different dates">Combi knap</button>
               }
               {(getFormattedDate(this.state.startDate) !== getFormattedDate(this.state.endDate)) &&
                 <Link onClick={this.setBookingAvailable} to="/showcombicars" className="btn btn-success btn-lg btn-block">Show Selected Cars</Link>
@@ -195,16 +195,7 @@ class RentCar extends Component {
           <div className="col-md-5">  </div>
           
         </div>
-        <div className="row">
-           <div className="col-md-4"></div>
 
-           {(getFormattedDate(this.state.startDate) === getFormattedDate(this.state.endDate)) &&
-                 <div className="col-md-4"><p className="text-warning rounded darkBackground">{this.state.errorMessage}</p></div>
-              }
-          
-
-           <div className="col-md-4"></div>
-        </div>
         <br /><br />
 
         <div className="row">
