@@ -89,6 +89,15 @@ class RentCar extends Component {
       this.props.setCategoryURL("?category=" + event.target.value);
     }
   }
+   
+  monthClick(event){
+    console.log("hejsa");
+    return event;
+  }
+  yearClick(event){
+    console.log("hey");
+  }
+  
 
   render() {
     return (
@@ -149,7 +158,7 @@ class RentCar extends Component {
                   {getFormattedDate(this.state.startDate)}
                 </button>
                 <div className="dropdown-menu">
-                  <Calendar className="dropdown-item" href="#" onChange={this.onChangeStart} value={this.state.startDate} />
+                  <Calendar className="dropdown-item" href="#" onClickDay={this.onChangeStart} value={this.state.startDate} />
                 </div>
 
               </div>
@@ -164,7 +173,7 @@ class RentCar extends Component {
                   {getFormattedDate(this.state.endDate)}
                 </button>
                 <div className="dropdown-menu">
-                  <Calendar className="dropdown-item" href="#" onChange={this.onChangeEnd} value={this.state.endDate} />
+                  <Calendar className="dropdown-item" href="#" onChange={this.onChangeEnd} onClickMonth={this.monthClick}  onClickYear={this.yearClick} value={this.state.endDate} />
                 </div>
                 <br />
               </div>
@@ -244,7 +253,7 @@ class ShowCars extends Component {
       <div className="row">
         <div className="col-sm-2"></div>
         <div className="col-sm-8">
-          <div> <h3> List of Cars</h3> </div>
+        <div className="alert alert-info text-center overskriftSize1"> <h3> List of Cars</h3> </div>
           <table className="table table-dark table-sm table-hover" key="tableList">
             <tbody>
               <tr>
@@ -290,7 +299,7 @@ class CarDetails extends Component {
        <div className="row">
         <div className="col-sm-2"></div>
         <div className="col-sm-8">
-          <div className="text-center"> <h3> Car Details</h3> </div>
+        <div className="alert alert-info text-center overskriftSize"> <h3> Car Details</h3> </div>
           <table className="table table-sm table-dark nonTransparent1 rounded" key="tableList">
             <tbody>
               <tr>
@@ -396,8 +405,8 @@ class BookingInfo extends Component {
           <p> <b>Customer Info:</b> </p>
           <p> Name: <b>{this.state.firstname} {this.state.lastname} </b></p>
           <p> Email: <b>{this.state.email} </b></p>
-          <Link to={this.props.returnURL} className="btn btn-success flyvVenstre lidtPlads">Back</Link>
-          <Link to="/confirmation" className="btn btn-success flyvHøjre lidtPlads">Confirm Booking</Link>
+          <Link to={this.props.returnURL} className="btn btn-success flyvVenstre lidtPladsBund">Back</Link>
+          <Link to="/confirmation" className="btn btn-success flyvHøjre lidtPladsBund">Confirm Booking</Link>
 
           <br /><br />
 
