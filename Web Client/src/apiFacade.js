@@ -47,7 +47,7 @@ class ApiFacade {
 
     fetchBooking = (body) => {
         const options = this.makeFetchOptions("POST",body);
-        return fetch(URL + "/api/test/", options).then(handleHttpErrors);
+        return fetch(URL + "/api/cars/", options).then(handleHttpErrors);
     }
 
 
