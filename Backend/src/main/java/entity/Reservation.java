@@ -50,6 +50,11 @@ public class Reservation {
     public void setToDate(String toDate) {
         this.toDate = toDate;
     }
+
+    @Override
+    public String toString() {
+        return "Reservation{" + "companyTag=" + companyTag + ", customerMail=" + customerMail + ", fromDate=" + fromDate + ", toDate=" + toDate + '}';
+    }
     
     
     

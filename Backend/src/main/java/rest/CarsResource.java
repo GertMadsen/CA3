@@ -44,7 +44,7 @@ public class CarsResource {
 
     private static Gson gson = new Gson();
 
-    private String schwertzUrl = "http://www.ramsbone.dk:8081/api/cars";
+    private String schwertzUrl = "http://www.ramsbone.dk:8085/api/cars";
     private String biglersUrl = "https://stanitech.dk/carrentalapi/api/cars";
 
     @Context
@@ -174,7 +174,7 @@ public class CarsResource {
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public String testDataSet(String json) throws MalformedURLException, IOException {
+    public String testDataSet(String json) throws IOException {
 
         //TODO kalde api-put med bilens regno.
         //Henter DataSet-Objekt
@@ -182,7 +182,7 @@ public class CarsResource {
 
         Car updatedCar = ds.getCar();
         String regno = updatedCar.getRegno();
-
+        
         char regStart = regno.charAt(0);
         String companyUrl = "";
 
@@ -196,26 +196,24 @@ public class CarsResource {
             default:
                 companyUrl = null;
         }
+        
+        companyUrl += "/" + regno;
 
-        companyUrl += "/"+regno;
-                
         BookingFacade bf = new BookingFacade();
         //Lægger bookingen og kunden ned i databasen 
         bf.createBooking(ds.getBooking(), ds.getCustomer());
 
         URL url = new URL(companyUrl);
-        HttpURLConnection httpCon = (HttpURLConnection) url.openConnection();
-        httpCon.setDoOutput(true);
-        httpCon.setRequestMethod("PUT");
-        httpCon.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
-
-        OutputStreamWriter out = new OutputStreamWriter(
-                httpCon.getOutputStream());
-        out.write(gson.toJson(updatedCar));
-        out.close();
-        //httpCon.getInputStream();
-
-        //returnerer bil objekt som json.
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("PUT");
+        connection.setDoOutput(true);
+        connection.setRequestProperty("Content-Type", "application/json");
+        connection.setRequestProperty("Accept", "application/json");
+        OutputStreamWriter osw = new OutputStreamWriter(connection.getOutputStream());
+        osw.write(gson.toJson(updatedCar));
+        osw.flush();
+        osw.close();
+        
         return gson.toJson(ds.getCar());
     }
 }

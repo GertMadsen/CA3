@@ -459,27 +459,19 @@ class Confirmation extends Component {
     let endDate = getFormattedDate(this.state.toDate)
      
     var car = this.state.car;
-    var reservations = car.reservations;
-    
-    var sDate = startDate.replace(/-/g,"/");
-    
+    var sDate = startDate.replace(/-/g,"/"); 
     var eDate = endDate.replace(/-/g,"/");
-    
     var insertion = { companyTag: "Carmondo", customerMail: this.state.email, fromDate: sDate, toDate: eDate }
     var newReservationArray = [];
     newReservationArray.push(insertion);
     car.reservations = newReservationArray;
-
-    console.log(car);
-
     var body = {
       car: car,
       booking: { regno: car.regno, fromDate: startDate, toDate: endDate, companyTag: "Carmondo" },
       customer: { email: this.state.email, firstName: this.state.firstname, lastName: this.state.lastname }
     };
     this.state.body = body;
-    
-    console.log(body);
+
 
   }
 
