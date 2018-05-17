@@ -44,7 +44,7 @@ class RentCar extends Component {
   onChangeStart(date) {
     this.props.setDateStart(date)
     this.setState({ startDate: date },
-      function (){
+      function () {
         let s = getFormattedDate(this.state.startDate);
         let e = getFormattedDate(this.state.endDate);
         if (s === e) {
@@ -53,12 +53,12 @@ class RentCar extends Component {
           this.props.setDateURL("?start=" + s + "&end=" + e)
         }
       }
-      );
+    );
   }
   onChangeEnd(date) {
     this.props.setDateEnd(date)
     this.setState({ endDate: date },
-      function (){
+      function () {
         let s = getFormattedDate(this.state.startDate);
         let e = getFormattedDate(this.state.endDate);
         if (s === e) {
@@ -67,7 +67,7 @@ class RentCar extends Component {
           this.props.setDateURL("?start=" + s + "&end=" + e)
         }
       }
-      );
+    );
   }
 
 
@@ -111,11 +111,11 @@ class RentCar extends Component {
 
           <div className="col-md-2 text-center">
 
-            <h3><span className="label label-default">Kategori</span></h3>
+            <h3><span className="label label-default">Category</span></h3>
             <br />
             <div className="btn-group customBredde">
               <select className="form-control" value={this.state.categori} onChange={this.handleChangeCategori}>
-                <option value="All">Alle</option>
+                <option value="All">All</option>
                 <option value="Mini">Mini</option>
                 <option value="Mini Elite">Mini Elite</option>
                 <option value="Economy">Economy</option>
@@ -142,7 +142,7 @@ class RentCar extends Component {
 
           <div className="col-md-2 text-center">
 
-            <h3><span className="label label-default">Lokation</span></h3>
+            <h3><span className="label label-default">Location</span></h3>
             <br />
             <div className="btn-group customBredde">
               <select className="form-control" value={this.state.location} onChange={this.handleChangeLocation}>
@@ -164,14 +164,14 @@ class RentCar extends Component {
 
           <div className="col-md-2 ">
             <div className="">
-              <h3><span className="label label-default minMargin" >Dato</span></h3>
+              <h3><span className="label label-default minMargin" >Date</span></h3>
               Start:
             <div className="btn-group dropright">
                 <button type="button" className="btn btn-secondary dropdown-toggle btn-block" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   {getFormattedDate(this.state.startDate)}
                 </button>
                 <div className="dropdown-menu">
-                  <Calendar className="dropdown-item" href="#" onChange={this.onChangeStart} value={this.state.startDate} />
+                  <Calendar className="dropdown-item" href="#" onClickDay={this.onChangeStart} value={this.state.startDate} />
                 </div>
 
               </div>
@@ -186,7 +186,7 @@ class RentCar extends Component {
                   {getFormattedDate(this.state.endDate)}
                 </button>
                 <div className="dropdown-menu">
-                  <Calendar className="dropdown-item" href="#" onChange={this.onChangeEnd} value={this.state.endDate} />
+                  <Calendar className="dropdown-item" href="#" onClickDay={this.onChangeEnd} value={this.state.endDate} />
                 </div>
                 <br />
               </div>
@@ -203,11 +203,24 @@ class RentCar extends Component {
           <div className="col-md-2">
             <form>
               <div className="form group">
-                <Link onClick={this.setBookingAvailable} to="/showcombicars" className="btn btn-success btn-lg btn-block">Show Combination</Link>
+
+                
+                {(getFormattedDate(this.state.startDate) === getFormattedDate(this.state.endDate)) &&    
+                      <button className="btn btn-success btn-lg btn-block" data-toggle="popover" data-trigger="focus" data-placement="right" data-content="Only available with two different dates">Show Combination</button>  
+                      
+                }
+
+                {(getFormattedDate(this.state.startDate) !== getFormattedDate(this.state.endDate)) &&
+                  <Link onClick={this.setBookingAvailable} to="/showcombicars" className="btn btn-success btn-lg btn-block">Show Combination</Link>
+                }
+
+
               </div>
+
             </form>
           </div>
-          <div className="col-md-5"> </div>
+          <div className="col-md-5">  </div>
+
         </div>
 
         <br /><br />
@@ -221,6 +234,8 @@ class RentCar extends Component {
               </div>
             </form>
           </div>
+
+
           <div className="col-md-5"> </div>
         </div>
         <br /><br /><br /><br /><br /><br /><br />
@@ -271,7 +286,7 @@ class ShowCars extends Component {
       <div className="row">
         <div className="col-sm-2"></div>
         <div className="col-sm-8">
-          <div> <h3> List of Cars</h3> </div>
+          <div className="alert alert-info text-center overskriftSize1"> <h3> List of Cars</h3> </div>
           <table className="table table-dark table-sm table-hover" key="tableList">
             <tbody>
               <tr>
@@ -355,8 +370,8 @@ class CarDetails extends Component {
             </tbody>
           </table>
           </div>
-          <div className="col-sm-2"></div>
-          </div>
+
+        
          
           <div className="row">
 
@@ -375,25 +390,27 @@ class CarDetails extends Component {
 
             <div className="flyvHøjre ">
               <img  src={car.logo} width="150px" height="150px" alt="" />
+
               <h2 className="textColor">{car.company}</h2>
             </div>
           </div>
 
           <div className="col-md-3"></div>
 
-          </div>
-        
-          <div className="row">
+        </div>
+
+        <div className="row">
           <div className="col-sm-3"></div>
           <div className="col-sm-6">
-          <br/>
-           <Link to={this.props.returnURL} className="btn btn-success">Back</Link>
+            <br />
+            <Link to={this.props.returnURL} className="btn btn-success">Back</Link>
           </div>
           <div className="col-sm-3"></div>
-         </div>
-        
-      </div>
+        </div>
 
+      </div>
+      </div>
+    
     )
   }
 }
@@ -401,11 +418,12 @@ class CarDetails extends Component {
 class BookingInfo extends Component {
   constructor(props) {
     super(props);
-    this.state = { fetchURL: props.fetchURL, dataFromServer: {}, 
-                  regno: props.match.params.regno, 
-                  firstname: props.firstname, lastname: props.lastname, email: props.email,
-                  fromDate: props.start, toDate: props.end
-                   };
+    this.state = {
+      fetchURL: props.fetchURL, dataFromServer: {},
+      regno: props.match.params.regno,
+      firstname: props.firstname, lastname: props.lastname, email: props.email,
+      fromDate: props.start, toDate: props.end
+    };
   }
   componentDidMount() {
     facade.fetchSingleCar(this.state.regno).then(res => this.setState({ dataFromServer: res }));
@@ -417,25 +435,25 @@ class BookingInfo extends Component {
       <div className="row">
         <div className="col-sm-4"></div>
         <div className="col-sm-4">
-        <br/>
-         <div className="nonTransparent text-center textColor rounded">
-          <div className=""> <h3> Booking info</h3> </div>
+          <br />
+          <div className="nonTransparent text-center textColor rounded">
+            <div className=""> <h3> Booking info</h3> </div>
 
-          <img src={car.picture} width="50%" height="30%" alt="" />
-          <br /><br />
-          <p> <b>Car Info:</b> </p>
-          <p>You want to rent a <b>{car.make} {car.model}</b> from the location <b>{car.location}</b> </p>
-          <p>In the period from <b>{getFormattedDate(this.state.fromDate)}</b> to <b>{getFormattedDate(this.state.toDate)}</b>. </p>
+            <img src={car.picture} width="50%" height="30%" alt="" />
+            <br /><br />
+            <p> <b>Car Info:</b> </p>
+            <p>You want to rent a <b>{car.make} {car.model}</b> from the location <b>{car.location}</b> </p>
+            <p>In the period from <b>{getFormattedDate(this.state.fromDate)}</b> to <b>{getFormattedDate(this.state.toDate)}</b>. </p>
 
-          <p> <b>Customer Info:</b> </p>
-          <p> Name: <b>{this.state.firstname} {this.state.lastname} </b></p>
-          <p> Email: <b>{this.state.email} </b></p>
-          <Link to={this.props.returnURL} className="btn btn-success flyvVenstre lidtPlads">Back</Link>
-          <Link to="/confirmation" className="btn btn-success flyvHøjre lidtPlads">Confirm Booking</Link>
+            <p> <b>Customer Info:</b> </p>
+            <p> Name: <b>{this.state.firstname} {this.state.lastname} </b></p>
+            <p> Email: <b>{this.state.email} </b></p>
+            <Link to={this.props.returnURL} className="btn btn-success flyvVenstre lidtPladsBund">Back</Link>
+            <Link to="/confirmation" className="btn btn-success flyvHøjre lidtPladsBund">Confirm Booking</Link>
 
-          <br /><br />
+            <br /><br />
 
-        </div>
+          </div>
         </div>
         <div className="col-sm-4"></div>
       </div>
@@ -481,19 +499,20 @@ class Confirmation extends Component {
       <div className="row">
         <div className="col-sm-4"></div>
         <div className="col-sm-4 ">
-        <br /><br /><br />
-        <div className="nonTransparent text-center textColor rounded">
-        
-          <div className=""> <h3> Confirmation</h3> </div>
+          <br /><br /><br />
+          <div className="nonTransparent text-center textColor rounded">
 
-          <p> Mr./Mrs. <b>{this.state.firstname} {this.state.lastname}</b> </p>
-          <p> Your reservation for a <b>{this.state.car.make} {this.state.car.model}</b> </p>
-          <p> from <b>{getFormattedDate(this.state.fromDate)}</b> to <b>{getFormattedDate(this.state.toDate)}</b></p>
-          <p> located at <b>{this.state.car.location}</b> has been completed.</p>
+            <div className=""> <h3> Confirmation</h3> </div>
 
-          <Link to={this.props.returnURL} className="btn btn-success lidtPlads">Back</Link>
+            <p> Mr./Mrs. <b>{this.state.firstname} {this.state.lastname}</b> </p>
+            <p> Your reservation for a <b>{this.state.car.make} {this.state.car.model}</b> </p>
+            <p> from <b>{getFormattedDate(this.state.fromDate)}</b> to <b>{getFormattedDate(this.state.toDate)}</b></p>
+            <p> Company: <b>{this.state.car.company} </b> </p>
+            <p> located at <b>{this.state.car.location}</b> has been completed.</p>
 
-        </div>
+            <Link to={this.props.returnURL} className="btn btn-success lidtPlads">Back</Link>
+
+          </div>
         </div>
         <div className="col-sm-4"></div>
       </div>
@@ -547,7 +566,7 @@ class ClientData extends Component {
 
   componentDidMount() {
     facade.fetchSingleCar(this.state.regno).then(res => this.setState({ dataFromServer: res }));
-      this.resetInformation()
+    this.resetInformation()
   }
 
   handleChangeFname(event) {
@@ -587,63 +606,63 @@ class ClientData extends Component {
 
         <div className="col-sm-4"></div>
         <div className="col-sm-4">
-        <br />
-        <div className="nonTransparent text-center textColor rounded">
-          <div className="well well-sm"> <h3> Customer Data</h3> </div>
+          <br />
+          <div className="nonTransparent text-center textColor rounded">
+            <div className="well well-sm"> <h3> Customer Data</h3> </div>
 
-          <form >
-            <div className="form-group ">
+            <form >
+              <div className="form-group ">
 
-              <label className="col-form-label">
-                Firstname:
+                <label className="col-form-label">
+                  Firstname:
           <input
-                  className="form-control"
-                  name="firstname"
-                  type="text"
-                  placeholder="firstname"
-                  onChange={this.handleChangeFname} />
-              </label>
-              <br />
-              <label className="col-form-label">
-                Lastname:
+                    className="form-control"
+                    name="firstname"
+                    type="text"
+                    placeholder="firstname"
+                    onChange={this.handleChangeFname} />
+                </label>
+                <br />
+                <label className="col-form-label">
+                  Lastname:
           <input
-                  className="form-control"
-                  name="lastname"
-                  type="text"
-                  placeholder="lastname"
-                  onChange={this.handleChangeLname} />
-              </label>
-              <br />
-              <label className="col-form-label">
-                Email:
+                    className="form-control"
+                    name="lastname"
+                    type="text"
+                    placeholder="lastname"
+                    onChange={this.handleChangeLname} />
+                </label>
+                <br />
+                <label className="col-form-label">
+                  Email:
               <input
-                  className="form-control"
-                  name="email"
-                  type="email"
-                  placeholder="email"
-                  onChange={this.handleChangeEmail} />
-              </label>
-            </div>
-            All fields must be filled out to continue
+                    className="form-control"
+                    name="email"
+                    type="email"
+                    placeholder="email"
+                    onChange={this.handleChangeEmail} />
+                </label>
+              </div>
+              All fields must be filled out to continue
           </form>
 
-          <br />
-          <Link to={this.props.returnURL} className="btn btn-success lidtPlads">Back</Link>
-          {" "}
-          {(this.state.firstname.length === 0 || this.state.lastname.length === 0 || this.state.email.length === 0) &&
-            <button onClick={this.errorHandling.bind(this)} className="btn btn-success lidtPlads">Continue</button>
-          }
+            <br />
+            <Link to={this.props.returnURL} className="btn btn-success lidtPlads">Back</Link>
+            {" "}
+            {(this.state.firstname.length === 0 || this.state.lastname.length === 0 || this.state.email.length === 0) &&
+              <button onClick={this.errorHandling.bind(this)} className="btn btn-success lidtPlads">Continue</button>
+            }
 
-          {(this.state.firstname.length > 0 && this.state.lastname.length > 0 && this.state.email.length > 0) &&
-            <Link to={`/bookinginfo/${car.regno}`} className="btn btn-success">Continue</Link>
-          }
-          <div><h3 className="text-danger">{this.state.errorMessage}</h3></div>
+            {(this.state.firstname.length > 0 && this.state.lastname.length > 0 && this.state.email.length > 0) &&
+              <Link to={`/bookinginfo/${car.regno}`} className="btn btn-success">Continue</Link>
+            }
+            <div><h3 className="text-danger">{this.state.errorMessage}</h3></div>
 
 
-        </div>
+          </div>
         </div>
         <div className="col-sm-4"></div>
-        
+
       </div>
 
     )
@@ -697,7 +716,7 @@ class App extends Component {
     this.setState({ car: car });
   }
 
-  setUserFname = (value) =>
+  setUserFname = (value) => 
     this.setState(prevState => ({
       user: {
         ...prevState.user,
@@ -729,7 +748,7 @@ class App extends Component {
     var locURL = "&" + locStr.substring(1, locStr.length);
     var catStr = this.state.categoryURL;
     var catURL = "&" + catStr.substring(1, catStr.length);
-    var dateDummy = "?start="+getFormattedDate(this.state.startDate)+"&end="+getFormattedDate(this.state.endDate);
+    var dateDummy = "?start=" + getFormattedDate(this.state.startDate) + "&end=" + getFormattedDate(this.state.endDate);
 
     if (this.state.dateURL !== "") {
       combiURL += this.state.dateURL;
@@ -741,13 +760,13 @@ class App extends Component {
       }
     } else {
       if (locStr !== "") {
-        combiURL += dateDummy+locURL;
+        combiURL += dateDummy + locURL;
         if (catStr !== "") {
           combiURL += catURL;
         }
       } else {
         if (catStr !== "") {
-          combiURL += dateDummy+catURL;
+          combiURL += dateDummy + catURL;
         }
       }
     }
@@ -768,9 +787,9 @@ class App extends Component {
                 <Route path="/showdatecars" render={(props) => <ShowCars setBookingBoolean={this.setBookingAvailable} bookingAvailable={true} setReturnURL={this.setReturnURL} fetchURL={this.state.dateURL} {...props} />} />
                 <Route path="/showcatcars" render={(props) => <ShowCars setBookingBoolean={this.setBookingAvailable} bookingAvailable={false} setReturnURL={this.setReturnURL} fetchURL={this.state.categoryURL} {...props} />} />
                 <Route path="/showcombicars" render={(props) => <ShowCars setBookingBoolean={this.setBookingAvailable} bookingAvailable={true} setReturnURL={this.setReturnURL} fetchURL={combiURL} {...props} />} />
-
                 
                 <Route path="/details/:regno" render={(props) => <CarDetails bookingBoolean={this.state.bookingBoolean} setReturnURL={this.setReturnURL} returnURL={this.state.returnURL} {...props} />} />
+
                 <Route path="/bookinginfo/:regno" render={(props) => <BookingInfo returnURL={this.state.returnURL} firstname={this.state.user.firstname} lastname={this.state.user.lastname} email={this.state.user.email} start={this.state.startDate} end={this.state.endDate} {...props} />} />
                 <Route path="/clientdata/:regno" render={(props) => <ClientData setCar={this.setCar} returnURL={this.state.returnURL}
 

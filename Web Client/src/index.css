@@ -79,22 +79,37 @@ ul.header li a {
 .custBredde{
   width: 60px !important;
 }
+.overskriftSize1{
+  margin-top: 1%;
+  margin-left: 35%;
+  width: 250px;
+  height: 60px;
+}
 .nonTransparent{
     background-color: rgb(53, 53, 53);
     opacity: 0.95;
 }
 .nonTransparent2{
-  
   opacity: 0.95;
 }
 .nonTransparent1{
   opacity: 0.8;
+}
+.darkBackground{
+  margin-left: 0;
+  width: 100%;
+  height: 80%;
+  font-size: x-large;
 }
 .lidtPlads{
   margin-left: 2%;
   margin-right: 2%;
   margin-top: 2%;
   margin-bottom: 2%;
+}
+.lidtPladsBund{
+  margin-left: 3%;
+  margin-right: 3%;
 }
 .minNyeMargin{
   margin-left: 8%;
