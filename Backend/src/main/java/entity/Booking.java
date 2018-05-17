@@ -18,6 +18,7 @@ import javax.persistence.Table;
  *
  * @author Gruppe 3 - Gert, Lene & Mikkel
  */
+
 @Entity
 @Table(name="bookings")
 public class Booking implements Serializable {
