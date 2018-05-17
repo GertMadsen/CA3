@@ -29,7 +29,7 @@ import javax.ws.rs.core.MediaType;
 /**
  * REST Web Service
  *
- * @author lene_
+ * @author Gruppe 3 - Gert, Lene & Mikkel
  */
 @Path("cars")
 public class CarsResource {

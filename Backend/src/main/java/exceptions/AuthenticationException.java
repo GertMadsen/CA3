@@ -2,7 +2,7 @@ package exceptions;
 
 /**
  *
- * @author lam@cphbusiness.dk
+ * @author Gruppe 3 - Gert, Lene & Mikkel
  */
 public class AuthenticationException extends Exception{
 

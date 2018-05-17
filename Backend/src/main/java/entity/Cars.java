@@ -10,7 +10,7 @@ import java.util.Objects;
 
 /**
  *
- * @author lene_
+ * @author Gruppe 3 - Gert, Lene & Mikkel
  */
 public class Cars {
     private ArrayList<Car> cars;

@@ -9,8 +9,11 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
-/*
-  Utility class to map errors into JSON
+
+/**
+ * Utility class to map errors into JSON
+ *
+ * @author Gruppe 3 - Gert, Lene & Mikkel
 */
 class Error {
 

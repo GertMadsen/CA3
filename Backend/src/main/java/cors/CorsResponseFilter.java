@@ -13,6 +13,11 @@ import javax.ws.rs.container.ContainerResponseFilter;
 import javax.ws.rs.container.PreMatching;
 import javax.ws.rs.ext.Provider;
 
+/**
+ *
+ * @author Gruppe 3 - Gert, Lene & Mikkel
+ */
+
 @Provider
 @PreMatching
 public class CorsResponseFilter implements ContainerResponseFilter {

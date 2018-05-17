@@ -16,7 +16,7 @@ import javax.persistence.Table;
 
 /**
  *
- * @author lene_
+ * @author Gruppe 3 - Gert, Lene & Mikkel
  */
 @Entity
 @Table(name="bookings")

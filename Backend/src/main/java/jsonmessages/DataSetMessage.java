@@ -9,7 +9,7 @@ import entity.*;
 
 /**
  *
- * @author Gert Lehmann Madsen
+ * @author Gruppe 3 - Gert, Lene & Mikkel
  */
 public class DataSetMessage implements JSONMessage<DataSet> {
     

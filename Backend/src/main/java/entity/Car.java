@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 /**
  *
- * @author lene_
+ * @author Gruppe 3 - Gert, Lene & Mikkel
  */
 public class Car {
     private String logo;

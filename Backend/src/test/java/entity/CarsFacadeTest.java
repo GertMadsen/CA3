@@ -14,7 +14,7 @@ import static org.junit.Assert.*;
 
 /**
  *
- * @author lene_
+ * @author Gruppe 3 - Gert, Lene & Mikkel
  */
 public class CarsFacadeTest {
     

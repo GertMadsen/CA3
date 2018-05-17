@@ -7,7 +7,7 @@ package entity;
 
 /**
  *
- * @author lene_
+ * @author Gruppe 3 - Gert, Lene & Mikkel
  */
 public class CarsFacade {
     public Cars mergeCars(Cars cars1, Cars cars2){

@@ -2,20 +2,19 @@ import React, { Component } from "react";
 import facade from "../apiFacade";
 import { Link } from 'react-router-dom'
 
-class CarDetails extends Component {
-    constructor(props) {
-      super(props);
-      this.state = { fetchURL: props.fetchURL, dataFromServer: {}, regno: props.match.params.regno, bookingBoolean: props.bookingBoolean };
-    }
-    componentDidMount() {
-      facade.fetchSingleCar(this.state.regno).then(res => this.setState({ dataFromServer: res }));
-    }
-    render() {
-      var car = this.state.dataFromServer;
-  
-      return (
-        <div className="">
-         <div className="row">
+export default class CarDetails extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { fetchURL: props.fetchURL, dataFromServer: {}, regno: props.match.params.regno, bookingBoolean: props.bookingBoolean };
+  }
+  componentDidMount() {
+    facade.fetchSingleCar(this.state.regno).then(res => this.setState({ dataFromServer: res }));
+  }
+  render() {
+    var car = this.state.dataFromServer;
+    return (
+      <div className="">
+        <div className="row">
           <div className="col-sm-2"></div>
           <div className="col-sm-8">
             <div className="text-center"> <h3> Car Details</h3> </div>
@@ -50,55 +49,39 @@ class CarDetails extends Component {
                   <td>{car.location}</td>
                   <td>{car.priceperday}</td>
                   {this.state.bookingBoolean === true &&
-                   <td><Link to={`../clientdata/${car.regno}`} className="btn btn-success">Book</Link></td>
-                   }
+                    <td><Link to={`../clientdata/${car.regno}`} className="btn btn-success">Book</Link></td>
+                  }
                 </tr>
               </tbody>
             </table>
-            </div>
-  
           </div>
-           
-            <div className="row">
-  
-             <div className="col-md-3"></div>
-  
-              <div className="col-md-6 nonTransparent rounded border border-dark text-center">
-  
-                <div className="flyvVenstre ">
-                 <img  src={car.logo} width="150px" height="150px"  alt=""/>
-                 <h2 className="textColor">{car.company}</h2>
-                </div> 
-  
-                <div className="flyvVenstreMerePlads whiteBackground">
-                 <img className="" src={car.picture} width="225px" height="150px" alt=""/>
-                </div>
-  
-              <div className="flyvHøjre ">
-                <img  src={car.logo} width="150px" height="150px" alt="" />
-  
-                <h2 className="textColor">{car.company}</h2>
-              </div>
-            </div>
-  
-            <div className="col-md-3"></div>
-  
-          </div>
-  
-          <div className="row">
-            <div className="col-sm-3"></div>
-            <div className="col-sm-6">
-              <br />
-              <Link to={this.props.returnURL} className="btn btn-success">Back</Link>
-            </div>
-            <div className="col-sm-3"></div>
-          </div>
-  
         </div>
-        
-      
-      )
-    }
+        <div className="row">
+          <div className="col-md-3"></div>
+          <div className="col-md-6 nonTransparent rounded border border-dark text-center">
+            <div className="flyvVenstre ">
+              <img src={car.logo} width="150px" height="150px" alt="" />
+              <h2 className="textColor">{car.company}</h2>
+            </div>
+            <div className="flyvVenstreMerePlads whiteBackground">
+              <img className="" src={car.picture} width="225px" height="150px" alt="" />
+            </div>
+            <div className="flyvHøjre ">
+              <img src={car.logo} width="150px" height="150px" alt="" />
+              <h2 className="textColor">{car.company}</h2>
+            </div>
+          </div>
+          <div className="col-md-3"></div>
+        </div>
+        <div className="row">
+          <div className="col-sm-3"></div>
+          <div className="col-sm-6">
+            <br />
+            <Link to={this.props.returnURL} className="btn btn-success">Back</Link>
+          </div>
+          <div className="col-sm-3"></div>
+        </div>
+      </div>
+    )
   }
-
-  export default CarDetails;
+}

@@ -10,7 +10,7 @@ import javax.persistence.Persistence;
 
 /**
  *
- * @author lene_
+ * @author Gruppe 3 - Gert, Lene & Mikkel
  */
 public class BookingFacade {
     private EntityManager em;

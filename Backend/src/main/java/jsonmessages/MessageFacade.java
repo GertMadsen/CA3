@@ -10,7 +10,7 @@ import jdk.nashorn.internal.objects.NativeArray;
 
 /**
  *
- * @author Gert Lehmann Madsen
+ * @author Gruppe 3 - Gert, Lene & Mikkel
  */
 public class MessageFacade {
 

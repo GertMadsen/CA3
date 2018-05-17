@@ -13,6 +13,12 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+
+/**
+ *
+ * @author Gruppe 3 - Gert, Lene & Mikkel
+ */
+
 @Entity
 @Table(name = "customers")
 public class Customer implements Serializable {
