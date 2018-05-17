@@ -7,23 +7,23 @@ import {
 } from 'react-router-dom'
 import facade from "./apiFacade";
 import Calendar from "react-calendar";
-
+import getFormattedDate from "./Components/DateFormatter";
 
 const NoMatch = () => (
   <h1> No Match </h1>
 )
 
-function getFormattedDate(date) {
-  var year = date.getFullYear();
+// function getFormattedDate(date) {
+//   var year = date.getFullYear();
 
-  var month = (1 + date.getMonth()).toString();
-  month = month.length > 1 ? month : '0' + month;
+//   var month = (1 + date.getMonth()).toString();
+//   month = month.length > 1 ? month : '0' + month;
 
-  var day = date.getDate().toString();
-  day = day.length > 1 ? day : '0' + day;
+//   var day = date.getDate().toString();
+//   day = day.length > 1 ? day : '0' + day;
 
-  return day + '-' + month + '-' + year;
-}
+//   return day + '-' + month + '-' + year;
+// }
 
 class RentCar extends Component {
   constructor(props) {
@@ -365,7 +365,7 @@ class CarDetails extends Component {
           </table>
           </div>
 
-        
+        </div>
          
           <div className="row">
 
@@ -403,7 +403,7 @@ class CarDetails extends Component {
         </div>
 
       </div>
-      </div>
+      
     
     )
   }
