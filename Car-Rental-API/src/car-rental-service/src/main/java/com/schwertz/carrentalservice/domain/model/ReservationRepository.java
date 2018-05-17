@@ -22,4 +22,15 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
    */
   public List<Reservation> findByToDateGreaterThanEqualAndCarRegnoIgnoreCase(
 	  LocalDate date, String carResitrationNumber);
+
+  /**
+   * Gets reservations from repository whose toDate is greater equal to given
+   * date and associated car id is equal to given registration no and that
+   * doesn't contain given reservation.
+   *
+   * @param date
+   * @return
+   */
+  public List<Reservation> findByToDateGreaterThanEqualAndCarRegnoIgnoreCaseAndIdNot(
+	  LocalDate date, String carResitrationNumber, Long reservationId);
 }

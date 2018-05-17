@@ -17,6 +17,8 @@ public class PayloadDto {
   private Collection<String> errors;
   @JsonProperty("cars")
   private Collection<CarDto> carDtos;
+  @JsonProperty("reservations")
+  private Collection<ReservationDto> reservationDtos;
 
   public Collection<String> getErrors() {
     return errors;
@@ -34,6 +36,14 @@ public class PayloadDto {
     this.carDtos = carDtos;
   }
 
+  public Collection<ReservationDto> getReservationDtos() {
+    return reservationDtos;
+  }
+
+  public void setReservationDtos(Collection<ReservationDto> reservationDtos) {
+    this.reservationDtos = reservationDtos;
+  }
+
   /**
    * Fluent builder pattern used to create payload dto since it's impossible via
    * constructor.
@@ -42,6 +52,7 @@ public class PayloadDto {
 
     private Collection<String> errors;
     private Collection<CarDto> carDtos;
+    private Collection<ReservationDto> reservationDtos;
 
     public Builder errors(Collection<String> errors) {
 
@@ -52,6 +63,12 @@ public class PayloadDto {
     public Builder carDtos(Collection<CarDto> carDtos) {
 
       this.carDtos = carDtos;
+      return this;
+    }
+
+    public Builder reservationDtos(Collection<ReservationDto> reservationDtos) {
+
+      this.reservationDtos = reservationDtos;
       return this;
     }
 
@@ -70,5 +87,6 @@ public class PayloadDto {
 
     this.errors = builder.errors;
     this.carDtos = builder.carDtos;
+    this.reservationDtos = builder.reservationDtos;
   }
 }

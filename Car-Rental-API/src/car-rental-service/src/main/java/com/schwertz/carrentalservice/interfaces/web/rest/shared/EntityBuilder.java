@@ -61,8 +61,9 @@ public class EntityBuilder {
    */
   public Reservation buildReservation(ReservationDto reservationDto) {
 
-    return new Reservation.Builder().customerMail(
-	    reservationDto.getCustomerMail()).fromDate(
+    return new Reservation.Builder().id(reservationDto.getId()).companyTag(
+	    reservationDto.getProviderTag()).customerMail(
+		    reservationDto.getCustomerMail()).fromDate(
 		    reservationDto.getFromDate()).toDate(
 		    reservationDto.getToDate()).build();
   }

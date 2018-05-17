@@ -40,6 +40,10 @@ public @interface CheckStartingDate {
     @Override
     public boolean isValid(Object value, ConstraintValidatorContext cvc) {
 
+      if (value == null) {
+	return true;
+      }
+
       return !((LocalDate) value).isBefore(LocalDate.now());
     }
   }

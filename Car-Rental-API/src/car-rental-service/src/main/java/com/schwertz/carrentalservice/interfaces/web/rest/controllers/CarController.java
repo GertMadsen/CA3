@@ -4,6 +4,7 @@ package com.schwertz.carrentalservice.interfaces.web.rest.controllers;
 import com.schwertz.carrentalservice.application.CarService;
 import com.schwertz.carrentalservice.application.ReservationService;
 import com.schwertz.carrentalservice.domain.model.Car;
+import com.schwertz.carrentalservice.domain.model.NotSupportedException;
 import com.schwertz.carrentalservice.domain.model.Reservation;
 import com.schwertz.carrentalservice.interfaces.shared.CheckDateRangeParameter;
 import com.schwertz.carrentalservice.interfaces.web.rest.dtos.CarDto;
@@ -101,7 +102,7 @@ public class CarController {
       foundCars = this.carService.queryForCarsInGivenDateRange(start, end);
     } else if (location != null && category != null) {
 
-      throw new RuntimeException(
+      throw new NotSupportedException(
 	      "Quering cars with location and category not supported yet.");
     } else if (location != null) {
 
@@ -122,8 +123,7 @@ public class CarController {
       List<Reservation> foundReservations = this.reservationService.queryForCurrentAndUpcomingReservations(
 	      carDto.getRegno());
       carDto.setReservationDtos(this.dtoBuilder.buildReservationDtos(
-	      foundReservations,
-	      carDto.getCompanyTag()));
+	      foundReservations));
     }
     return new PayloadDto.Builder().carDtos(carDtos).build();
   }
@@ -150,7 +150,7 @@ public class CarController {
 	    foundCar.getRegno());
     CarDto carDto = this.dtoBuilder.buildCarDto(foundCar);
     carDto.setReservationDtos(this.dtoBuilder.buildReservationDtos(
-	    foundReservations, foundCar.getCompanyTag()));
+	    foundReservations));
 
     return carDto;
   }
@@ -179,7 +179,7 @@ public class CarController {
 	    updatedCar.getRegno());
     carDto = this.dtoBuilder.buildCarDto(updatedCar);
     carDto.setReservationDtos(this.dtoBuilder.buildReservationDtos(
-	    foundReservations, updatedCar.getCompanyTag()));
+	    foundReservations));
 
     return carDto;
   }

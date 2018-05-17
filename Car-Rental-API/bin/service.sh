@@ -3,12 +3,12 @@ DIR="$(cd "$(dirname "$0")" && pwd)"
 cd "$DIR"
 
 SERVICE_NAME="Car Rental Service"
-PATH_TO_JAR=../lib/car-rental-service-0.0.1.jar
+PATH_TO_JAR=../lib/car-rental-service-0.0.2.jar
 PATH_TO_CONF=../conf/
 PID_PATH_NAME=/tmp/car_rental_service-pid
 case $1 in
     start)
-        if which java &>/dev/null
+        if which java > /dev/null
         then
             version=$(java -version 2>&1 | head -n 1 | cut -d'"' -f2 | cut -d'.' -f2)
             if [ $version -lt "8" ]; then
@@ -44,7 +44,7 @@ case $1 in
         fi
     ;;
     restart)
-        if which java &>/dev/null
+        if which java > /dev/null
         then
             version=$(java -version 2>&1 | head -n 1 | cut -d'"' -f2 | cut -d'.' -f2)
             if [ $version -lt "8" ]; then
