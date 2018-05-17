@@ -44,46 +44,41 @@ export default class ShowCars extends Component {
             // </View>
 
             
+
             <View style={{flex: 1, paddingTop:20}}>
               <FlatList
                 data={this.state.datasource}
-                renderItem={({item}) => <Text>{item.make} {item.model} {item.category} {item.location} {item.priceperday}</Text>}
-                keyExtractor={(item, index) => index}
+                renderItem={({item,index})=>{
+                    return(
+                        <FlatListItem item={item} index={index}/>
+                    );
+                }} 
+            
               />
             </View>
         );
     }
 }
 
+class FlatListItem extends Component{
+    render(){
+        return(
+            <View style={{
+                flex: 1,
+                backgroundColor: this.props.index % 2 == 0 ? 'black': 'steelblue'
+            }}>
+            <Text style={styles.flatListItem}>{this.props.item.make} {this.props.item.model}</Text>
+            <Text style={styles.flatListItem}>{this.props.item.category} {this.props.item.location} {this.props.item.priceperday}</Text>
+            </View>
+        );
+    }
+}
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: 'center',
-        backgroundColor: 'black',
-    },
-    texting: {
-        margin: 20,
+    flatListItem: {
         color: 'white',
-        fontSize: 30,
-    },
-    button: {
-        marginTop: 10,
-        paddingTop: 7,
-        paddingBottom: 7,
-        marginLeft: 30,
-        marginRight: 30,
-        backgroundColor: '#999999',
-        borderRadius: 10,
-        borderWidth: 1,
-        borderColor: '#4d4d4d',
-        
-    },
-    buttonText: {
-        textAlign: 'center',
-        padding: 5,
-        fontSize: 18,
-        fontWeight: 'bold',
-        color: 'white'
+        padding: 10,
+        fontSize: 16,
     }
-});
+})
+
