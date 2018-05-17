@@ -1,6 +1,8 @@
 
 package com.schwertz.carrentalservice.interfaces.web.rest.shared;
 
+import com.schwertz.carrentalservice.domain.model.NotSupportedException;
+import com.schwertz.carrentalservice.domain.model.OverlappingReservationException;
 import com.schwertz.carrentalservice.interfaces.web.rest.dtos.PayloadDto;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -8,6 +10,7 @@ import java.util.List;
 import javax.persistence.EntityNotFoundException;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
+import javax.validation.ValidationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.ConversionNotSupportedException;
@@ -95,7 +98,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 	  HttpStatus status, WebRequest request) {
 
     return new ResponseEntity(new PayloadDto.Builder().errors(Arrays.asList(
-	    ex.getMessage())).build(),
+	    "Request doesn't conform the API usage protocol.")).build(),
 	    status);
   }
 
@@ -104,7 +107,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 	  HttpHeaders headers, HttpStatus status, WebRequest request) {
 
     return new ResponseEntity(new PayloadDto.Builder().errors(Arrays.asList(
-	    ex.getMessage())).build(),
+	    "Request doesn't conform the API usage protocol.")).build(),
 	    status);
   }
 
@@ -233,6 +236,52 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
   }
 
   /**
+   * Handles {@link OverlappingReservationException}.
+   *
+   * @param exception
+   * @return
+   */
+  @ExceptionHandler(OverlappingReservationException.class)
+  public ResponseEntity<Object> handleOverlappingReservationException(
+	  OverlappingReservationException exception) {
+
+    return new ResponseEntity(new PayloadDto.Builder().errors(Arrays.asList(
+	    exception.getMessage())).build(),
+	    HttpStatus.BAD_REQUEST);
+  }
+
+  /**
+   * Handles {@link NotSupportedException}.
+   *
+   * @param exception
+   * @return
+   */
+  @ExceptionHandler(NotSupportedException.class)
+  public ResponseEntity<Object> handleNotSupportedException(
+	  NotSupportedException exception) {
+
+    return new ResponseEntity(new PayloadDto.Builder().errors(Arrays.asList(
+	    exception.getMessage())).build(),
+	    HttpStatus.BAD_REQUEST);
+  }
+
+  /**
+   * Handles {@link ValidationException}.
+   *
+   * @param exception
+   * @return
+   */
+  @ExceptionHandler(ValidationException.class)
+  public ResponseEntity<Object> handleValidationException(
+	  ValidationException exception) {
+
+    exception.printStackTrace();
+    return new ResponseEntity(new PayloadDto.Builder().errors(Arrays.asList(
+	    "Request doesn't conform the API usage protocol.")).build(),
+	    HttpStatus.BAD_REQUEST);
+  }
+
+  /**
    * Handles every other exceptions.
    *
    * @param exception
@@ -242,8 +291,10 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
   public ResponseEntity<Object> handleOtherException(
 	  Exception exception) {
 
+    exception.printStackTrace();
     LOGGER.info(exception.getMessage());
     return new ResponseEntity(new PayloadDto.Builder().errors(Arrays.asList(
-	    exception.getMessage())).build(), HttpStatus.BAD_REQUEST);
+	    "There's a problem with the service. Help us reporting this issue to support.")).build(),
+	    HttpStatus.INTERNAL_SERVER_ERROR);
   }
 }

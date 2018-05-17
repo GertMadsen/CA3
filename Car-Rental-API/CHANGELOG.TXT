@@ -1,0 +1,2 @@
+ - Same company tag for all reservation bug fix.
+ - Added reservation update API providing a way to correct existing data.

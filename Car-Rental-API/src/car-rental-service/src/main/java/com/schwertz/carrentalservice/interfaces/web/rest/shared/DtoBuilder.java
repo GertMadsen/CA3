@@ -26,7 +26,7 @@ public class DtoBuilder {
    */
   public CarDto buildCarDto(Car car) {
 
-    return new CarDto.Builder().companyTag(car.getCompanyTag()).aircondition(
+    return new CarDto.Builder().aircondition(
 	    car.getAircondition()).category(
 		    car.getCategory()).company(car.getCompany()).doors(
 	    car.getDoors()).gear(car.getGear()).logo(car.getPicture()).location(
@@ -56,15 +56,13 @@ public class DtoBuilder {
    * Build {@link ReservationDto} dto from {@link Reservation} entity.
    *
    * @param reservation
-   * @param providerTag
    * @return
    */
-  public ReservationDto buildReservationDto(Reservation reservation,
-	  String providerTag) {
+  public ReservationDto buildReservationDto(Reservation reservation) {
 
-    return new ReservationDto.Builder().customerMail(
+    return new ReservationDto.Builder().id(reservation.getId()).customerMail(
 	    reservation.getCustomerMail()).fromDate(reservation.getFromDate()).providerTag(
-	    providerTag).toDate(reservation.getToDate()).build();
+	    reservation.getCompanyTag()).toDate(reservation.getToDate()).build();
   }
 
   /**
@@ -72,15 +70,14 @@ public class DtoBuilder {
    * {@link Reservation} entity.
    *
    * @param reservations
-   * @param providerTag
    * @return
    */
   public List<ReservationDto> buildReservationDtos(
-	  List<Reservation> reservations, String providerTag) {
+	  List<Reservation> reservations) {
 
     List<ReservationDto> reservationDtos = new ArrayList<>();
     for (Reservation reservation : reservations) {
-      reservationDtos.add(this.buildReservationDto(reservation, providerTag));
+      reservationDtos.add(this.buildReservationDto(reservation));
     }
     return reservationDtos;
   }

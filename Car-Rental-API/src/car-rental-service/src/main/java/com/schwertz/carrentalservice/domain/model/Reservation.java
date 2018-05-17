@@ -24,6 +24,9 @@ public class Reservation {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
+  @Column(length = 45, nullable = false)
+  private String companyTag;
+
   @Column(length = 254, nullable = false)
   private String customerMail;
 
@@ -77,12 +80,21 @@ public class Reservation {
     this.car = car;
   }
 
+  public String getCompanyTag() {
+    return companyTag;
+  }
+
+  public void setCompanyTag(String companyTag) {
+    this.companyTag = companyTag;
+  }
+
   /**
    * Fluent builder class that helps building {@link Builder} in easier way.
    */
   public static class Builder {
 
     private Long id;
+    private String companyTag;
     private String customerMail;
     private LocalDate fromDate;
     private LocalDate toDate;
@@ -90,6 +102,12 @@ public class Reservation {
     public Builder id(Long id) {
 
       this.id = id;
+      return this;
+    }
+
+    public Builder companyTag(String companyTag) {
+
+      this.companyTag = companyTag;
       return this;
     }
 
@@ -128,5 +146,11 @@ public class Reservation {
     this.fromDate = builder.fromDate;
     this.id = builder.id;
     this.toDate = builder.toDate;
+    this.companyTag = builder.companyTag;
+  }
+
+  @Override
+  public String toString() {
+    return "Reservation{" + "id=" + id + ", companyTag=" + companyTag + ", customerMail=" + customerMail + ", fromDate=" + fromDate + ", toDate=" + toDate + ", car=" + car + '}';
   }
 }

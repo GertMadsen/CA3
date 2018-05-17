@@ -13,6 +13,10 @@
         {
             "name": "car",
             "description": "Car resource specific services."
+        },
+        {
+            "name": "reservation",
+            "description": "Reservation resource specific services."
         }
     ],
     "schemes": [
@@ -182,9 +186,119 @@
                     }
                 }
             }
+        },
+        "/reservations/{reservationId}": {
+            "put": {
+                "tags": [
+                    "reservation"
+                ],
+                "summary": "Update a reservations.",
+                "description": "No need to include every data updated/non-updated. Inclusion of just updated data is good enough.",
+                "operationId": "updateReservation",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "reservationId",
+                        "in": "path",
+                        "description": "Reservation ID of a reservation to update.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "Reservation object that needs to get an update.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/ReservationRequest"
+                        }
+
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Request successfully processed.",
+                        "schema": {
+                            "$ref": "#/definitions/ReservationResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request. Request doesn't conform api standard.",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Server Error. There's a problem in server.",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
+        "CarRequest": {
+            "type": "object",
+            "properties": {
+                "logo": {
+                    "type": "string",
+                    "format": "uri"
+                },
+                "company": {
+                    "type": "string"
+                },
+                "category": {
+                    "type": "string"
+                },
+                "picture": {
+                    "type": "string"
+                },
+                "make": {
+                    "type": "string"
+                },
+                "model": {
+                    "type": "string"
+                },
+                "year": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "seats": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "doors": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "gear": {
+                    "type": "string"
+                },
+                "aircondition": {
+                    "type": "boolean"
+                },
+                "location": {
+                    "type": "string"
+                },
+                "priceperday": {
+                    "type": "number",
+                    "format": "double"
+                },
+                "reservations": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ReservationRequest"
+                    }
+                }
+            }
+        },
         "CarResponse": {
             "type": "object",
             "properties": {
@@ -254,7 +368,7 @@
                 }
             }
         },
-        "ReservationResponse": {
+        "ReservationRequest": {
             "type": "object",
             "properties": {
                 "companyTag": {
@@ -274,64 +388,16 @@
                 }
             }
         },
-        "CarRequest": {
+        "ReservationResponse": {
             "type": "object",
             "properties": {
-                "logo": {
-                    "type": "string",
-                    "format": "uri"
-                },
-                "company": {
-                    "type": "string"
-                },
-                "category": {
-                    "type": "string"
-                },
-                "picture": {
-                    "type": "string"
-                },
-                "make": {
-                    "type": "string"
-                },
-                "model": {
-                    "type": "string"
-                },
-                "year": {
+                "id": {
                     "type": "integer",
-                    "format": "int32"
+                    "format": "int64"
                 },
-                "seats": {
-                    "type": "integer",
-                    "format": "int32"
-                },
-                "doors": {
-                    "type": "integer",
-                    "format": "int32"
-                },
-                "gear": {
+                "companyTag": {
                     "type": "string"
                 },
-                "aircondition": {
-                    "type": "boolean"
-                },
-                "location": {
-                    "type": "string"
-                },
-                "priceperday": {
-                    "type": "number",
-                    "format": "double"
-                },
-                "reservations": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/ReservationRequest"
-                    }
-                }
-            }
-        },
-        "ReservationRequest": {
-            "type": "object",
-            "properties": {
                 "customerMail": {
                     "type": "string",
                     "format": "email"

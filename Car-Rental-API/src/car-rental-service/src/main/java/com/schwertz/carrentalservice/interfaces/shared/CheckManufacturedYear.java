@@ -32,7 +32,7 @@ public @interface CheckManufacturedYear {
   Class<? extends Payload>[] payload() default {};
 
   /**
-   * Manufactured year validation.Manufactured year cannot be more then current
+   * Manufactured year validation. Manufactured year cannot be more then current
    * year or may cannot be before 1970.
    */
   public static class ManufacturedYearValidator implements ConstraintValidator<CheckManufacturedYear, Integer> {

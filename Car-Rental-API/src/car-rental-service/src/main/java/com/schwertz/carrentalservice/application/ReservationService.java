@@ -20,4 +20,11 @@ public interface ReservationService {
    */
   public List<Reservation> queryForCurrentAndUpcomingReservations(
 	  String carRegistrationNumber);
+
+  /**
+   * Update information of a reservation.
+   *
+   * @return
+   */
+  public Reservation updateReservationInfo(Reservation reservation);
 }

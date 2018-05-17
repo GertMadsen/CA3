@@ -56,6 +56,13 @@ public @interface CheckDateRange {
 
       if (value instanceof ReservationDto) {
 	ReservationDto reservationDto = (ReservationDto) value;
+
+	if (reservationDto.getFromDate() == null && reservationDto.getToDate() == null) {
+	  return true;
+	} else if(reservationDto.getFromDate() == null || reservationDto.getToDate() == null) {
+	  return false;
+	}
+
 	return !reservationDto.getFromDate().isAfter(reservationDto.getToDate());
       }
       return true;

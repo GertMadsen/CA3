@@ -4,9 +4,11 @@ package com.schwertz.carrentalservice.interfaces.web.rest.dtos;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.schwertz.carrentalservice.interfaces.shared.CheckManufacturedYear;
+import com.schwertz.carrentalservice.interfaces.shared.NoOverlappingReservations;
 import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.URL;
 
@@ -63,6 +65,7 @@ public class CarDto {
 
   @JsonProperty("reservations")
   @Valid
+  @NoOverlappingReservations
   private List<ReservationDto> reservationDtos;
 
   public CarDto() {

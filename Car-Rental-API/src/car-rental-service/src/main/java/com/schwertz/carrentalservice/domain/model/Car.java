@@ -36,9 +36,6 @@ public class Car {
   private String company;
 
   @Column(length = 45, nullable = false)
-  private String companyTag;
-
-  @Column(length = 45, nullable = false)
   @CheckCategory
   private String category;
 
@@ -200,14 +197,6 @@ public class Car {
     this.reservations = reservations;
   }
 
-  public String getCompanyTag() {
-    return companyTag;
-  }
-
-  public void setCompanyTag(String companyTag) {
-    this.companyTag = companyTag;
-  }
-
   /**
    * Fluent builder class that helps building {@link Car} in easier way.
    */
@@ -347,5 +336,10 @@ public class Car {
     this.regno = builder.regno;
     this.reservations = builder.reservations;
     this.seats = builder.seats;
+  }
+
+  @Override
+  public String toString() {
+    return "Car{" + "regno=" + regno + ", logo=" + logo + ", company=" + company + ", category=" + category + ", picture=" + picture + ", make=" + make + ", model=" + model + ", year=" + year + ", location=" + location + ", priceperday=" + priceperday + ", seats=" + seats + ", doors=" + doors + ", gear=" + gear + ", aircondition=" + aircondition + ", reservations=" + reservations + '}';
   }
 }
