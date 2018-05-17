@@ -93,8 +93,6 @@ class RentCar extends Component {
   render() {
     return (
       <div className="panel-body transparent">
-
-
         <br />
         <div className="row">
           <div className="col-sm-3"></div>
@@ -102,13 +100,9 @@ class RentCar extends Component {
           <div className="col-sm-3"></div>
         </div>
         <br />
-
-
         <div className="row">
-
           <div className="col-md-3">
           </div>
-
           <div className="col-md-2 text-center">
 
             <h3><span className="label label-default">Category</span></h3>
@@ -786,19 +780,14 @@ class App extends Component {
                 <Route path="/showloccars" render={(props) => <ShowCars setBookingBoolean={this.setBookingAvailable} bookingAvailable={false} setReturnURL={this.setReturnURL} fetchURL={this.state.locationURL} {...props} />} />
                 <Route path="/showdatecars" render={(props) => <ShowCars setBookingBoolean={this.setBookingAvailable} bookingAvailable={true} setReturnURL={this.setReturnURL} fetchURL={this.state.dateURL} {...props} />} />
                 <Route path="/showcatcars" render={(props) => <ShowCars setBookingBoolean={this.setBookingAvailable} bookingAvailable={false} setReturnURL={this.setReturnURL} fetchURL={this.state.categoryURL} {...props} />} />
-                <Route path="/showcombicars" render={(props) => <ShowCars setBookingBoolean={this.setBookingAvailable} bookingAvailable={true} setReturnURL={this.setReturnURL} fetchURL={combiURL} {...props} />} />
-                
+                <Route path="/showcombicars" render={(props) => <ShowCars setBookingBoolean={this.setBookingAvailable} bookingAvailable={true} setReturnURL={this.setReturnURL} fetchURL={combiURL} {...props} />} />                
                 <Route path="/details/:regno" render={(props) => <CarDetails bookingBoolean={this.state.bookingBoolean} setReturnURL={this.setReturnURL} returnURL={this.state.returnURL} {...props} />} />
-
                 <Route path="/bookinginfo/:regno" render={(props) => <BookingInfo returnURL={this.state.returnURL} firstname={this.state.user.firstname} lastname={this.state.user.lastname} email={this.state.user.email} start={this.state.startDate} end={this.state.endDate} {...props} />} />
                 <Route path="/clientdata/:regno" render={(props) => <ClientData setCar={this.setCar} returnURL={this.state.returnURL}
-
                   firstname={this.state.user.firstname} lastname={this.state.user.lastname} email={this.state.user.email}
                   setUserFname={this.setUserFname} setUserLname={this.setUserLname} setUserEmail={this.setUserEmail}
                   {...props} />} />
                 <Route path="/confirmation/" render={(props) => <Confirmation returnURL={this.state.returnURL} firstname={this.state.user.firstname} lastname={this.state.user.lastname} email={this.state.user.email} start={this.state.startDate} end={this.state.endDate} car={this.state.car} {...props} />} />
-
-
                 <Route component={NoMatch} />
               </Switch>
             </Router>

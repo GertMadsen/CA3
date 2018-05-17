@@ -1,7 +1,5 @@
 
-// const URL = require("../package.json").serverURL;
-const URL = "http://localhost:8084/jwtbackend";
-
+const URL = require("../package.json").serverURL;
 
 function handleHttpErrors(res) {
     if (!res.ok) {
@@ -11,29 +9,6 @@ function handleHttpErrors(res) {
 }
 
 class ApiFacade {
-
-    setToken = (token) => {
-        localStorage.setItem('jwtToken', token)
-    }
-    getToken = () => {
-        return localStorage.getItem('jwtToken')
-    }
-    loggedIn = () => {
-        const loggedIn = this.getToken() != null;
-        return loggedIn;
-    }
-    logout = () => {
-        localStorage.removeItem("jwtToken");
-    }
-
-    login = (user, pass) => {
-        const options = this.makeFetchOptions("POST", { username: user, password: pass });
-
-
-        return fetch(URL + "/api/login", options, true)
-            .then(handleHttpErrors)
-            .then(res => { this.setToken(res.token) })
-    }
 
     fetchCars = (urlExtension) => {
         const options = this.makeFetchOptions("GET");
@@ -50,14 +25,10 @@ class ApiFacade {
         return fetch(URL + "/api/test/", options).then(handleHttpErrors);
     }
 
-
     makeFetchOptions = (type, b) => {
         let headers = {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
-        }
-        if (this.loggedIn()) {
-            headers["x-access-token"] = this.getToken();
         }
         return {
             method: type,
