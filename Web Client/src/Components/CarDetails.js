@@ -59,14 +59,14 @@ export default class CarDetails extends Component {
         <div className="row">
           <div className="col-md-3"></div>
           <div className="col-md-6 nonTransparent rounded border border-dark text-center">
-            <div className="flyvVenstre ">
+            <div className="flyvVenstreLogo ">
               <img src={car.logo} width="150px" height="150px" alt="" />
               <h2 className="textColor">{car.company}</h2>
             </div>
-            <div className="flyvVenstreMerePlads whiteBackground">
+            <div className="flyvVenstreMerePlads">
               <img className="" src={car.picture} width="225px" height="150px" alt="" />
             </div>
-            <div className="flyvHøjre ">
+            <div className="flyvHøjreLogo ">
               <img src={car.logo} width="150px" height="150px" alt="" />
               <h2 className="textColor">{car.company}</h2>
             </div>

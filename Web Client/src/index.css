@@ -52,9 +52,14 @@ ul.header li a {
 .flyvVenstre{
   float:left;
 }
+.flyvVenstreLogo{
+  float:left;
+  margin-top: 10px
+}
 .flyvVenstreMerePlads{
   float:left;
-  margin-left: 9.5%;
+  margin-left: 16%;
+  margin-top: 25px
 }
 .flyvMidt{
   float:none;
@@ -65,7 +70,11 @@ ul.header li a {
   width: 225px;
 }
 .flyvHøjre{
-  float:right
+  float:right;
+}
+.flyvHøjreLogo{
+  float:right;
+  margin-top: 10px
 }
 .customBredde{
   width: 200px;
