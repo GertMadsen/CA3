@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {FlatList, ActivityIndicator, Button, Text, StyleSheet, View, TouchableOpacity } from 'react-native';
+import {FlatList, ActivityIndicator, Button, Text, StyleSheet, View, TouchableOpacity, Image } from 'react-native';
 
 const URL = require("./package.json").serverURL;
 
@@ -65,10 +65,19 @@ class FlatListItem extends Component{
         return(
             <View style={{
                 flex: 1,
+                flexDirection: 'row',
                 backgroundColor: this.props.index % 2 == 0 ? 'black': 'steelblue'
             }}>
-            <Text style={styles.flatListItem}>{this.props.item.make} {this.props.item.model}</Text>
-            <Text style={styles.flatListItem}>{this.props.item.category} {this.props.item.location} {this.props.item.priceperday}</Text>
+            <Image source={{uri: this.props.item.picture}}
+                   style={{width: 120, height: 100, margin: 5}}/>
+            <View style={{
+                flex: 1,
+                flexDirection: 'column',
+            }}>
+                <Text style={styles.flatListItem}>{this.props.item.make} {this.props.item.model}</Text>
+                <Text style={styles.flatListItem}>{this.props.item.category}, {this.props.item.location}, {this.props.item.priceperday} kr</Text>
+            </View>
+            
             </View>
         );
     }
