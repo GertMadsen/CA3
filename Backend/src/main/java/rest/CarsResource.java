@@ -9,6 +9,7 @@ import com.google.gson.Gson;
 import entity.Car;
 import entity.Cars;
 import entity.CarsFacade;
+import entity.DevranCars;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -37,7 +38,10 @@ public class CarsResource {
     
     private String schwertzUrl = "http://www.ramsbone.dk:8085/api/cars";
     private String biglersUrl = "https://stanitech.dk/carrentalapi/api/cars";
+    private String internationUrl = "https://www.devrancoskun.dk/Rental-International/api/cars";
 
+    
+    
     @Context
     private UriInfo context;
     
@@ -64,6 +68,9 @@ public class CarsResource {
             case 'B': 
                 companyUrl = biglersUrl;
                 break;
+            case 'D': 
+                companyUrl = internationUrl;
+                break;
             case 'L': 
                 companyUrl = schwertzUrl;
                 break;
@@ -84,10 +91,19 @@ public class CarsResource {
         scan.close();
         
         if(regStart == 'B') {
-            Cars BiglerCars = gson.fromJson(jsonStr, Cars.class);
-            Car BiglerCar = BiglerCars.getCars().get(0);
-            jsonStr = gson.toJson(BiglerCar);           
+            Cars biglerCars = gson.fromJson(jsonStr, Cars.class);
+            Car biglerCar = biglerCars.getCars().get(0);
+            jsonStr = gson.toJson(biglerCar);           
         }
+        System.out.println("Bla bla.. " + regStart);
+        
+        if(regStart == 'D') {
+            System.out.println("AAAA: "+jsonStr);
+            DevranCars devCars = gson.fromJson(jsonStr, DevranCars.class);
+            Car devCar = devCars.getCar();
+            jsonStr = gson.toJson(devCar);
+        }
+        
     
         return jsonStr;
     }
@@ -144,12 +160,15 @@ public class CarsResource {
 
         String jsonSchwertz = getDataMethod(schwertzUrl, location, category, fromDate, toDate);
         String jsonBiglers = getDataMethod(biglersUrl, location, category, fromDate, toDate);
+        String jsonInternational = getDataMethod(internationUrl, location, category, fromDate, toDate);
         
         CarsFacade cf = new CarsFacade();
         
         Cars schwertzList = gson.fromJson(jsonSchwertz, Cars.class);
         Cars biglerList = gson.fromJson(jsonBiglers, Cars.class);
         Cars merged = cf.mergeCars(schwertzList, biglerList);
+        Cars internationalList = gson.fromJson(jsonInternational, Cars.class);
+        merged = cf.mergeCars(merged, internationalList);
         
         String resultStr =gson.toJson(merged);
         return resultStr;
