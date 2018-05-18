@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
-import {FlatList, ActivityIndicator, Button, Text, StyleSheet, View, TouchableOpacity, Image } from 'react-native';
+import {FlatList, Alert, ActivityIndicator, Button, Text, StyleSheet, View, TouchableOpacity, Image } from 'react-native';
+import { StackNavigator } from 'react-navigation';
 import ShowDetails from './showdetails';
 
-_onPressButton(){
-
-}
-
 const URL = require("./package.json").serverURL;
+
 
 export default class ShowCars extends Component {
     static navigationOptions = { title: "Show Cars" }
@@ -19,7 +17,6 @@ export default class ShowCars extends Component {
                 .then((responseJson) => {
                     this.setState({
                         isLoading: false,
-                        // car: responseJson.cars[0].regno,
                         datasource: responseJson.cars,
                     }, function () {
 
@@ -42,14 +39,7 @@ export default class ShowCars extends Component {
     }
 
     render() {
-        return (
-            // <View style={styles.container}>
-            //     <Text style={styles.texting}>A car:</Text>
-            //     <Text style={styles.texting}>Regno: {this.state.car}</Text>
-            // </View>
-
-            
-
+        return (   
             <View style={{flex: 1, paddingTop:20}}>
               <FlatList
                 data={this.state.datasource}
@@ -66,10 +56,18 @@ export default class ShowCars extends Component {
 }
 
 class FlatListItem extends Component{
+    
+    _onPressButton(){
+        Alert.alert('You tapped the button!')
+    }
+
+    
+    
     render(){
+        // const {navigate} = this.props.navigation;
         return(
-            <View>
-                <Button onPress=>
+                // <TouchableOpacity onPress={() => navigate('ShowDetails', {regno: 'LAA0001'})}>
+                <TouchableOpacity onPress={this._onPressButton}>
                 <View style={{
                     flex: 1,
                     flexDirection: 'row',
@@ -85,11 +83,15 @@ class FlatListItem extends Component{
                     <Text style={styles.flatListItem}>{this.props.item.category}, {this.props.item.location}, {this.props.item.priceperday} kr</Text>
                 </View>
                 </View>
-                </Button>
-            <View>
+                </TouchableOpacity>
+           
         );
     }
 }
+
+const RouteStack = StackNavigator({
+    ShowDetails: { screen: ShowDetails },
+  })
 
 const styles = StyleSheet.create({
     flatListItem: {

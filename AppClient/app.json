@@ -1,7 +1,7 @@
 {
   "expo": {
-	"name": "Seed App",
+	"name": "Carmondo",
     "sdkVersion": "26.0.0",
-	"description": "Seed App for use with Seed Project",
+	"description": "Car rental app",
   }
 }
