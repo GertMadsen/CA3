@@ -3,6 +3,7 @@ import { Text, View, Platform, TouchableOpacity, StyleSheet, Button, WebView, Sc
 import { Constants, WebBrowser } from "expo";
 import { StackNavigator } from 'react-navigation';
 import ShowCars from './showcars';
+import ShowDetails from './showdetails';
 
 const Touchable = (props) => (
   <TouchableOpacity style={styles.button} onPress={props.onPress}>
@@ -18,6 +19,7 @@ class HomeScreen extends React.Component{
       <View>
         <Text style={{ textAlign: "center", fontSize: 20 }}>Touch the button to see some cars</Text>
         <Touchable onPress={() => navigate('showcars')} title="Show Cars" />
+        <Touchable onPress={() => navigate('showdetails')} title="See details on a car" />
       </View>
     );
   }
@@ -28,6 +30,7 @@ export default App = () => <RouteStack style={{ marginTop: Platform.OS === 'ios'
 const RouteStack = StackNavigator({
   Home: { screen: HomeScreen},
   showcars: { screen: ShowCars },
+  showdetails: { screen: ShowDetails },
 })
 
 
