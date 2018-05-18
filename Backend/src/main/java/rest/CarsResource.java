@@ -95,10 +95,8 @@ public class CarsResource {
             Car biglerCar = biglerCars.getCars().get(0);
             jsonStr = gson.toJson(biglerCar);           
         }
-        System.out.println("Bla bla.. " + regStart);
         
         if(regStart == 'D') {
-            System.out.println("AAAA: "+jsonStr);
             DevranCars devCars = gson.fromJson(jsonStr, DevranCars.class);
             Car devCar = devCars.getCar();
             jsonStr = gson.toJson(devCar);
