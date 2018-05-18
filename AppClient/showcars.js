@@ -1,5 +1,10 @@
 import React, { Component } from 'react';
 import {FlatList, ActivityIndicator, Button, Text, StyleSheet, View, TouchableOpacity, Image } from 'react-native';
+import ShowDetails from './showdetails';
+
+_onPressButton(){
+
+}
 
 const URL = require("./package.json").serverURL;
 
@@ -63,22 +68,25 @@ export default class ShowCars extends Component {
 class FlatListItem extends Component{
     render(){
         return(
-            <View style={{
-                flex: 1,
-                flexDirection: 'row',
-                backgroundColor: this.props.index % 2 == 0 ? 'black': 'steelblue'
-            }}>
-            <Image source={{uri: this.props.item.picture}}
+            <View>
+                <Button onPress=>
+                <View style={{
+                    flex: 1,
+                    flexDirection: 'row',
+                    backgroundColor: this.props.index % 2 == 0 ? 'black': 'steelblue'
+                }}>
+                <Image source={{uri: this.props.item.picture}}
                    style={{width: 120, height: 100, margin: 5}}/>
-            <View style={{
-                flex: 1,
-                flexDirection: 'column',
-            }}>
-                <Text style={styles.flatListItem}>{this.props.item.make} {this.props.item.model}</Text>
-                <Text style={styles.flatListItem}>{this.props.item.category}, {this.props.item.location}, {this.props.item.priceperday} kr</Text>
-            </View>
-            
-            </View>
+                <View style={{
+                   flex: 1,
+                   flexDirection: 'column',
+                }}>
+                    <Text style={styles.flatListItem}>{this.props.item.make} {this.props.item.model}</Text>
+                    <Text style={styles.flatListItem}>{this.props.item.category}, {this.props.item.location}, {this.props.item.priceperday} kr</Text>
+                </View>
+                </View>
+                </Button>
+            <View>
         );
     }
 }
