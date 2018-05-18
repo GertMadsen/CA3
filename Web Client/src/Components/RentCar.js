@@ -111,7 +111,7 @@ export default class RentCar extends Component {
             <br />
             <div className="btn-group customBredde">
               <select className="form-control" value={this.state.location} onChange={this.handleChangeLocation}>
-                <option value="All">Alle</option>
+                <option value="All">All</option>
                 <option value="Cph (Copenhagen Airport)">Cph (Copenhagen Airport)</option>
                 <option value="Billund Lufthavn">Billund Lufthavn</option>
                 <option value="Aalborg Lufthavn">Aalborg Lufthavn</option>
