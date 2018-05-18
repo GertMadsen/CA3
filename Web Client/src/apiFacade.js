@@ -3,7 +3,8 @@ const URL = require("../package.json").serverURL;
 
 function handleHttpErrors(res) {
     if (!res.ok) {
-        throw { message: res.statusText, status: res.status };
+        var error = { message: res.statusText, status: res.status }; 
+        throw error;       
     }
     return res.json();
 }

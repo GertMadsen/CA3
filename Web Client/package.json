@@ -2,7 +2,7 @@
   "name": "login-frontend",
   "version": "0.1.0",
   "private": true,
-  "serverURL": "http://localhost:8084/jwtbackend",
+  "serverURL": "https://www.leneaskov.dk/backend/",
   "dependencies": {
     "jsonwebtoken": "^8.2.1",
     "react": "^16.3.1",
